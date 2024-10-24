@@ -1,0 +1,227 @@
+<div class="card shadow mb-2 p-0 animated zoomIn">
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold">
+      <span *ngIf="!currentItem?.name">{{departement_name}}</span>
+      <span *ngIf="currentItem?.name">{{ currentItem?.name }}</span>
+    </h6>
+    <small class="float-right">
+      <a (click)="toggleView('list');restoreTitle()" *ngIf="currentView != 'list'"
+        class="text-secondary mr-2 text-dark">
+        <i class="fas fa-times-circle"></i> {{'CLOSE' | translate}}
+      </a>
+    </small>
+  </div>
+
+  <div *ngIf="currentView=='list'" class="card-body p-1">
+    <!-- LIST -->
+    <div class="row">
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading()" class="col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th> {{'MOTIF' | translate}} </th>
+              <th>{{'dateRejet' | translate}}</th>
+              <th> {{'dateCorrection' | translate}} </th>
+              <th>
+                <i class="float-right fas fa-cog"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of SOURCE?.data; let i=index" class="handMe animated slideInDown">
+              <td>
+                <a (click)="details(item)">{{item?.name}}</a>
+              </td>
+              <td>
+                {{item?.created_at | date:'d MMM y' }}
+              </td>
+              <td>
+                {{item?.updated_at | date:'d MMM y' }}
+              </td>
+              <td>
+                <div class="float-right btn-group" role="group" aria-label="Basic example">
+                  <button (click)="details(item)" [title]="'SHOW' | translate" type="button"
+                    class="btn btn-sm btn-light">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button (click)="initEditForm(item, i)" title="Modifier" type="button" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-edit"></i>
+                  </button>
+                  <button (click)="initDelete(item.id, i); delete(null)" title="Supprimer" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="!SOURCE?.data?.length && !service.isLoading() && departement_actuel <  departement_affecte" class="row"
+      style="margin-top: 10%; margin-bottom: 10%;">
+      <div class="col-md-12 text-center">
+        <i class="text-primary">
+          <i class="fas fa-check-circle"></i> Mission Validée avec succès par le {{departement_name}}
+        </i>
+      </div>
+
+    </div>
+
+    <div *ngIf="SOURCE?.data?.length && !service.isLoading() && departement_actuel <  departement_affecte"
+      class="row mt-3 mb-3">
+      <div class="col-md-12 text-center">
+        <i class="text-primary">
+          <i class="fas fa-check-circle"></i> Mission Validée avec succès par le {{departement_name}}
+        </i>
+      </div>
+    </div>
+
+
+    <div class="row mt-2 mb-3"
+      *ngIf=" !service.isLoading() && !missionService.requestings?.processDepartement &&  (termine || (departement_actuel == 3 &&  departement_affecte == 4))">
+
+      <div *ngIf="forms.ordre" class="offset-md-2 col-md-8">
+        <form [formGroup]="forms.ordre" (ngSubmit)="completeInfo()" class="form row p-2 bg-light border" role="form"
+          autocomplete="off">
+
+          <div class="form-group col-md-9 p-0">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">
+              Affectation des imputations
+              <span class="text-danger requiredField">*</span>
+              <i *ngIf="requestings.search" class="float-right fas fa-spinner fa-spin"></i>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <ngx-select-dropdown (searchChange)="search($event)" formControlName="imputation" [multiple]="true"
+                [config]="config" [options]="missionService.imputationService.allData | async"></ngx-select-dropdown>
+            </div>
+          </div>
+
+          <div class="form-group col-md-3 mt-3">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">
+
+            </label>
+            <div class="text-center col-sm-12 pl-0">
+              <button [disabled]="forms.ordre.invalid || requesting" type="submit"
+                class="btn btn-light btn-lg border noRadius">
+                {{ 'VALIDATE' | translate }}
+                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="mission_all_details.imputations?.length" class="col-md-12 text-center mt-5 mb-2">
+        <button (click)="ordreMission()" class="btn btn-lg btn-primary text-white noRadius shadow">
+          <i class="fas fa-file-pdf"></i> Voir L'ordre de mission
+        </button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="departement_actuel >=  departement_affecte">
+      <app-nodata *ngIf="!SOURCE?.data?.length && !service.isLoading()">
+      </app-nodata>
+    </ng-container>
+
+
+
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+
+    <div *ngIf="departement_actuel == departement_affecte && mission_etat_id == 2 " class="row">
+      <div class="col-md-12 text-center mt-4 mb-4">
+        <button (click)="initAddForm()" type="button" class="btn btn-lg btn-danger noRadius mr-3 shadow">
+          <i class="fas fa-times-circle"></i> {{ 'rejeteMission' | translate }}
+        </button>
+
+        <button (click)="processDepartement()" [disabled]="missionService.requestings?.processDepartement" type="button"
+          class="btn btn-lg bgTheme text-white noRadius shadow">
+          <i *ngIf="!missionService.requestings?.processDepartement" class="fas fa-check-circle"></i>
+          {{ 'validateMission' | translate }}
+          <i *ngIf="missionService.requestings?.processDepartement" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="currentView=='ordre'" class="card-body p-1">
+    <app-ordre [mission_all_details]="mission_all_details"></app-ordre>
+  </div>
+
+
+  <div *ngIf="currentView == 'add'" class="card-body">
+    <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4" role="form" autocomplete="off">
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'MOTIF' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="name" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'DESCRIPTION' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <angular-editor formControlName="description" [config]="textEditorConfig">
+          </angular-editor>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button (click)="toggleView('list');restoreTitle()" type="button"
+            class="btn btn-sm btn-light shadow-danger mr-2">
+            {{ 'CLOSE' | translate}}
+          </button>
+          <button [disabled]="forms.add.invalid || requesting" type="submit"
+            class="btn btn-sm btn-primary noRadius shadow-primary">
+            <i *ngIf="!requesting" class="fas fa-check-circle"></i> {{ 'SUBMIT' | translate }}
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="currentView == 'edit'" class="card-body">
+    <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form" autocomplete="off">
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'MOTIF' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="name" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'DESCRIPTION' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <angular-editor formControlName="description" [config]="textEditorConfig">
+          </angular-editor>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button (click)="toggleView('list');restoreTitle()" type="button"
+            class="btn btn-sm btn-light shadow-danger mr-2">
+            {{ 'CLOSE' | translate}}
+          </button>
+          <button [disabled]="forms.edit.invalid || requesting" type="submit"
+            class="btn btn-sm btn-primary noRadius shadow-primary">
+            <i *ngIf="!requesting" class="fas fa-edit"></i> {{ 'VALIDATE' | translate }}
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="currentView == 'details'" class="card-body ">
+    <div [innerHtml]="currentItem?.description"></div>
+  </div>
+
+</div>

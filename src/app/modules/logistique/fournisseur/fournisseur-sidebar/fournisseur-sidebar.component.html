@@ -1,0 +1,56 @@
+<div class="card-body p-0">
+    <div class="form-group  mb-0 bd-b">
+        <div class="input-group">
+            <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                        <option selected> Catégories...</option>
+                        <option value="1"> Important</option>
+                        <option value="2"> Moins Important</option>
+                    </select>
+            <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                        <option selected> Fournisseurs...</option>
+                        <option value="1"> Académique</option>
+                        <option value="2"> Business</option>
+                        <option value="3"> Partenariat</option>
+                        <option value="3"> Diplômatique</option>
+                    </select>
+
+            <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                        <option selected> Matériels...</option>
+                        <option value="1"> Important pour un type de données</option>
+                        <option value="2"> Moins Important</option>
+                    </select>
+        </div>
+    </div>
+</div>
+<div>
+    <ul class="list-group list-group-flush tx-13 " [class.loading]="fournisseurHelper.loading$ | async">
+        <ng-container *ngIf="fournisseurHelper.data$ | async as items">
+            <ng-container *ngIf="items.length; else noItem">
+                <li class="list-group-item d-flex pd-sm-x-10 bd-b bg-light" *ngFor="let fournisseur of items;trackBy: fournisseurHelper.trackByFn">
+                    <button class="btn btn-default d-flex w-100 btn-sm" [class.accent-facebook-left]="selectedFournisseurId && fournisseur.id == selectedFournisseurId" (click)="onSetSelected(fournisseur)">
+                      <div class="mr-2 mg-l-0 ">
+                        <div class="avatar d-block">
+                            <img class="avatar3" src="assets/images/avatar-placeholder.png" alt="avatar">
+                        </div>
+                      </div>
+                      <div class="pd-sm-l-10">
+                          <p class="tx-primary mg-b-0"> {{fournisseur.user.libelle}}</p>
+                          <span class="tx-12 mg-b-0 tx-gray-500"> {{fournisseur.type.libelle}}</span>
+                          <span class="tx-12 mg-b-0 tx-gray-500"><i class="fad fa-link tx-primary " style="padding:4px; border-radius:50%"></i></span>
+
+                      </div>
+                      <div class="mg-l-auto text-right">
+                          <div class="mg-b-0  tx-dar"><small>28/12/2020</small></div>
+                          <span class="tx-10 tx-success-100 mg-b-0">En Arrêt</span>
+                      </div>
+                    </button>
+                </li>
+            </ng-container>
+        </ng-container>
+    </ul>
+</div>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

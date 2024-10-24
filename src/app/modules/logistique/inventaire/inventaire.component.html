@@ -1,0 +1,296 @@
+<div class="card mb-2">
+    <div class="section-body ">
+        <div class="form-group  mb-0 bd-b ">
+            <div class="input-group bd-b">
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Type Matériel...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Matériel...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Fournisseurs...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Etats...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Affecté à...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                    <option selected> Année ...</option>
+                    <option value="1"> Académique</option>
+                    <option value="2"> Business</option>
+                    <option value="3"> Partenariat</option>
+                    <option value="3"> Diplômatique</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row row-xs mg-0 pd-0 bg-light p-0">
+        <div class="col-lg-6 d-flex">
+            <div>
+                <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+            <i class="fal fa-plus-circle tx-14" ></i>
+          </button>
+            </div>
+            <div class="form-group mg-t-5 mg-b-5 ">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <ul class="nav float-right list-inline justify-content-end">
+                <li class="nav-item"><button class="btn btn-sm btn-link px-1 cursor-pointer tx-gray-600" [class.text-primary]="view == enumView.tous" (click)="view = enumView.tous"><i class="fad fa-circle bg-light  tx-12" style="padding:6px; border-radius: 50%; "></i> <span class=" tx-14">Tous</span></button></li>
+                <li class="nav-item"><button class="btn btn-sm btn-link px-1 cursor-pointer tx-gray-600" [class.text-primary]="view == enumView.stock" (click)="view = enumView.stock"><i class="fad fa-circle bg-light  tx-12" style="padding:6px; border-radius: 50%; "></i> <span class=" tx-14">Stock</span></button></li>
+                <li class="nav-item"><button class="btn btn-sm btn-link px-1 cursor-pointer tx-gray-600" [class.text-primary]="view == enumView.defectueux" (click)="view = enumView.defectueux"><i class="fad fa-circle bg-light  tx-12" style="padding:6px; border-radius: 50%; "></i> <span class=" tx-14">Défecteux</span></button></li>
+                <li class="nav-item"><button class="btn btn-sm btn-link px-1 cursor-pointer tx-gray-600" [class.text-primary]="view == enumView.normal" (click)="view = enumView.normal"><i class="fad fa-circle bg-light  tx-12" style="padding:6px; border-radius: 50%; "></i> <span class=" tx-14">Normal</span></button></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <h5 class="tx-yeto2"><i class="fad fa-circle bg-light tx-light tx-12" style="padding:6px; border-radius:50%"></i> Inventaire Actuel</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table  table-hover table-sm mb-0 " [class.loading]="dataHelper.loading$ | async">
+            <ng-container [ngSwitch]="view">
+                <tbody *ngSwitchCase="enumView.stock">
+                    <tr class="barder-0">
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Date vérification</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Quantité Stock</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Prix Unitaire</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Total inventaire</th>
+                        <th class="tx-facebook  tx-16"> Fournisseurs </th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <ng-container *ngFor="let inventaire of items;trackBy: dataHelper.trackByFn">
+                                <tr class=" bd-b">
+
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.libelle}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.date | date: 'dd/MM/yyyy'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock*inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center ">
+                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-facebook " style="padding:6px; border-radius:50%"></i></span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+                <tbody *ngSwitchCase="enumView.defectueux">
+                    <tr class="barder-0">
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Date vérification</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Quantité Défectueuse</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Prix Unitaire</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Total inventaire</th>
+                        <th class="tx-facebook  tx-16"> Fournisseurs </th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <ng-container *ngFor="let inventaire of items;trackBy: dataHelper.trackByFn">
+                                <tr class=" bd-b">
+
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.libelle}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.date | date: 'dd/MM/yyyy'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_defectueux}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_defectueux*inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center ">
+                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-facebook " style="padding:6px; border-radius:50%"></i></span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+                <tbody *ngSwitchCase="enumView.normal">
+                    <tr class="barder-0">
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Date vérification</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Quantité Stock</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Stock Normal</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Total Normal</th>
+                        <th class="tx-facebook  tx-16"> Fournisseurs </th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <ng-container *ngFor="let inventaire of items;trackBy: dataHelper.trackByFn">
+                                <tr class=" bd-b">
+
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.libelle}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.date | date: 'dd/MM/yyyy'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.stock_normal}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock-inventaire.stock_normal}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center ">
+                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-facebook " style="padding:6px; border-radius:50%"></i></span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+                <tbody *ngSwitchDefault>
+                    <tr class="barder-0">
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Date vérification</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Quantité Stock</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Quantité Defectueuse</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Reste</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Prix Unitaire</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Total inventaire</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight"> Stock Normal</th>
+                        <th class="tx-facebook  tx-16"> Fournisseurs </th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <ng-container *ngFor="let inventaire of items;trackBy: dataHelper.trackByFn">
+                                <tr class=" bd-b">
+
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.libelle}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.date | date: 'dd/MM/yyyy'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_defectueux}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.quantite_stock - inventaire.quantite_defectueux}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{(inventaire.quantite_stock - inventaire.quantite_defectueux)*inventaire.prix | number :'':'fr-FR'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center bg-white ">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{inventaire.stock_normal}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center ">
+                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-facebook " style="padding:6px; border-radius:50%"></i></span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </ng-container>
+        </table>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <tr>
+        <td colspan="10">
+            <h4 class="text-center title m-2 p-5" *ngIf="!(dataHelper.loading$ | async)">
+                {{ 'Aucun Element' }}
+            </h4>
+        </td>
+    </tr>
+</ng-template>

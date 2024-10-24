@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div *ngIf="!materielId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="materiel_id">Materiel</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allMateriels$ | async" required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}"
+                        required>
+                        <option value="">--choississez le materiel --</option>
+                        <ng-container *ngFor="let item of (allMateriels$ | async)">
+                            <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                        </ng-container>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('materiel_id')" class="invalid-feedback">veillez choisir le materiel.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Quantite</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'quantite'" [ngClass]="{'is-invalid': shouldShowRequiredError('quantite'), 'is-valid': isValid('quantite')}" name="quantite">
+                    <div *ngIf="shouldShowRequiredError('quantite')" class="invalid-feedback">veillez saisir la quantite.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Niveau d'urgence</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="niveau_id" [formControlName]="'niveau_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'niveau_id') , 'is-valid': isValid('niveau_id')}" required>
+                      <ng-container *ngFor="let item of (allNiveaus$ | async)">
+                          <option [ngValue]="item.id">{{item.libelle}} </option>
+                      </ng-container>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('niveau_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="description">Observation</label>
+                    <textarea name="description" required maxlength="300" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
+                    <small>{{editForm.get('description').value?.length}}/300</small>
+                    <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

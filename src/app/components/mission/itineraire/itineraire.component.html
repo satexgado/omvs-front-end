@@ -1,0 +1,191 @@
+<div class="card mb-4 mt-2 p-0">
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0">{{'itineraireMission' | translate}}</h6>
+    <small class="float-right">
+      <a [title]="'ADD' | translate" class="handMe" (click)="initAddForm()">
+        <i class="text-secondary fas fa-plus-circle"></i></a>
+    </small>
+  </div>
+
+
+
+  <!-- CLIST ELEMENT -->
+  <div *ngIf="currentView == 'list'">
+    <div *ngIf="missionService?.single && !service.isLoading()" class="card-body">
+      <div class="row bs-wizard" style="border-bottom:0;">
+
+        <div [class]="'bs-wizard-step complete '+colSize()">
+          <div class="text-center bs-wizard-stepnum">{{missionService?.single?.depart?.name || 'Depart'}}</div>
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+          <a popoverPlacement="top" [popoverOnHover]="true" [popover]="detailsPopover_1"
+            class="bs-wizard-dot text-center handMe">
+          </a>
+          <popover-content #detailsPopover_1 [title]="'DEPART' | translate" [animation]="true"
+            [closeOnClickOutside]="true" placement="top">
+            {{'missionDepart' | translate}}
+          </popover-content>
+        </div>
+
+        <div *ngFor="let item of SOURCE.data; let i=index" [class]="'bs-wizard-step complete '+colSize()">
+          <div class="text-center bs-wizard-stepnum"> {{item?.localite?.name}} </div>
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+          <a popoverPlacement="top" [popoverOnHover]="false" [popover]="detailsPopover_2"
+            class="bs-wizard-dot text-center handMe">
+          </a>
+          <popover-content #detailsPopover_2 [title]="item?.localite?.name" [animation]="true"
+            [closeOnClickOutside]="true" placement="top">
+            {{item?.objectif}}
+
+            <p class="text-center mt-2">
+              <button (click)="initEditForm(item, i)" [title]="'EDIT' | translate" type="button"
+                class="btn btn-sm btn-default mr-2">
+                <i class="fas fa-edit"></i>
+              </button>
+
+              <button [disabled]="requesting" (click)="initDelete(item?.id, i); delete(null, false)"
+                [title]="'DELETE' | translate" class="btn btn-sm btn-default">
+                <i *ngIf="!requestings?.delete" class="fas fa-trash"></i>
+                <i *ngIf="requestings?.delete" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </p>
+          </popover-content>
+        </div>
+
+
+        <div [class]="'bs-wizard-step complete '+colSize()">
+          <!-- active -->
+          <div class="text-center bs-wizard-stepnum"> {{missionService?.single?.localite?.name || 'Arrivée'}} </div>
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+          <a popoverPlacement="top" [popoverOnHover]="true" [popover]="addPopover" class="bs-wizard-dot">
+          </a>
+          <popover-content #addPopover [title]="'ARRIVEE' | translate" [animation]="true" [closeOnClickOutside]="true"
+            placement="top">
+            {{'missionArrivee' | translate}}
+          </popover-content>
+        </div>
+
+      </div>
+
+    </div>
+
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+  </div>
+
+  <div *ngIf="currentView == 'add'" class="row mt-5 mb-5">
+    <div class="offset-md-3 col-md-6">
+      <div class="card p-0">
+        <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between text-center bgTheme">
+          <h6 class="m-0 font-weight-bold text-white text-center">{{'ADDING' | translate}}</h6>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4" role="form" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">
+              Localité <span class="text-danger requiredField">*</span>
+              <span [title]="'createNew' | translate" class="float-right">
+                <i class="text-xs fas fa-plus-circle handMe" popoverPlacement="bottom-left" [popoverOnHover]="false"
+                  [popover]="addVille"></i>
+                <popover-content #addVille title="Nouvelle localité" [animation]="true" [closeOnClickOutside]="true"
+                  placement="bottom">
+                  <app-add-ville></app-add-ville>
+
+                </popover-content>
+              </span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <select formControlName="localite_id" class="form-control form-control-lg">
+                <option></option>
+                <option *ngFor="let item of service.localiteService.allData | async" [value]="item.id">{{item?.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0"> {{ 'OBJECTIFS' | translate }} <span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <textarea formControlName="objectif" class="form-control form-control-lg" cols="30" rows="7"></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button (click)="toggleView('list')" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+                {{ 'CLOSE' | translate}}
+              </button>
+              <button [disabled]="forms.add.invalid || requesting" type="submit"
+                class="btn btn-sm btn-primary shadow-primary">
+                <i *ngIf="!requesting" class="fas fa-plus-circle"></i> {{ 'CREATE' | translate }}
+                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="currentView == 'edit'" class="row mt-5 mb-5">
+    <div class="offset-md-3 col-md-6">
+      <div class="card p-0">
+        <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between text-center bgTheme">
+          <h6 class="m-0 font-weight-bold text-white text-center">{{'EDITING' | translate}}</h6>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">
+              Localité <span class="text-danger requiredField">*</span>
+              <span [title]="'createNew' | translate" class="float-right">
+                <i class="text-xs fas fa-plus-circle handMe" popoverPlacement="bottom-left" [popoverOnHover]="false"
+                  [popover]="addVille"></i>
+                <popover-content #addVille title="Nouvelle localité" [animation]="true" [closeOnClickOutside]="true"
+                  placement="bottom">
+                  <app-add-ville></app-add-ville>
+
+                </popover-content>
+              </span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <select formControlName="localite_id" class="form-control form-control-lg">
+                <option></option>
+                <option *ngFor="let item of service.localiteService.allData | async" [value]="item.id">{{item?.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0"> {{ 'OBJECTIFS' | translate }} <span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <textarea formControlName="objectif" class="form-control form-control-lg" cols="30" rows="7"></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button (click)="toggleView('list')" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+                {{ 'CLOSE' | translate}}
+              </button>
+              <button [disabled]="forms.edit.invalid || requesting" type="submit"
+                class="btn btn-sm btn-primary shadow-primary">
+                <i *ngIf="!requesting" class="fas fa-check-circle"></i> {{ 'VALIDATE' | translate }}
+                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>

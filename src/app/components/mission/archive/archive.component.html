@@ -1,0 +1,443 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <app-sidebar></app-sidebar>
+  </ul>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Topbar -->
+      <app-header></app-header>
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row  mb-4">
+          <h4 class="col-md-6 mb-0 text-gray-800">
+            <i class="fas fa-fw fa-folder-open"></i>
+            <span *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)">{{ 'ARCHIVES' | translate }}</span>
+            <span *ngIf="profile?.user_type_id == 1">{{ 'myMissions' | translate }}</span>
+          </h4>
+
+          <div class="col-md-6">
+            <app-helper-menu></app-helper-menu>
+          </div>
+        </div>
+
+        <div *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="row mb-4 animated slideInUp">
+          <div class="col-md-12">
+            <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
+              <a routerLink="/mission" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-hiking fa-sm"></i> {{'listMission' | translate}}
+              </a>
+              <a routerLink="/mission/type" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-wrench"></i> {{'typeMission' | translate}}
+              </a>
+              <a routerLink="/mission/calendrier" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-calendar fa-sm"></i> {{'CALENDRIER' | translate}}
+              </a>
+              <a routerLink="/mission/evaluation" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-comment-alt fa-sm"></i> {{'EVALUATION' | translate}}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card shadow mb-4 p-0">
+              <!-- Card Header - Dropdown -->
+              <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">{{titles?.window | translate}}</h6>
+                <small class="float-right">
+                  <a (click)="toggleView('card')" *ngIf="currentView != 'card'" class="text-secondary mr-2 text-dark">
+                    <i class="fa fa-table"></i> {{'cardMode' | translate}}
+                  </a>
+                  <a (click)="toggleView('list')" *ngIf="currentView != 'list'" class="text-secondary mr-2 text-dark">
+                    <i class="fa fa-table"></i> {{'tableMode' | translate}}
+                  </a>
+                </small>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <!-- FILTER -->
+                <!-- currentView == 'list' || currentView == 'card' && SOURCE?.data?.data.length>0 && !service.isLoading() -->
+                <div *ngIf="false" class="row">
+                  <div class="col-md-2 mb-4">
+                    <div class="d-flex flex-row align-items-center justify-content-start subHeaderAction">
+                      <a class="d-none d-sm-inline-block  ">
+                        <i class="text-danger fas fa-ban"></i> {{'cancelAllFilter' | translate}}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-10 mb-4">
+                    <div class="d-flex flex-row align-items-center justify-content-end">
+                      <!-- PERIODE -->
+                      <div class="mr-2 ml-2">
+                        <a popoverPlacement="bottom-left" [popoverOnHover]="false" [popover]="addPopover" type="button">
+                          {{'PERIODE' | translate}}
+                        </a>
+                        <popover-content #addPopover title="Filtrer par période" [animation]="true"
+                          [closeOnClickOutside]="true" placement="bottom">
+                          Du: <div class="form-group">
+                            <input class="form-control input--air" type="date">
+                          </div>
+                          <div class="form-group">
+                            Au:<input class="form-control input--air" type="date">
+                          </div>
+                          <div class="form-group text-center">
+                            <button [disabled]="requesting" class="btn btn-outline-primary btn-sm">
+                              <i *ngIf="!requesting"> Filtrer</i>
+                              <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                            </button>
+                          </div>
+                        </popover-content>
+                      </div>
+                      <!-- STATUT -->
+                      <div class="dropdown no-arrow mr-2 ml-2">
+                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          {{'STATUT' | translate}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <a *ngFor="let item of service.statuts" class="dropdown-item">{{item?.name | translate}}</a>
+                          <div class="dropdown-divider"></div>
+                          <div class="dropdown-header text-primary">{{'clickToFilter' | translate}}</div>
+                        </div>
+                      </div>
+                      <!-- TYPE -->
+                      <div class="dropdown no-arrow mr-2 ml-2">
+                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          {{'TYPE' | translate}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <a *ngFor="let item of service.typeService.sourceAll"
+                            class="dropdown-item">{{item?.name | translate}}</a>
+                          <div class="dropdown-divider"></div>
+                          <div class="dropdown-header text-primary">{{'clickToFilter' | translate}}</div>
+                        </div>
+                      </div>
+                      <!-- NIVEAU -->
+                      <div class="dropdown no-arrow ml-2">
+                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          {{'NIVEAU' | translate}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <a *ngFor="let item of service.niveaux" class="dropdown-item">{{item?.name | translate}}</a>
+                          <div class="dropdown-divider"></div>
+                          <div class="dropdown-header text-primary">{{'clickToFilter' | translate}}</div>
+                        </div>
+                      </div>
+                      <!-- DEPARTEMENT -->
+                      <div class="dropdown no-arrow mr-2 ml-2">
+                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          {{'DEPARTEMENT' | translate}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink">
+                          <a *ngFor="let item of service.departementService.sourceAll"
+                            class="dropdown-item">{{item?.name | translate}}</a>
+                          <div class="dropdown-divider"></div>
+                          <div class="dropdown-header text-primary">{{'clickToFilter' | translate}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div *ngIf="currentView == 'list'" class="card">
+                  <!-- DATA -->
+                  <table *ngIf="SOURCE?.data?.data.length>0 && !service.isLoading()"
+                    class="table table-hover animated slideInUp">
+                    <thead>
+                      <tr>
+                        <th scope="col">{{'MISSION' | translate}}</th>
+                        <th scope="col">Periode</th>
+                        <th scope="col">{{'DUREE' | translate}}</th>
+                        <th scope="col">Equipe</th>
+                        <th scope="col">
+                          {{'STATUT' | translate}}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of SOURCE.data.data; let i=index"
+                        [class]="'handMe '+service.borderByStatut(item?.etat)" (click)="details(item, i)">
+                        <td [title]="item?.name">
+                          <a class="text-secondary">
+                            {{ item?.name | truncate:[30]}}
+                          </a>
+                        </td>
+                        <td>
+                          {{item?.start | date:'d MMM' }} - {{item?.end | date:'d MMM y'}}
+                        </td>
+                        <td>
+                          {{item?.start | age:item?.end }}
+                        </td>
+                        <td> {{item?.equipes_count+' personne(s)'}} </td>
+                        <td [class]="service.colorByStatut(item?.etat)">{{item?.etat?.name | translate}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <app-nodata *ngIf="!SOURCE.data?.data?.length>0 && !service.isLoading()"></app-nodata>
+
+                  <app-loading *ngIf="service.isLoading()"></app-loading>
+
+                  <div *ngIf="!service.isLoading()" class="col-md-12">
+                    <br><br>
+                    <app-pagination></app-pagination>
+                  </div>
+
+                </div>
+
+                <div *ngIf="currentView == 'card'">
+                  <div *ngIf="SOURCE?.data?.data.length>0 && !service.isLoading()" class="row">
+                    <div *ngFor="let item of SOURCE.data.data; let i=index" class="col-3 mb-3 animated zoomIn">
+                      <div [class]="'handMe card shadow p-0 '+service.borderByStatut(item?.etat)">
+                        <div (click)="details(item, i)" class="card-body p-3">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div title="Plus d'actions">
+                                <a [title]="item?.name">
+                                  <span class="text-xs font-weight-bold text-dark text-uppercase">
+                                    {{ item?.name | truncate:[33]}}
+                                  </span>
+                                </a>
+                              </div>
+                              <div class="mb-1">
+                                <small [class]="service.colorByStatut(item?.etat)">
+                                  {{item.etat?.name | translate}}
+                                </small>
+                                <small class="ml-2">
+                                  {{item.niveau?.name| translate }}
+                                </small>
+                              </div>
+                              <div class="text-secondary">
+                                <small class="float-left">
+                                  <i class="fa fa-calendar"></i> {{item?.start | date:'d MMM' }} -
+                                  {{item?.end | date:'d MMM y'}}
+                                </small>
+
+                                <small class="float-right">
+                                  <i class="fa fa-clock"></i> {{item?.start | age:item?.end }}
+                                </small>
+                              </div>
+                            </div>
+                            <!-- <div class="col-auto text-center">
+                              <i class="fas fa-hiking fa-1x text-gray-300"></i>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <app-nodata *ngIf="!SOURCE.data?.data?.length>0 && !service.isLoading()"></app-nodata>
+
+                    <app-loading *ngIf="service.isLoading()"></app-loading>
+
+                    <div *ngIf="!service.isLoading()" class="col-md-12">
+                      <br><br>
+                      <app-pagination></app-pagination>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div *ngIf="currentView == 'add'" class="row card-body m-0 p-0">
+                  <div class="col-md-12 p-3 animated slideInLeft border shadow">
+
+                    <div  class="card-body">
+                      <app-add-mission [mission_id]="current_mission_id" [currentStep]="currentformStep"
+                        [input_currentItem]="currentItem" [input_currentIndex]="currentIndex" [billetMode]="billetMode">
+                      </app-add-mission>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+    <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+  <button *ngIf=" currentView == 'list' || currentView == 'card'" title="Créer" (click)="addOrList()" type="button"
+    class="btn btn-primary btn-circle btn-lg">
+    <i class="fas fa-plus-circle"></i>
+  </button>
+  <button *ngIf="currentView == 'add'" title="Fermer"
+    (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+    class="btn btn-danger btn-circle btn-lg">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+
+
+<!-- APERCU -->
+<div class="modal fade" id="modal__details" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="modal__flat" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light text-center">
+        <h5 class="modal-title">
+          <i class="fas fa-download-alt"></i>
+          Aperçu de la mission
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div *ngIf="detailsItem" class="modal-body p-1">
+        <div class="col-md-12">
+          <h5 class="text-center mt-3 mb-3">
+            {{detailsItem?.name | truncate:[80]}}
+          </h5>
+        </div>
+        <div class="row">
+          <div class="col-md-7">
+            <div>
+              <ul class="list-group shadow noRadius">
+                <li class="list-group-item d-flex justify-content-between align-items-center noRadius">
+                  {{'DEPART' | translate}} : {{detailsItem?.depart?.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'ARRIVEE' | translate}} : {{detailsItem?.localite?.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'moyenTransport' | translate}} : {{detailsItem?.moyen_transport}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'TYPE' | translate}} : {{detailsItem?.type?.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'NIVEAU' | translate}} : {{detailsItem?.niveau?.name  | translate}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'START' | translate}} : {{detailsItem?.start | date:'d MMM y' }}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'END' | translate}} : {{detailsItem?.end | date:'d MMM y'}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{'DUREE' | translate}} : {{detailsItem?.start | age:detailsItem?.end }}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Traitement: {{detailsItem?.departement?.name}}
+                </li>
+                <li class="list-group-item text-center noRadius">
+                  <b>
+                    <span
+                      [class]="'text-center '+service.colorByStatut(detailsItem?.etat)">{{detailsItem?.etat?.name | translate}}
+                    </span>
+                  </b>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5 modal-actions">
+            <a (click)="service.closeModalAndgoTo('#modal__details', '/mission/details/'+detailsItem?.id+'/tab/default')"
+              class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-success fas fa-circle"></i> {{'detailsGlobal' | translate}}
+            </a> <br>
+            <a (click)="onEdit(detailsItem, currentIndex, 'addOrEdit')" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-primary fas fa-circle"></i> {{'editDemande' | translate}}
+            </a> <br>
+            <a (click)="initDelete(detailsItem.id, i)" data-toggle="modal" data-target="#modal__flat"
+              class="btn btn-light btn-md btn-bloc noRadius handMe">
+              <i class="text-danger fas fa-circle"></i> {{'DELETE' | translate}}
+            </a> <br>
+            <a (click)="initEditForm(detailsItem, i)" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-warning fas fa-circle"></i> {{'manageStatut' | translate}}
+            </a> <br>
+            <a (click)="onEdit(detailsItem, currentIndex, 'charge')" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-dark fas fa-money-bill-alt"></i> {{'manageCharge' | translate}}
+            </a> <br>
+            <a (click)="onEdit(detailsItem, currentIndex, 'materiel')" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-secondary fas fa-desktop"></i> {{'manageMateriel' | translate}}
+            </a> <br>
+            <a (click)="onEdit(detailsItem, currentIndex, 'equipe')" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-secondary fas fa-users"></i> {{'manageEquipe' | translate}}
+            </a> <br>
+            <a (click)="onEdit(detailsItem, currentIndex, 'itineraire')" class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-secondary fas fa-road"></i> {{'planifierItineraire' | translate}}
+            </a> <br>
+            <a *ngIf="detailsItem?.equipes_count" (click)="onEdit(detailsItem, currentIndex, 'equipe', true)"
+              class="btn btn-light btn-md btn-bloc noRadius text-dark">
+              <i class="fas fa-plane-departure"></i> {{'billetAvion' | translate}}
+            </a> <br *ngIf="detailsItem?.equipes_count">
+            <a (click)="service.closeModalAndgoTo('#modal__details', '/mission/details/'+detailsItem?.id+'/tab/rapport_quotidien')"
+              class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-secondary fas fa-book"></i> {{'rapportsQuotidiensAndSuivi' | translate}}
+            </a> <br>
+            <a (click)="service.toggleModal('#modal__details')"
+              [routerLink]="'/mission/details/'+detailsItem.id+'/tab/rapport_final'"
+              class="btn btn-light btn-md btn-bloc noRadius">
+              <i class="text-secondary fas fa-book-open"></i> {{'rapportFinal' | translate}}
+            </a> <br>
+            <a (click)="service.closeModalAndgoTo('#modal__details', '/mission/details/'+detailsItem?.id+'/tab/evaluation')"
+              class="btn btn-light btn-md btn-bloc noRadius">
+              <i class=" text-secondary fas fa-fw fa-comment-alt"></i> {{'EVALUATION' | translate}}
+            </a> <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE Modal flat-->
+<div class="modal fade" id="modal__flat" tabindex="-2" role="dialog" aria-labelledby="modal__flat" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body py-4">
+        <p class="text-center">
+          Voulez-vous vraiment supprimer cet élement ?
+        </p>
+        <div class="mt-2 text-center">
+          <button class="btn btn-danger btn-sm mr-2" data-dismiss="modal">Non</button>
+          <button class="btn btn-primary btn-sm" [disabled]="requesting" type="button" (click)="delete('#modal__flat')">
+            Oui <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

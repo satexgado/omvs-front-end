@@ -1,0 +1,49 @@
+<div class="card card-2 card-accent-primary">
+    <div class="d-flex p-2  border-bottom">
+        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+    <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+  </button>
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <div *ngIf="dataHelper.data$ | async as items">
+            <div class="row card-group p-2">
+                <ng-container *ngIf="items.length; else noItem">
+                    <div class="mb-2 col-12 col-sm-8 col-md-6 col-lg-4" *ngFor="let dossier of items;trackBy:  dataHelper.trackByFn">
+                        <div class="card card-1 mg-15">
+                            <img class="card-img" style="max-height: 200px;" src="./assets/img/10.jpg" alt="Bologna">
+                            <div class="card-body">
+
+                                <h3 class="card-title mb-0">{{dossier.conducteur.libelle | titlecase}}
+                                </h3>
+                                <p class="text-center mb-0">
+                                    <button class="btn  p-0 mx-2" [routerLink]="[ './', dossier.id]" [ngbTooltip]="'Details'" tooltipClass="my-tooltip-class">
+                              <i class="fal fa-search" size="lg" style="color: #99600b "></i>
+                          </button>
+                                    <button class="btn p-0 mx-2" (click)="onShowUpdateForm(dossier)" [ngbTooltip]="'Modifier'" tooltipClass="my-tooltip-class">
+                              <i class="fal fa-edit" size="lg" style="color: #99600b "></i>
+                          </button>
+                                    <button class="btn p-0 mx-2" (click)="onShowCreateForm(dossier)" [ngbTooltip]="'Créer comme'" tooltipClass="my-tooltip-class">
+                              <i class="fal fa-copy" size="lg" style="color: #99600b "></i>
+                          </button>
+                                    <button class="btn p-0 mx-2" (click)="onDelete(dossier)" [ngbTooltip]="'Supprimer'" tooltipClass="my-tooltip-class">
+                              <i class="fal fa-times-square" size="lg" style="color: #99600b "></i>
+                          </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <section *ngIf="dataHelper.hasMoreData" [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="dataHelper.loadData()">
+                    </section>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

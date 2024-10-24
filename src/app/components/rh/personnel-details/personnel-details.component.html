@@ -1,0 +1,118 @@
+<div *ngIf="SOURCE && !requesting" class="row pl-1 pr-1">
+  <div class="col-md-3 animated pulse text-center">
+    <img *ngIf="SOURCE?.sexe == 'Masculin' || SOURCE?.sexe == 'Masculin'" src="assets/images/users/male.png"
+      class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+    <img *ngIf="SOURCE?.sexe == 'Feminin' || SOURCE?.sexe == 'Feminin'" src="assets/images/users/female.png"
+      class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+    <div class="text-center">
+      {{SOURCE?.nom +' '+ SOURCE?.prenom}}
+    </div>
+  </div>
+  <div class="col-md-9 animated pulse border shadow p-0">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Tabs_profil" role="tab" aria-selected="true">
+          {{'PROFILE' | translate}}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Tabs_mission" role="tab" aria-selected="false">
+          {{'MISSIONS' | translate}}
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <!-- PROFILE -->
+      <div class="tab-pane fade show active p-1" id="Tabs_profil" role="tabpanel">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'NAME' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.nom }}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'PRENOM' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.prenom}}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'SEXE' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.sexe || SOURCE?.sexe}}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'POSTE' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.poste?.name || SOURCE?.poste?.name}}
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'DEPARTEMENT' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.departement?.name || SOURCE?.departement?.name}}
+            </div>
+          </div>
+          <div *ngIf="SOURCE?.role" class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'ROLE' | translate}}
+            </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{SOURCE?.role}}
+            </div>
+          </div>
+          <div *ngIf="SOURCE?.description" class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'DESCRIPTION' | translate}}
+            </label>
+            <div class="col-sm-12 border p-2">
+              {{SOURCE?.description}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MISSION -->
+      <div class="tab-pane fade" id="Tabs_mission" role="tabpanel">
+        <div class="row">
+          <div class="col-md-12">
+            <table *ngIf="SOURCE?.missions?.length>0" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">{{'MISSION' | translate}}</th>
+                  <th scope="col"> {{'PERIODE' | translate}} </th>
+                  <th scope="col">{{'LOCALISATION' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of SOURCE.missions | paginate: { itemsPerPage: 5, currentPage: p }"
+                  [class]="' '+service.borderByStatut(item?.etat)">
+                  <td [title]="item?.name">
+                    <a class="text-secondary" (click)="service.closeModalAndgoTo('#modal__flat', '/mission/details/'+item?.id+'/tab/default')">
+                      {{ item?.name | truncate:[30]}}
+                    </a>
+                  </td>
+                  <td>
+                    {{item?.start | date:'d MMM' }} - {{item?.end | date:'d MMM y'}}
+                  </td>
+                  <td>{{item?.localite?.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <pagination-controls (pageChange)="p = $event" previousLabel="Precedent" nextLabel="Suivant" class="mt-2">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-nodata *ngIf="!SOURCE?.missions?.length && !requesting"></app-nodata>
+
+<app-loading *ngIf="requesting"></app-loading>

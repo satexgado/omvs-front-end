@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-md-12">
+    <form [formGroup]="form" (ngSubmit)="add()" class="form" role="form" autocomplete="off">
+      <div class="input-group">
+        <input formControlName="name" class="form-control" type="text" [placeholder]="placeholder" >
+        <div class="input-group-append" id="button-addon1">
+          <button [disabled]="form.invalid" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-check-circle"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

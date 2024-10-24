@@ -1,0 +1,139 @@
+<div class="card shadow mb-4">
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Notes d'évaluation des missions</h6>
+    <small class="float-right">
+      <a (click)="toggleView('add')" class="text-secondary mr-2 text-dark">
+        <i class="fa fa-plus-circle"></i> {{'ADD' | translate}}
+      </a>
+    </small>
+  </div>
+  <!-- CLIST ELEMENT -->
+  <div *ngIf="currentView == 'list'">
+    <div *ngIf="SOURCE?.data?.data.length>0 && !service.isLoading()" class="card-body">
+      <div class="card">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Libelle</th>
+              <th scope="col">Valeur</th>
+              <th scope="col">
+                <span class="float-right">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of SOURCE.data.data; let i=index" class="handMe animated slideInDown">
+              <td>{{item?.name}}</td>
+              <td>{{item?.note}}</td>
+              <td>
+                <div class="float-right btn-group " role="group" aria-label="Basic example">
+                  <button (click)="initEditForm(item, i)" title="Modifier" type="button" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-edit"></i>
+                  </button>
+                  <button (click)="initDelete(item.id, i); delete(null)" title="Supprimer" data-toggle="modal"
+                    data-target="#modal__flat" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <app-nodata *ngIf="!SOURCE.data?.data?.length>0 && !service.isLoading()"></app-nodata>
+
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+  </div>
+
+  <div *ngIf="currentView == 'add'" class="row mt-5 mb-5">
+    <div class="offset-md-3 col-md-6 p-3 border shadow">
+      <div class="card">
+        <div
+          class="card-header py-2 d-flex flex-row align-items-center justify-content-between text-center bg-light border">
+          <h6 class="m-0 font-weight-bold">{{'ADDING' | translate}}</h6>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4" role="form" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <input formControlName="name" class="form-control form-control-lg" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">Valeur<span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <input formControlName="note" class="form-control form-control-lg" type="number" min="1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button (click)="toggleView('list')" type="button"
+                class="btn btn-md btn-danger noRadius shadow-danger mr-2">
+                Annuler
+              </button>
+              <button [disabled]="forms.add.invalid || requesting" type="submit"
+                class="btn btn-md btn-primary noRadius shadow-primary">
+                <i *ngIf="!requesting" class="fas fa-check-circle"></i> Ajouter
+                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="currentView == 'edit'" class="row mt-5 mb-5">
+    <div class="offset-md-3 col-md-6 p-3 border shadow">
+      <div class="card">
+        <div
+          class="card-header py-2 d-flex flex-row align-items-center justify-content-between text-center bg-light border">
+          <h6 class="m-0 font-weight-bold">{{'EDITING' | translate}}</h6>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <input formControlName="name" class="form-control form-control-lg" type="text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-12 col-form-label form-control-label pl-0">Valeur<span
+                class="text-danger requiredField">*</span>
+            </label>
+            <div class="col-sm-12 pl-0">
+              <input formControlName="note" class="form-control form-control-lg" type="number" min="1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button (click)="toggleView('list')" type="button"
+                class="btn btn-md btn-danger noRadius shadow-danger mr-2">
+                Annuler
+              </button>
+              <button [disabled]="forms.edit.invalid || requesting" type="submit"
+                class="btn btn-md btn-primary noRadius shadow-primary">
+                <i *ngIf="!requesting" class="fas fa-check-circle"></i> Valider
+                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

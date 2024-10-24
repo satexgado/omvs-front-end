@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ng-snotify/styles/material.scss";
+
+/*fullcalendar*/
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+@import '~@fullcalendar/bootstrap/main.css';
+
+//custom
+
+body a:hover {
+  cursor: pointer;
+}
+
+.myHover:hover{
+  cursor: pointer;
+}

@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div *ngIf="!materielId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="materiel_id">Materiel</label>
+                    <select class="form-control form-control-sm" [class.loading]="allMateriels$ | async" required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}"
+                        required>
+                    <option value="">--choississez le materiel --</option>
+                    <ng-container *ngFor="let item of (allMateriels$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                    </ng-container>
+                </select>
+                    <div *ngIf="shouldShowRequiredError('materiel_id')" class="invalid-feedback">veillez choisir le materiel.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Date vérification</label>
+                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date'" [ngClass]="{'is-invalid': shouldShowRequiredError('date'), 'is-valid': isValid('date')}" required>
+                    <div *ngIf="shouldShowRequiredError('date')" class="invalid-feedback">veillez saisir la date.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Quantité en stock</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'quantite_stock'" [ngClass]="{'is-invalid': shouldShowRequiredError('quantite_stock'), 'is-valid': isValid('quantite_stock')}" name="quantite_stock">
+                    <div *ngIf="shouldShowRequiredError('quantite_stock')" class="invalid-feedback">veillez saisir la quantite.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Quantite défecteux</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'quantite_defectueux'" [ngClass]="{'is-invalid': shouldShowRequiredError('quantite_defectueux'), 'is-valid': isValid('quantite_defectueux')}" name="quantite_defectueux">
+                    <div *ngIf="shouldShowRequiredError('quantite_defectueux')" class="invalid-feedback">veillez saisir la quantite.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Stock normal</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'stock_normal'" [ngClass]="{'is-invalid': shouldShowRequiredError('stock_normal'), 'is-valid': isValid('stock_normal')}" name="stock_normal">
+                    <div *ngIf="shouldShowRequiredError('stock_normal')" class="invalid-feedback">veillez saisir le stock.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Prix</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'prix'" [ngClass]="{'is-invalid': shouldShowRequiredError('prix'), 'is-valid': isValid('prix')}" name="prix">
+                    <div *ngIf="shouldShowRequiredError('prix')" class="invalid-feedback">veillez saisir la prix.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

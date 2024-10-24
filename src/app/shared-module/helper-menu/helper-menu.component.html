@@ -1,0 +1,21 @@
+<div *ngIf="[2, 3, 4, 5].includes(profile?.user_type_id)"
+  class="d-sm-flex align-items-center justify-content-end subHeaderAction">
+  <a routerLink="/dashboard" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+    <i class="fas fa-tachometer-alt fa-sm text-primary"></i> {{'DASHBOARD' | translate}}
+  </a>
+  <a routerLink="/configuration" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+    <i class="fas fa-cog fa-sm text-primary"></i> {{'SETTING' | translate}}
+  </a>
+  <!-- <a routerLink="/dashboard" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+    <i class="fas fa-question-circle fa-sm text-primary"></i> {{'HELP' | translate}}
+  </a> -->
+</div>
+
+<div *ngIf="profile?.user_type_id == 1" class="d-sm-flex align-items-center justify-content-end subHeaderAction">
+  <a routerLink="/dashboard" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+    <i class="fas fa-fw fa-user-lock"></i> <span> {{'PROFIL' | translate}}</span>
+  </a>
+  <a routerLink="/dashboard" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+    <i class="fas fa-question-circle fa-sm text-primary"></i> {{'HELP' | translate}}
+  </a>
+</div>

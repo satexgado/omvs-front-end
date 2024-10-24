@@ -1,0 +1,205 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+  <span aria-hidden="true"><i class="icon-close"></i></span>
+</button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body p-0" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Information Conducteurs
+                    </h5>
+                </header>
+                <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" *ngIf="!proprietaire">
+                    <div class="col-12 col-sm-10">
+                        <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}">
+                            <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                                <option [ngValue]="item.user?.id">{{item.user?.libelle}} ({{item.user?.idcam}})</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Conducteur</span>
+                        <div *ngIf="shouldShowRequiredError('conducteur_id')" class="invalid-feedback">veillez choisir le conducteur.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <input type="text" class="form-control" required [formControlName]="'numero_permis'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'numero_permis'), 'is-valid': isValid('numero_permis')}" name="numero_permis">
+                        <span class="custom-span">numero_permis</span>
+                        <div *ngIf="shouldShowRequiredError('numero_permis')" class="invalid-feedback">veillez saisir le numéro du permis.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <select appSelect2Default required style="width: 100%" [data]="typePermisPreselectedData" multiple="multiple" [formControlName]="'type_permis'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_permis'), 'is-valid': isValid('type_permis')}" class="form-control"
+                            placeholder="Select">
+                </select>
+                        <span class="custom-span">type de permis</span>
+                        <div *ngIf="shouldShowRequiredError('type_permis')" class="invalid-feedback">veillez choisir le type de permis.</div>
+                    </div>
+                </div>
+
+                <div class="formSep form-group   d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <input class="form-control" required name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_obtention'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_obtention'), 'is-valid': isValid('date_obtention')}">
+                        <span class="custom-span" i18n>date d'obtention du permis</span>
+                    </div>
+                </div>
+
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'lieu_obtention_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'lieu_obtention_permis_id'), 'is-valid': isValid('lieu_obtention_permis_id')}"
+                            required>
+                                <ng-container *ngFor="let item of (allPays$ | async)">
+                                    <option [ngValue]="item.id">{{item.libelle}}</option>
+                                </ng-container>
+                            </select>
+                        <span class="custom-span">pays d'obtention du permis</span>
+                        <div *ngIf="shouldShowRequiredError('lieu_obtention_permis_id')" class="invalid-feedback">veillez choisir le pays.</div>
+                    </div>
+                </div>
+
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <input type="number" required class="form-control" [formControlName]="'depuis_combien_de_temps_conduisez_vous_annee'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'depuis_combien_de_temps_conduisez_vous_annee'), 'is-valid': isValid('depuis_combien_de_temps_conduisez_vous_annee')}"
+                            name="depuis_combien_de_temps_conduisez_vous_annee">
+                        <span class="custom-span">Nombre d'année de conduite</span>
+                        <div *ngIf="shouldShowRequiredError('depuis_combien_de_temps_conduisez_vous_annee')" class="invalid-feedback">veillez saisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Avez vous exercez autrepart?</label>
+                        <app-custom-select-icon formControlName="avez_vous_exercez_autre_part" [selected]="editForm.get('avez_vous_exercez_autre_part').value" [items]="oui_non_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('avez_vous_exercez_autre_part')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_exercez_autre_part').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <textarea name="reference" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'reference'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'reference'), 'is-valid': isValid('reference')}"></textarea>
+                        <span class="custom-span">Reference</span>
+                        <small>{{editForm.get('reference').value?.length}}/200</small>
+                        <div *ngIf="shouldShowRequiredError('reference')" class="invalid-feedback">veillez saisir la description.</div>
+                    </div>
+                </div>
+
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Fumeur <i class="fal fa-smoking float-right"></i>
+                    </h5>
+                </header>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Etes vous fumeur?</label>
+                        <app-custom-select-icon formControlName="etes_vous_fumeur" [selected]="editForm.get('etes_vous_fumeur').value" [items]="fumer_alcool_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('etes_vous_fumeur')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('etes_vous_fumeur').value == fumer_alcool_select[2].libelle">
+                    <div class="col-12 col-sm-10">
+                        <input type="text" class="form-control" [formControlName]="'depuis_quand_avez_vous_arrete_fumer'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'depuis_quand_avez_vous_arrete_fumer'), 'is-valid': isValid('depuis_quand_avez_vous_arrete_fumer')}" name="depuis_quand_avez_vous_arrete_fumer">
+                        <span class="custom-span">Depuis quand avez vous arretez de fumer ?</span>
+                        <div *ngIf="shouldShowRequiredError('depuis_quand_avez_vous_arrete_fumer')" class="invalid-feedback">veillez saisir.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Alcool <i class="fal fa-wine-bottle float-right"></i>
+                    </h5>
+                </header>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Prenez vous l'alcool?</label>
+                        <app-custom-select-icon formControlName="prenez_vous_lalcool" [selected]="editForm.get('prenez_vous_lalcool').value" [items]="fumer_alcool_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('prenez_vous_lalcool')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('prenez_vous_lalcool').value == fumer_alcool_select[2].libelle">
+                    <div class="col-12 col-sm-10">
+                        <input type="text" class="form-control" [formControlName]="'depuis_quand_avez_vous_arrete_alcool'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'depuis_quand_avez_vous_arrete_alcool'), 'is-valid': isValid('depuis_quand_avez_vous_arrete_alcool')}"
+                            name="depuis_quand_avez_vous_arrete_alcool">
+                        <span class="custom-span">Depuis quand avez vous arretez l'alcool ?</span>
+                        <div *ngIf="shouldShowRequiredError('depuis_quand_avez_vous_arrete_alcool')" class="invalid-feedback">veillez saisir.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Audition <i class="fal fa-ear float-right"></i>
+                    </h5>
+                </header>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Avez vous des difficultés à entendre?</label>
+                        <app-custom-select-icon formControlName="avez_vous_difficulter_entendre" [selected]="editForm.get('avez_vous_difficulter_entendre').value" [items]="oui_non_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('avez_vous_difficulter_entendre')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_difficulter_entendre').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <textarea name="quel_difficulte" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'quel_difficulte'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'quel_difficulte'), 'is-valid': isValid('quel_difficulte')}"></textarea>
+                        <span class="custom-span">Quel difficulté?</span>
+                        <small>{{editForm.get('quel_difficulte').value?.length}}/200</small>
+                        <div *ngIf="shouldShowRequiredError('quel_difficulte')" class="invalid-feedback">veillez saisir la description.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_difficulter_entendre').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Combien d'oreilles?</label>
+                        <app-custom-select-icon formControlName="combien_doreille" [selected]="editForm.get('combien_doreille').value" [items]="oreille_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('combien_doreille')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Vue <i class="fal fa-eye float-right"></i>
+                    </h5>
+                </header>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Avez vous des difficultés à voir?</label>
+                        <app-custom-select-icon formControlName="avez_vous_des_difficultes_voir" [selected]="editForm.get('avez_vous_des_difficultes_voir').value" [items]="oui_non_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('avez_vous_des_difficultes_voir')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_des_difficultes_voir').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <textarea name="laquel" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'laquel'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'laquel'), 'is-valid': isValid('laquel')}"></textarea>
+                        <span class="custom-span">Quel difficulté?</span>
+                        <small>{{editForm.get('laquel').value?.length}}/200</small>
+                        <div *ngIf="shouldShowRequiredError('laquel')" class="invalid-feedback">veillez saisir la description.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_des_difficultes_voir').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Utilisez vous des correcteurs?</label>
+                        <app-custom-select-icon formControlName="utilisez_vous_des_correcteurs" [selected]="editForm.get('utilisez_vous_des_correcteurs').value" [items]="oui_non_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('utilisez_vous_des_correcteurs')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_des_difficultes_voir').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">Avez vous consultez un spécialiste?</label>
+                        <app-custom-select-icon formControlName="avez_vous_consulte_un_specialiste" [selected]="editForm.get('avez_vous_consulte_un_specialiste').value" [items]="oui_non_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('avez_vous_consulte_un_specialiste')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+                <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_des_difficultes_voir').value == 'Oui' && editForm.get('avez_vous_consulte_un_specialiste').value == 'Oui'">
+                    <div class="col-12 col-sm-10">
+                        <label for="" class="control-label">A quand remonte la consultation?</label>
+                        <app-custom-select-icon formControlName="a_quand_remonte_votre_consultation" [selected]="editForm.get('a_quand_remonte_votre_consultation').value" [items]="consultation_select"></app-custom-select-icon>
+                        <div *ngIf="shouldShowRequiredError('a_quand_remonte_votre_consultation')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

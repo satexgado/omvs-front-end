@@ -1,0 +1,42 @@
+<div class="card mb-3">
+    <div class="card-header flex-wrap p-0">
+        <a role="button" class="btn btn-default tx-yeto2 btn-lg">
+            <i class="fad fa-plus fa-sm"></i> <span> Nouveau</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/materiel']" queryParamsHandling="merge">
+            <i class="fal fa-film-alt fa-sm"></i> <span> Materiels</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/suivie']" queryParamsHandling="merge">
+            <i class="fal fa-bell-on fa-sm"></i> <span> Suivi du matériel</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/besoin']" queryParamsHandling="merge">
+            <i class="fal fa-image fa-sm"></i> <span> Besoins Matériels</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/fournisseur']" queryParamsHandling="merge">
+            <i class="fal fa-stars fa-sm"></i> <span> Fournisseurs</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/inventaire']" queryParamsHandling="merge">
+            <i class="fal fa-rss fa-sm"></i> <span> Inventaires</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/amortissement']" queryParamsHandling="merge">
+            <i class="fal fa-rss fa-sm"></i> <span> Amortissements</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
+            <i class="fal fa-image fa-sm"></i> <span> Calendriers Livraisons</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
+            <i class="fad fa-balance-scale fa-sm"></i> <span> Balance</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
+            <i class="fad fa-bring-forward fa-sm"></i> <span> Journaux</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
+            <i class="fad fa-books fa-sm"></i> <span> Grand Livre</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/plan-comptable']" queryParamsHandling="merge">
+            <i class="fad fa-ballot-check fa-sm"></i> <span> Plan Comptable</span>
+        </a>
+    </div>
+</div>
+<router-outlet>
+</router-outlet>

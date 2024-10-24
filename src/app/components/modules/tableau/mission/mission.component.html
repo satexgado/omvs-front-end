@@ -1,0 +1,222 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card mg-b-20">
+            <div class="card-header bg-white">
+                <!-- <button class="btn float-right mx-1 btn-outline-primary" [class.btn-primary]="is_showing_filter" (click)="showFilter(!is_showing_filter)" style="font-size: 13px">
+                    <i class="fas fa-calendar-alt"></i>
+                </button> -->
+                <div class="dropdown">
+                    <button class="btn float-right mx-1 btn-outline-primary dropdown-toggle"
+                        [class.btn-primary]="is_showing_filter" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form class="px-4 py-3" [formGroup]="configForm">
+                            <div class="form-group">
+                                <select class="custom-select" (change)="resetFormValue()" formControlName="type">
+                                    <option value="personnel_id">Createur</option>
+                                    <option value="departement_id">Departement</option>
+                                    <option value="imputation_id">Imputation</option>
+                                    <option value="localite_id">Localite</option>
+                                    <option value="membre_equipe_id">Membre de l'equipe</option>
+                                    <option value="niveau_id">Niveau</option>
+                                    <option value="pays_id">Pays</option>
+                                    <option value="moyen_transport">Transport</option>
+                                    <option value="type_id">Type de mission</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <ng-container [ngSwitch]="configForm.get('type').value">
+                                    <div [class.loading]="!(service.allDepartements$ | async)"
+                                        *ngSwitchCase="'departement_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le departement</option>
+                                            <ng-container *ngFor="let item of (service.allDepartements$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div *ngSwitchCase="'type_id'">
+                                        <select [class.loading]="!(service.allTypes$ | async)" class="custom-select"
+                                            formControlName="value">
+                                            <option [value]="null">choississez le type</option>
+                                            <ng-container *ngFor="let item of (service.allTypes$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allImputations$ | async)"
+                                        *ngSwitchCase="'imputation_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le imputation</option>
+                                            <ng-container *ngFor="let item of (service.allImputations$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allLocalites$ | async)"
+                                        *ngSwitchCase="'localite_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez la localité</option>
+                                            <ng-container *ngFor="let item of (service.allLocalites$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allPays$ | async)" *ngSwitchCase="'pays_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le pays</option>
+                                            <ng-container *ngFor="let item of (service.allPays$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allNiveauMissions$ | async)"
+                                        *ngSwitchCase="'niveau_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le niveau</option>
+                                            <ng-container *ngFor="let item of (service.allNiveauMissions$ | async)">
+                                                <option [ngValue]="item">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allTransports$ | async)"
+                                        *ngSwitchCase="'moyen_transport'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le transport</option>
+                                            <ng-container *ngFor="let item of (service.allTransports$ | async)">
+                                                <option [ngValue]="item.id">{{item.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(service.allPersonnels$ | async)" *ngSwitchDefault>
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">choississez le membre</option>
+                                            <ng-container *ngFor="let item of (service.allPersonnels$ | async)">
+                                                <option [ngValue]="item">{{item.nom }} {{item.prenom}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <button type="button" (click)="onAddFilter()" [disabled]="configForm.invalid"
+                                class="btn btn-primary">Ajouter un filtre</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="input-group float-right col-md-4 col-12">
+                    <input aria-describedby="basic-addon2" (keyup.enter)="searchButton.click()" [(ngModel)]="search"
+                        aria-label="Search" class="form-control bg-light border-0 small" placeholder="Recherche..."
+                        type="text">
+                    <div class="input-group-append"><button #searchButton [routerLink]="['./']"
+                            queryParamsHandling="merge" [queryParams]="{ search: search }" class="btn btn-primary"
+                            type="button"><i class="fas fa-search fa-sm"></i></button></div>
+                </div>
+            </div>
+            <div class="card-body p-0 collapse show" [class.loading]="loading">
+                <div class="p-3" *ngIf="filtres && filtres.length">
+                    <button class="btn btn-sm btn-outline-primary mx-1" *ngFor="let filtre of filtres; let i = index"
+                        (click)="onRemoveFilter(i)">
+                        {{filtre.name | titlecase}} <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead class="tx-10 tx-uppercase">
+                            <tr>
+                                <th>Mission</th>
+                                <th>Creer par</th>
+                                <th>Localite</th>
+                                <th>Departement</th>
+                                <th class="text-center">Equipe</th>
+                                <th>Note</th>
+                                <th>Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="missions?.length; else noItem">
+                            <tr *ngFor="let mission of missions" [routerLink]="'/mission/details/'+mission?.id+'/tab/default'" class="handMe">
+                                <td>
+                                    <a 
+                                        class="my-0 mt-1 text-primary">{{(mission.name.length>30)? (mission.name | slice:0:30)+'..':(mission.name)}}</a>
+                                    <p class="tx-12 mb-0">
+                                        {{mission?.type?.name}}
+                                    </p>
+                                </td>
+                                <td class="d-flex align-items-center">
+                                    <div class="avatar">
+                                        <img src="https://via.placeholder.com/100x100"
+                                            title="{{mission?.personnel.nom}} {{mission?.personnel.prenom}}"
+                                            class="img-fluid wd-40 ht-40 rounded-circle" alt="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="my-0 font-weight-bold">{{mission?.ville.name}}</p>
+                                    <p>{{mission?.ville.pay.name}}</p>
+                                </td>
+                                <td>
+                                    {{mission?.departement.name}}
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                        <li *ngFor="let equipe of mission.equipes | slice:0:4" class="mg-l--10"
+                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                            data-html="true" title="" data-original-title="Alison G">
+                                            <div class="avatar"
+                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                    src="assets/images/users/male.png"
+                                                    class="avatar-initial border border-secondary rounded-circle">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                    src="assets/images/users/female.png"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    alt="">
+                                            </div>
+                                        </li>
+                                        <li *ngIf="mission.equipes?.length > 4" class="mg-l--10" data-original-title=""
+                                            title="">
+                                            <div class="avatar"><span
+                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{mission.equipes.length - 4}}+</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>{{mission.avg_note ? mission.avg_note : 'Aucune note'}}</td>
+                                <td>
+                                    {{mission.total_budget}} ECO
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination flex-wrap justify-content-center pagination-sm col-12" *ngIf="1 < page_last">
+                    <li class="page-item">
+                        <a class="page-link cursor-pointer" (click)="changed(1)">‹‹</a>
+                    </li>
+                    <ng-container *ngFor="let pageNumber of [].constructor(page_last); let i=index">
+                        <li class="page-item" [class.active]="i == page_current" *ngIf="canDisplayPage(i) && i > 0">
+                            <a class="page-link cursor-pointer" (click)="changed(i)">{{ i }}</a>
+                        </li>
+                    </ng-container>
+                    <li class="page-item">
+                        <a class="page-link cursor-pointer" (click)="changed(page_last)">››</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <h4 class="text-center">
+                    {{ 'Aucun Element' }}
+                </h4>
+            </td>
+        </tr>
+    </tbody>
+</ng-template>

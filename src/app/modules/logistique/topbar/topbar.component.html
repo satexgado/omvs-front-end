@@ -1,0 +1,22 @@
+<div class="card mb-3">
+    <div class="card-header flex-wrap p-0">
+        <a role="button" class="btn btn-default btn-lg">
+            <i class="fal fa-chart-line tx-second fa-sm"></i> <span> Tableau de Bord</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/etablissements/cites-universitaires/chambre']" queryParamsHandling="merge">
+            <i class="fal fa-bed fa-sm"></i> <span> Chambres</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[ '/etablissements/cites-universitaires/foyer']" queryParamsHandling="merge">
+            <i class="fal fa-hotel fa-sm"></i> <span> Foyer</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[ '/etablissements/cites-universitaires/logement-professionnel']" queryParamsHandling="merge">
+            <i class="fal fa-home fa-sm"></i> <span> Logements des Professionnels</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[ '/etablissements/cites-universitaires/logement-etudiant']" queryParamsHandling="merge">
+            <i class="fal fa-store-alt fa-sm"></i> <span>  Logements des Etudiants</span>
+        </a>
+        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[ '/etablissements/cites-universitaires/internat']" queryParamsHandling="merge">
+            <i class="fal fa-gopuram fa-sm"></i> <span> Internats</span>
+        </a>
+    </div>
+</div>

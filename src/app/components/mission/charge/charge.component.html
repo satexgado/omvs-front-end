@@ -1,0 +1,133 @@
+<div class="card mb-4 mt-2 p-0">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0">{{'listCharge' | translate}}</h6>
+        <small class="float-right">
+            <a [title]="'ADD' | translate" class="handMe" (click)="initAddForm()">
+                <i class="text-secondary fas fa-plus-circle"></i></a>
+        </small>
+    </div>
+    <!-- CLIST ELEMENT -->
+    <div *ngIf="currentView == 'list'">
+        <div *ngIf="SOURCE?.data?.length>0 && !service.isLoading()" class="card-body p-0">
+            <div class="card p-0">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th> {{'DESIGNATION' | translate}} </th>
+                            <th>{{'MONTANT' | translate}}</th>
+                            <th>
+                                <i class="float-right fas fa-cog"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of SOURCE.data; let i=index" class="handMe animated slideInDown">
+                            <td>{{item?.name}}</td>
+                            <td>{{ service.moneyFormat(item?.montant) }}</td>
+                            <td>
+                                <div class="float-right btn-group" role="group" aria-label="Basic example">
+                                    <button (click)="initEditForm(item, i)" title="Modifier" type="button"
+                                        class="btn btn-sm btn-light">
+                                        <i class="text-secondary fas fa-edit"></i>
+                                    </button>
+                                    <button (click)="initDelete(item.id, i); delete(null)" title="Supprimer" class="btn btn-sm btn-light">
+                                        <i class="text-secondary fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf="!SOURCE.data?.length>0 && !service.isLoading()" class="text-center">
+            <br><br><br><br>
+            <a [title]="'ADD' | translate" class="centerAdd handMe" (click)="initAddForm()">
+                <i  class="text-secondary fas fa-plus-circle"></i>
+            </a>
+            <br><br><br><br>
+        </div>
+
+        <app-loading *ngIf="service.isLoading()"></app-loading>
+    </div>
+
+    <div *ngIf="currentView == 'add'" class="row mt-5 mb-5">
+        <div class="offset-md-3 col-md-6">
+            <div class="card-body">
+                <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4" role="form" autocomplete="off">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+                                class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                            <input formControlName="name" class="form-control form-control-lg" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Montant<span
+                                class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                            <input formControlName="montant" class="form-control form-control-lg" type="number" min="1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <button (click)="toggleView('list')" type="button"
+                                class="btn btn-sm btn-light shadow-danger mr-2">
+                                {{ 'CLOSE' | translate}}
+                            </button>
+                            <button [disabled]="forms.add.invalid || requesting" type="submit"
+                                class="btn btn-sm btn-primary shadow-primary">
+                                <i *ngIf="!requesting" class="fas fa-plus-circle"></i> {{ 'CREATE' | translate }}
+                                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="currentView == 'edit'" class="row mt-5 mb-5">
+        <div class="offset-md-3 col-md-6">
+            <div class="card-body">
+                <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form" autocomplete="off">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+                                class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                            <input formControlName="name" class="form-control form-control-lg" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Montant<span
+                                class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                            <input formControlName="montant" class="form-control form-control-lg" type="number" min="1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <button (click)="toggleView('list')" type="button"
+                                class="btn btn-sm btn-light shadow-danger mr-2">
+                                {{ 'CLOSE' | translate}}
+                            </button>
+                            <button [disabled]="forms.edit.invalid || requesting" type="submit"
+                                class="btn btn-sm btn-primary shadow-primary">
+                                <i *ngIf="!requesting" class="fas fa-check-circle"></i> {{ 'VALIDATE' | translate }}
+                                <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

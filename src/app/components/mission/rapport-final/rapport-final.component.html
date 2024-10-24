@@ -1,0 +1,59 @@
+<div class="card shadow mb-2 p-0 animated zoomIn">
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold">
+      <span>
+        {{'rapportFinal' | translate}}
+      </span>
+    </h6>
+    <small class="float-right">
+      <a *ngIf="currentView != 'edit' && SOURCE?.data?.length && SOURCE?.data[0]?.document" (click)="toggleView('edit')" class="text-secondary">
+        <i class="fa fa-edit"></i> {{'EDIT' | translate}}
+      </a>
+    </small>
+  </div>
+
+  <div *ngIf="currentView=='list'" class="card-body p-1">
+    <!-- LIST -->
+    <div class="row mt-5 mb-5">
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading() && SOURCE?.data[0]?.document" class="col-md-12 text-center">
+        <a target="_blank"  [href]="service.getApiFileLocation()+SOURCE?.data[0].document?.url" class="btn btn-primary btn-circle btn-lg">
+          <i class="fa fa-download"></i>
+        </a> <br>
+        <span  class="mt-2"> 
+          {{'downloadRapport' | translate}}. 
+          {{'dateSoumission' | translate}} {{SOURCE?.data[0]?.updated_at | date:'d MMM y' }}
+        </span>
+      </div>
+
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading() && !SOURCE?.data[0]?.document" class="col-md-12 text-center">
+        <a (click)="toggleView('edit')" class="btn btn-sm btn-warning text-white noRadius" *ngIf="currentView != 'edit'">
+          <i class="fa fa-plus-circle"></i> {{'ADD' | translate}}
+        </a>
+      </div>
+
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading() && SOURCE?.data[0]?.document" class="col-md-12">
+        
+      </div>
+    </div>
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+  </div>
+
+
+  <div *ngIf="currentView == 'edit'" class="card-body">
+    <div class="row">
+      <div class="offset-md-3 col-md-6">
+        <h5 class="text-center mt-4"> {{'addRapportFinalLabel' | translate}} </h5>
+        <app-file-manager [fileConfig]="fileConfig"> </app-file-manager>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <button (click)="initData()" class="btn btn-md btn-warning text-white noRadius">
+          {{'DONE' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>

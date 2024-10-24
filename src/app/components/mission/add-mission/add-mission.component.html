@@ -1,0 +1,249 @@
+<div class="row">
+  <div class="col-md-12 form-box">
+    <div class="f1-steps">
+      <div class="f1-progress">
+        <div [class]="'f1-progress-line '+stepLength()"></div>
+      </div>
+      <div (click)="switchStep('addOrEdit')" [ngClass]="{'f1-step': true, 'active': currentView == 'addOrEdit'}">
+        <div class="f1-step-icon"><i class="fa fa-edit"></i></div>
+        <p>Edition</p>
+      </div>
+      <div (click)="switchStep('charge')" [ngClass]="{'f1-step': true, 'active': currentView == 'charge'}">
+        <div class="f1-step-icon"><i class="fa fa-money-bill-alt"></i></div>
+        <p>Charges</p>
+      </div>
+      <div (click)="switchStep('equipe')" [ngClass]="{'f1-step': true, 'active': currentView == 'equipe'}">
+        <div class="f1-step-icon"><i class="fa fa-users"></i></div>
+        <p>Equipe</p>
+      </div>
+      <div (click)="switchStep('materiel')" [ngClass]="{'f1-step': true, 'active': currentView == 'materiel'}">
+        <div class="f1-step-icon"><i class="fa fa-car"></i></div>
+        <p>Materiel</p>
+      </div>
+      <div (click)="switchStep('itineraire')" [ngClass]="{'f1-step': true, 'active': currentView == 'itineraire'}">
+        <div class="f1-step-icon"><i class="fas fa-road"></i></div>
+        <p> {{'ITINERAIRE' | translate}} </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="currentView == 'addOrEdit'" class="row" style="padding-left: 12%; padding-right: 12%;">
+  <div class="col-md-12">
+    <h3 class="text-center">{{'planificateurMission' | translate}}</h3>
+  </div>
+  <div class="col-md-12 p-0">
+    <form [formGroup]="forms.add" (ngSubmit)="addOrEdit()" class="form row" role="form" autocomplete="off">
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">
+          Archive <span class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="archive" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of archives" [value]="item.value">{{item?.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">
+          Departement <span class="text-danger requiredField">*</span>
+          <span [title]="'createNew' | translate" class="float-right">
+            <i *ngIf="[2, 3, 4, 5].includes(profile?.user_type_id)" class="text-xs fas fa-plus-circle handMe"
+              popoverPlacement="bottom-left" [popoverOnHover]="false" [popover]="addDepartement"></i>
+            <popover-content *ngIf="[2, 3, 4, 5].includes(profile?.user_type_id)" #addDepartement
+              title="Nouveau departement" [animation]="true" [closeOnClickOutside]="true" placement="bottom">
+              <app-add-departement></app-add-departement>
+
+            </popover-content>
+          </span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="departement_id" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of service.departementService.allData | async" [value]="item.id">{{item?.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">
+          Type <span class="text-danger requiredField">*</span>
+          <span [title]="'createNew' | translate" class="float-right">
+            <i *ngIf="[2, 3, 4, 5].includes(profile?.user_type_id)" class="text-xs fas fa-plus-circle handMe"
+              popoverPlacement="bottom-left" [popoverOnHover]="false" [popover]="addPoste"></i>
+            <popover-content *ngIf="[2, 3, 4, 5].includes(profile?.user_type_id)" #addPoste
+              title="Nouveau type de mission" [animation]="true" [closeOnClickOutside]="true" placement="bottom">
+              <app-add-type-mission></app-add-type-mission>
+
+            </popover-content>
+          </span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="type_id" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of service.typeService.allData | async" [value]="item.id">{{item?.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Urgence<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="niveau_id" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of service.niveaux" [value]="item.id">{{item?.name | translate}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">
+          {{'DEPART' | translate}} <span class="text-danger requiredField">*</span>
+          <span [title]="'createNew' | translate" class="float-right">
+            <i class="text-xs fas fa-plus-circle handMe" popoverPlacement="bottom-left" [popoverOnHover]="false"
+              [popover]="addVille_2"></i>
+            <popover-content #addVille_2 title="Nouvelle localité" [animation]="true" [closeOnClickOutside]="true"
+              placement="bottom">
+              <app-add-ville></app-add-ville>
+
+            </popover-content>
+          </span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="depart" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of service.localiteService.allData | async" [value]="item.id">{{item?.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">
+          {{'DESTINATION' | translate}} <span class="text-danger requiredField">*</span>
+          <span [title]="'createNew' | translate" class="float-right">
+            <i class="text-xs fas fa-plus-circle handMe" popoverPlacement="bottom-left" [popoverOnHover]="false"
+              [popover]="addVille"></i>
+            <popover-content #addVille title="Nouvelle localité" [animation]="true" [closeOnClickOutside]="true"
+              placement="bottom">
+              <app-add-ville></app-add-ville>
+
+            </popover-content>
+          </span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="localite_id" class="form-control form-control-lg">
+            <option></option>
+            <option *ngFor="let item of service.localiteService.allData | async" [value]="item.id">{{item?.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-12">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="name" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Début<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="start" class="form-control form-control-lg" type="date">
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Fin<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="end" class="form-control form-control-lg" type="date">
+        </div>
+      </div>
+      <div class="col-sm-12 text-center mt-5">
+        <button [disabled]="forms.add.invalid || requesting" type="submit"
+          class="btn btn-lg btn-primary noRadius shadow-primary">
+          <i *ngIf="!requesting" class="fas fa-check-circle"></i> {{currentFormAction | translate}}
+          <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+
+      <div *ngIf="currentItem" class="form-group col-md-12">
+        <h5 class="text-center mt-4"> {{'addMissionFileLabel' | translate}} </h5>
+        <app-file-manager [fileConfig]="fileConfig"> </app-file-manager>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div *ngIf="currentView == 'charge' " class="row" style="padding-left: 12%; padding-right: 12%;">
+
+  <div *ngIf="!mission_id" class="col-md-12">
+    <app-no-mission></app-no-mission>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12">
+    <h3 class="text-center">{{'chargeMission' | translate}}</h3>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12 p-0">
+    <app-charge [mission_id]="mission_id"></app-charge>
+  </div>
+
+</div>
+
+<div *ngIf="currentView == 'equipe' " class="row">
+
+  <div *ngIf="!mission_id" class="col-md-12">
+    <app-no-mission></app-no-mission>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12">
+    <h3 class="text-center">
+      <span *ngIf="!billetMode">{{'equipeQuestion' | translate}}</span>
+      <span *ngIf="billetMode">{{'manageBilletAvion' | translate}}</span>
+    </h3>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12 p-0">
+    <app-equipe [mission_id]="mission_id" [billetMode]="billetMode"></app-equipe>
+  </div>
+
+</div>
+
+<div *ngIf="currentView == 'materiel' " class="row" style="padding-left: 12%; padding-right: 12%;">
+
+  <div *ngIf="!mission_id" class="col-md-12">
+    <app-no-mission></app-no-mission>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12">
+    <h3 class="text-center">{{'materielQuestion' | translate}}</h3>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12 p-0">
+    <app-materiel [mission_id]="mission_id"></app-materiel>
+  </div>
+
+</div>
+
+<div *ngIf="currentView == 'itineraire' " class="row">
+
+  <div *ngIf="!mission_id" class="col-md-12">
+    <app-no-mission></app-no-mission>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12">
+    <h3 class="text-center"><i class="fas fa-road"></i> {{'ITINERAIRE' | translate}}</h3>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12 p-0">
+    <app-itineraire [mission_id]="mission_id"></app-itineraire>
+  </div>
+
+</div>

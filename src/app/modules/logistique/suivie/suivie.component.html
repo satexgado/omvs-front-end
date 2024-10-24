@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="d-flex">
+        <div class="col-lg-4 p-0">
+            <app-logistique-materiel-sidebar (selectedMateriel)="onSetSelectedMateriel($event)"></app-logistique-materiel-sidebar>
+        </div>
+        <div class="col-lg-8 p-0 border-0">
+            <ul ngbNav #nav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
+                <li [ngbNavItem]="'panne'">
+                    <a ngbNavLink class="tx-16" routerLink="." [fragment]="'panne'">
+                        <i class="fal fa-archive tx-facebook bold"></i> Pannes
+                    </a>
+                    <ng-template ngbNavContent>
+                        <app-panne-materiel [materielId]="selectedMaterielId"></app-panne-materiel>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="'defectueux'">
+                    <a ngbNavLink class="tx-16" routerLink="." [fragment]="'defectueux'">
+                        <i class="fal fa-stars tx-facebook bold"></i> Défectueux
+                    </a>
+                    <ng-template ngbNavContent>
+                        <app-defect-materiel [materielId]="selectedMaterielId"></app-defect-materiel>
+                    </ng-template>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="nav"></div>
+        </div>
+    </div>
+</div>
+
+<ng-template #chooseMateriel>
+    <h5 class="text-center my-5 w-100">{{ 'Selectionnez un materiel' }}</h5>
+</ng-template>

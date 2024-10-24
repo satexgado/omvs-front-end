@@ -1,0 +1,345 @@
+<div class="card">
+    <div class="row">
+        <div class="col-lg-4">
+            <app-logistique-fournisseur-sidebar></app-logistique-fournisseur-sidebar>
+        </div>
+        <div class="col-lg-8 p-0 border-0">
+            <h4 class="text-center title m-2 p-5"><i class="fal fa-construction fa-5x"></i></h4>
+            <!-- <div class="card-body collapse show  p-0" id="collapse1">
+
+                <ul class="nav bg-light mg-0 pd-0 mg-t-0 bd-b">
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <i class="fal fa-bell-on bg-white tx-facebook " style="padding:6px; border-radius:50%"></i><span class="tx-facebook">Matériels</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <i class="fal fa-archive bg-white tx-facebook " style="padding:6px; border-radius:50%"></i><span class="tx-facebook"> Historique</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <i class="fal fa-eye bg-white tx-facebook " style="padding:6px; border-radius:50%"></i><span class="tx-facebook"> Affectés</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link3 " data-toggle="tab" href="#">
+                            <i class="fal fa-stars bg-white tx-facebook " style="padding:6px; border-radius:50%"></i><span class="tx-facebook"> Fournisseurs</span></a>
+                    </li>
+
+
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane fade active show" id="tb_continent">
+                    <div class="section-body ">
+                        <div class="form-group  mb-0 bd-b ">
+                            <div class="input-group bd-b">
+                                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                      <option selected> Type Fournisseurs...</option>
+                      <option value="1"> Académique</option>
+                      <option value="2"> Business</option>
+                      <option value="3"> Partenariat</option>
+                      <option value="3"> Diplômatique</option>
+                  </select>
+
+                                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                      <option selected> Fournisseurs...</option>
+                      <option value="1"> Académique</option>
+                      <option value="2"> Business</option>
+                      <option value="3"> Partenariat</option>
+                      <option value="3"> Diplômatique</option>
+                  </select>
+                                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                      <option selected> Années...</option>
+                      <option value="1"> Académique</option>
+                      <option value="2"> Business</option>
+                      <option value="3"> Partenariat</option>
+                      <option value="3"> Diplômatique</option>
+                  </select>
+                                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                      <option selected> Etats...</option>
+                      <option value="1"> Académique</option>
+                      <option value="2"> Business</option>
+                      <option value="3"> Partenariat</option>
+                      <option value="3"> Diplômatique</option>
+                  </select>
+                                <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                      <option selected> Affecté à...</option>
+                      <option value="1"> Académique</option>
+                      <option value="2"> Business</option>
+                      <option value="3"> Partenariat</option>
+                      <option value="3"> Diplômatique</option>
+                  </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0" id="collapse9">
+                        <div class=" bg-white">
+                            <div class="row row-xs clearfix mg-0 pd-0">
+                                <div class="col-lg-12">
+                                    <div class="tab-content ">
+                                        <div class="tab-pane fade show active" id="tableau_vie_scolaire" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade active show" id="tous_mes_etablissements">
+                                                    <div class=" p-0">
+                                                        <div class="row row-xs mg-0 pd-0 bg-light p-0">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group mg-t-5 mg-b-5 ">
+                                                                    <div class="input-group border-0" style="width:400px">
+                                                                        <span class="input-group-append"></span>
+                                                                        <input type="text" class="form-control pd-y-10  tx-white" placeholder="Recherches...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <ul class="nav float-right list-inline justify-content-end">
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-globe bg-white tx-danger tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-flag-alt bg-white tx-success-100 tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-chair-office bg-white tx-warning tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-people-carry bg-white tx-primary tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <ul class="nav float-right list-inline justify-content-end">
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Ajustement</span></a></li>
+                                                                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Affectés</span></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table  table-hover table-sm mb-0 ">
+                                                            <tbody>
+                                                                <tr class="barder-0">
+                                                                    <th class="tx-yeto2 tx-center "> <i class="fad fa-circle bg-light tx-light tx-12" style="padding:6px; border-radius:50%"></i></th>
+                                                                    <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
+                                                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight bd-r bd-white">Quantités</th>
+                                                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Prix</th>
+                                                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Total</th>
+                                                                    <th class="tx-orange tx-center tx-16 bg-jaunelight1">Niveau d'urgence</th>
+                                                                    <th class="tx-orange tx-center tx-16 bg-jaunelight1">Observations</th>
+                                                                    <th class="tx-facebook tx-center p-3 tx-16"> # </th>
+                                                                </tr>
+                                                                <tr class=" bd-b">
+                                                                    <td class=" ">
+                                                                        <div class="form-check  bg-d tx-center">
+                                                                            <input class="form-check-input bg-yeto2" type="checkbox" value="" id="defaultCheck1">
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                    <td class=" bg-light">
+                                                                        <div class=" from"><a class=" tx-yeto3 tx-14 " href="javascript:void(0);">
+Ram de Papier Format A4
+
+</a></div>
+                                                                    </td>
+                                                                    <td class=" tx-center bg-white bd-r bd-white">
+                                                                        <div>
+                                                                            <p class="mg-0 tx-gray-600 tx-bolder"> 1235</p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center bg-white bd-r bd-white">
+                                                                        <div>
+                                                                            <p class="mg-0 tx-gray-600 tx-bolder"> 1235</p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center bg-white ">
+                                                                        <div>
+                                                                            <p class="mg-0 tx-gray-600 tx-bolder"> 15</p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center bg-white ">
+                                                                        <div>
+                                                                            <p class="mg-0 tx-gray-600 tx-bolder"> Très urgent</p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center bg-white ">
+                                                                        <div>
+                                                                            <p class="mg-0 tx-gray-600 tx-bolder"> Les observations</p>
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td class=" tx-center ">
+                                                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-facebook " style="padding:6px; border-radius:50%"></i></span>
+                                                                    </td>
+
+                                                                </tr>
+                                                                <tr class=" ">
+                                                                    <td class="bg-white"></td>
+                                                                </tr>
+                                                                <tr class=" ">
+                                                                    <td class="bg-white border-0"></td>
+                                                                    <td class=" tx-right border-0 ">
+                                                                        <span class=""><i class="fad fa-circle tx-10 tx-success-100 " ></i></span>
+                                                                    </td>
+
+                                                                    <td class="text-center width40 bd-b bg-light ">
+                                                                        <div>
+                                                                            <div class="avatar d-block">
+                                                                                <img class="avatar" src="assets/images/avatar-placeholder.png" alt="avatar">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14">
+                                                                                <p class="mg-0 tx-16 tx-danger"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>12</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>12</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center ">
+                                                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-light " style="padding:6px; border-radius:50%"></i></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class=" ">
+                                                                    <td class="bg-white border-0"></td>
+                                                                    <td class=" tx-right border-0">
+                                                                        <span class=""><i class="fad fa-circle tx-10 tx-danger " ></i></span>
+                                                                    </td>
+
+                                                                    <td class="text-center width40 bd-b bg-light ">
+                                                                        <div>
+                                                                            <div class="avatar d-block">
+                                                                                <img class="avatar" src="assets/images/avatar-placeholder.png" alt="avatar">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14">
+                                                                                <p class="mg-0 tx-16 tx-danger"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>0</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>0</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center ">
+                                                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-light " style="padding:6px; border-radius:50%"></i></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class=" ">
+                                                                    <td class="bg-white border-0"></td>
+                                                                    <td class=" tx-right border-0">
+                                                                        <span class=""><i class="fad fa-circle tx-10 tx-warning " ></i></span>
+                                                                    </td>
+
+                                                                    <td class="text-center width40 bd-b bg-light ">
+                                                                        <div>
+                                                                            <div class="avatar d-block">
+                                                                                <img class="avatar" src="assets/images/avatar-placeholder.png" alt="avatar">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14">
+                                                                                <p class="mg-0 tx-16 tx-danger"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small> 12, March 2019 :12:24</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>12</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" bd-b bg-light">
+                                                                        <div class=" from">
+                                                                            <a class=" tx-facebook tx-14" href="javascript:void(0);">
+                                                                                <p class="mg-0 tx-16 tx-success-100"><small>18</small></p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" tx-center ">
+                                                                        <span class=""><i class="fad fa-info-circle tx-14 bg-light tx-light " style="padding:6px; border-radius:50%"></i></span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class=" mg-b-20 border-0">
+                                                        <nav>
+                                                            <ul class="pagination justify-content-center mg-t-10">
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                                </li>
+                                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#">Next</a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

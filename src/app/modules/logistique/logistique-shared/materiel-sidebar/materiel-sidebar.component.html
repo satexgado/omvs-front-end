@@ -1,0 +1,158 @@
+<ul class="nav bg-light pd-y-6" id="pills-tab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link3 active" data-toggle="pill" href="#mode_libelle"><i class="fad fa-dice-one tx-primary " ></i> <span class="tx-facebook tx-14"> Mode Libellé</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link3 " data-toggle="pill" href="#mode_comptable"><i class="fad fa-th-large tx-primary " ></i><span class="tx-facebook tx-14"> Mode Comptable </span></a>
+    </li>
+
+</ul>
+
+<div class="tab-content bg-light">
+    <div class="tab-pane fade active show" id="mode_libelle">
+        <div class="card-body p-0">
+            <div class="form-group  mb-0 bd-b">
+                <div class="input-group">
+
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Fournisseurs...</option>
+                            <option value="1"> Académique</option>
+                            <option value="2"> Business</option>
+                            <option value="3"> Partenariat</option>
+                            <option value="3"> Diplômatique</option>
+                        </select>
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Catégories...</option>
+                            <option value="1"> Important</option>
+                            <option value="2"> Moins Important</option>
+                        </select>
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Etats...</option>
+                            <option value="1"> Important pour un type de données</option>
+                            <option value="2"> Moins Important</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush tx-13 " [class.loading]="materielHelper.loading$ | async">
+                <ng-container *ngIf="materielHelper.data$ | async as items">
+                    <ng-container *ngIf="items.length; else noItem">
+                        <li class="list-group-item pd-sm-x-10 bd-b bg-light" *ngFor="let materiel of items;trackBy: materielHelper.trackByFn">
+                            <button class="btn btn-default d-flex w-100 btn-sm" [class.accent-facebook-left]="selectedMaterielId && materiel.id == selectedMaterielId" (click)="onSetSelected(materiel)">
+                            <div class="mr-2 ">
+                                <div class=" d-block">
+                                    <i class="fad fa-circle tx-primary " style="padding:4px; border-radius:50%"></i>
+                                </div>
+                            </div>
+                            <div class="pd-sm-l-10">
+                                <p class="tx-primary mg-b-0"> {{materiel.libelle | titlecase}}</p>
+                                <span class="tx-12 mg-b-0 tx-warning mr-4">  30 Décembre 2021</span>
+                                <span class="tx-12 mg-b-0 tx-gray-500"><i class="fad fa-people-carry tx-success-100 bg-white" style="padding:4px; border-radius:50%"></i></span>
+                            </div>
+                            <div class="mg-l-auto text-right">
+                                <div class="mg-b-0  tx-dar">
+                                    <div class="mr-2 mg-l-0 tx-danger ">
+                                        <div class="avatar"><span class="avatar-initial rounded-circle bg-white "><small class="tx-primary tx-bolder">12</small></span></div>
+                                    </div>
+                                </div>
+                                <span class="tx-10 tx-success-100 mg-b-0"></span>
+                            </div>
+                        </button>
+                        </li>
+                    </ng-container>
+                </ng-container>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-pane fade  " id="mode_comptable">
+        <div class="card-body p-0">
+            <div class="form-group  mb-0 bd-b">
+                <div class="input-group">
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Classes...</option>
+                            <option value="1"> Académique</option>
+                            <option value="2"> Business</option>
+                            <option value="3"> Partenariat</option>
+                            <option value="3"> Diplômatique</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="form-group  mb-0 bd-b">
+                <div class="input-group">
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Comptes...</option>
+                            <option value="1"> Académique</option>
+                            <option value="2"> Business</option>
+                            <option value="3"> Partenariat</option>
+                            <option value="3"> Diplômatique</option>
+                        </select>
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Sous comptes...</option>
+                            <option value="1"> Important</option>
+                            <option value="2"> Moins Important</option>
+                        </select>
+                    <select class="custom-select border-0  tx-yeto2" id="inputGroupSelect02">
+                            <option selected> Etendu Subdivision...</option>
+                            <option value="1"> Important</option>
+                            <option value="2"> Moins Important</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <ul class="list-group list-group-flush tx-13 ">
+                <li class="list-group-item d-flex pd-sm-x-1 bd-b bg-light">
+                    <div class="mr-2 ">
+                        <div class=" d-block">
+                            <i class="fad fa-circle tx-primary " style="padding:4px; border-radius:50%"></i>
+                        </div>
+                    </div>
+                    <div class="pd-sm-l-10">
+                        <p class="tx-primary mg-b-0"> Ram de papier format A4</p>
+                        <span class="tx-12 mg-b-0 tx-warning mr-4">  30 Décembre 2021</span>
+                        <span class="tx-12 mg-b-0 tx-gray-500"><i class="fad fa-people-carry tx-success-100 bg-white" style="padding:4px; border-radius:50%"></i></span>
+                    </div>
+                    <div class="mg-l-auto text-right">
+                        <div class="mg-b-0  tx-dar">
+                            <div class="mr-2 mg-l-0 tx-danger ">
+                                <div class="avatar"><span class="avatar-initial rounded-circle bg-white "><small class="tx-primary tx-bolder">12</small></span></div>
+                            </div>
+                        </div>
+                        <span class="tx-10 tx-success-100 mg-b-0"></span>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex pd-sm-x-1 bd-b bg-light">
+                    <div class="mr-2 ">
+                        <div class=" d-block">
+                            <i class="fad fa-circle tx-primary " style="padding:4px; border-radius:50%"></i>
+                        </div>
+                    </div>
+                    <div class="pd-sm-l-10">
+                        <p class="tx-primary mg-b-0"> Cartouche d'encre en Couleur</p>
+                        <span class="tx-12 mg-b-0 tx-warning mr-4">  30 Décembre 2021</span>
+                        <span class="tx-12 mg-b-0 tx-gray-500"><i class="fad fa-people-carry tx-success-100 bg-white" style="padding:4px; border-radius:50%"></i></span>
+                    </div>
+                    <div class="mg-l-auto text-right">
+                        <div class="mg-b-0  tx-dar">
+                            <div class="mr-2 mg-l-0 ">
+                                <div class="avatar"><span class="avatar-initial rounded-circle bg-white "><small class="tx-primary tx-bolder">12</small></span></div>
+                            </div>
+                        </div>
+                        <span class="tx-10 tx-success-100 mg-b-0"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

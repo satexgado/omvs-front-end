@@ -1,0 +1,149 @@
+<div class="container_fluid container-row">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="text-center">
+                    <img src="./assets/img/10.jpg" class="rounded img-thumbnail" alt="avatar">
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Nom: </span> {{dossierconducteur.conducteur.nom | titlecase}}
+                        </p>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Prenom: </span> {{dossierconducteur.conducteur.prenom | titlecase}}
+                        </p>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Email: </span> {{dossierconducteur.conducteur.email | titlecase}}
+                        </p>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Date de naissance: </span> {{dossierconducteur.conducteur.date_naissance | date: 'dd/MM/yyyy'}}
+                        </p>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Sexe: </span> {{dossierconducteur.conducteur.sexe | titlecase}}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9 card">
+            <div class="w-box  w-box-white"><br>
+                <div class="w-box-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngb-tabset [justify]="'fill'" #tabs="ngbTabset" [destroyOnHide]="false">
+                                <ngb-tab id="tab-description">
+                                    <ng-template ngbTabTitle>
+                                        <i class="fal fa-list-alt"></i> Dossier Conducteur
+                                    </ng-template>
+                                    <ng-template ngbTabContent>
+                                        <div class="d-flex justify-content-center">
+                                            <button (click)="onUpdateForm()" class="btn btn-light m-2 tx-13"> <i class="fal fa-edit" style="color:   #99600b    "></i> Modifier</button>
+                                        </div>
+                                        <section class="py-2 col-md-11  d-block mx-auto">
+                                            <ul class="row pl-0 mb-0">
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Numero du permis: </span> {{dossierconducteur.numero_permis | titlecase}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Type de permis: </span>
+                                                        <b *ngFor="let typepermis of dossierconducteur.type_permis;  let last = last">
+                                                                    {{typepermis.libelle | titlecase}} {{last ? '' : ','}}
+                                                                </b>
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">lieu d'obtention du permis: </span> {{dossierconducteur.lieu_obtention_permis?.libelle | titlecase}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">date d'obtention du permis: </span> {{dossierconducteur.date_obtention | date: 'dd/MM/yyyy'}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Fumeur: </span> {{dossierconducteur.etes_vous_fumeur | titlecase}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold" *ngIf="dossierconducteur.etes_vous_fumeur == arreter">
+                                                    <p class="formSep m-0"><span class="text-muted">Depuis quand j'ai arretez de fumer: </span> {{dossierconducteur.depuis_quand_avez_vous_arrete_fumer}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Alcool: </span> {{dossierconducteur.prenez_vous_lalcool | titlecase}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold" *ngIf="dossierconducteur.prenez_vous_lalcool == arreter">
+                                                    <p class="formSep m-0"><span class="text-muted">Depuis quand j'ai arretez l'alcool: </span> {{dossierconducteur.depuis_quand_avez_vous_arrete_alcool}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item invoice_preview p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Problème d'audition: </span> {{dossierconducteur.avez_vous_difficulter_entendre | titlecase}}
+                                                    </p>
+                                                    <p class="inv_notes mx-3" *ngIf="dossierconducteur.avez_vous_difficulter_entendre == 'Oui'"><span class="badge badge-info">description du problème</span> {{dossierconducteur.quel_difficulte}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold" *ngIf="dossierconducteur.avez_vous_difficulter_entendre == 'Oui'">
+                                                    <p class="formSep m-0"><span class="text-muted">Combien d'oreilles: </span> {{dossierconducteur.combien_doreille}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item invoice_preview p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Problème de vue: </span> {{dossierconducteur.avez_vous_des_difficultes_voir | titlecase}}
+                                                    </p>
+                                                    <p class="inv_notes mx-3" *ngIf="dossierconducteur.avez_vous_des_difficultes_voir == 'Oui'"><span class="badge badge-info">description du problème</span> {{dossierconducteur.laquel}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold" *ngIf="dossierconducteur.avez_vous_des_difficultes_voir == 'Oui'">
+                                                    <p class="formSep m-0"><span class="text-muted">Correcteur pour la vue: </span> {{dossierconducteur.utilisez_vous_des_correcteurs}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item invoice_preview p-0 border-0 col-md-6 col-12 font-weight-bold" *ngIf="dossierconducteur.avez_vous_des_difficultes_voir == 'Oui'">
+                                                    <p class="formSep m-0"><span class="text-muted">Spécialiste pour la vue consulté: </span> {{dossierconducteur.avez_vous_consulte_un_specialiste}}
+                                                    </p>
+                                                    <p class="inv_notes mx-3" *ngIf="dossierconducteur.avez_vous_consulte_un_specialiste == 'Oui'"><span class="badge badge-info">la consultation remonte à</span> {{dossierconducteur.a_quand_remonte_votre_consultation}}
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Depuis quand je conduis: </span> {{dossierconducteur.depuis_combien_de_temps_conduisez_vous_annee }} ans
+                                                    </p>
+                                                </li>
+                                                <li class="list-group-item invoice_preview p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                                    <p class="formSep m-0"><span class="text-muted">Ai-je exercez autre part?: </span> {{dossierconducteur.avez_vous_exercez_autre_part}}
+                                                    </p>
+                                                    <p class="inv_notes mx-3" *ngIf="dossierconducteur.avez_vous_exercez_autre_part == 'Oui'"><span class="badge badge-info">reference</span> {{dossierconducteur.reference}}
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </section>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab id="tab-objectifs">
+                                    <ng-template ngbTabTitle>
+                                        <i class="fal fa-map-marker-alt"></i> Adresse
+                                    </ng-template>
+                                    <ng-template ngbTabContent>
+                                        <div class="p-3">
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                            </ngb-tabset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer_space">
+</div>
+
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

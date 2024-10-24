@@ -1,0 +1,15 @@
+<div  class="row">
+  <div class="col-md-12">
+    <form [formGroup]="forms.add" (ngSubmit)="add()" class="form" role="form" autocomplete="off">
+      <div class="input-group">
+        <input formControlName="name" class="form-control input--air" type="text" placeholder="Libelle">
+        <div class="input-group-append" id="button-addon1">
+          <button [disabled]="forms.add.invalid || requesting" class="btn btn-outline-primary">
+            <i *ngIf="!requesting" class="fas fa-plus-circle"></i>
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

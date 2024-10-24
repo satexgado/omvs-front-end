@@ -1,0 +1,20 @@
+<div class="card mb-2">
+    <div class="d-flex">
+        <div class="col-lg-4 p-0 scrollable-75 scroll-11">
+            <app-logistique-materiel-sidebar (selectedMateriel)="onSetSelected($event)"></app-logistique-materiel-sidebar>
+        </div>
+        <div class="col-lg-8 p-0 border-0">
+            <app-commande-materiel [materielId]="selectedMaterielId"></app-commande-materiel>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #chooseMateriel>
+    <h5 class="text-center my-5 w-100">{{ 'Selectionnez un materiel' }}</h5>
+</ng-template>

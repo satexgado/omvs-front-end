@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'itineraire_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'itineraire_id'), 'is-valid': isValid('itineraire_id')}" required>
+                <ng-container *ngFor="let item of (allItineraire$ | async)">
+                    <option [ngValue]="item.id">{{item.libelle}}</option>
+                </ng-container>
+            </select>
+                    <span class="custom-span">itineraire</span>
+                    <div *ngIf="shouldShowRequiredError('itineraire_id')" class="invalid-feedback">veillez choisir le itineraire.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label for="" class="control-label">Periode ({{editForm.get('date_debut').value | date: 'dd/MM/yyyy'}} - {{editForm.get('date_fin').value | date: 'dd/MM/yyyy'}})</label>
+                    <div class="d-flex justify-content-center">
+                        <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+                        </ngb-datepicker>
+
+                        <ng-template #t let-date let-focused="focused">
+                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                        {{ date.day }}
+                    </span>
+                        </ng-template>
+                    </div>
+                    <div *ngIf="shouldShowRequiredError('date_debut') || shouldShowRequiredError('date_fin')" class="invalid-feedback">veillez choisir la periode.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <textarea name="commentaire" maxlength="2000" class="form-control" cols="30" rows="5" [formControlName]="'commentaire'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'commentaire'), 'is-valid': isValid('commentaire')}"></textarea>
+                    <span class="custom-span">commentaire <small>optionnel</small></span>
+                    <small>{{editForm.get('commentaire').value?.length}}/2000</small>
+                    <div *ngIf="shouldShowRequiredError('commentaire')" class="invalid-feedback">veillez saisir le commentaire.</div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

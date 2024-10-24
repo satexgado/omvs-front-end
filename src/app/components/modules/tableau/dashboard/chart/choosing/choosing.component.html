@@ -1,0 +1,169 @@
+<section class="row" [formGroup]="configForm">
+    <!-- dashboard element -->
+    <div class="col-md-6">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Valeur</div>
+                    </div>
+                    <app-custom-select-icon formControlName="valeur" [items]="valeurSelect" [limit]="3"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Qualité</div>
+                    </div>
+                    <app-custom-select-icon formControlName="qualite" [items]="qualiteSelect" [limit]="3"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-12">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div>
+                    <div>
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Type de graphique</div>
+                    </div>
+                    <app-custom-select-icon formControlName="chart" [items]="chartSelectItems" [limit]="10"></app-custom-select-icon>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="col-md-12">
+        <div class="card border-left-primary shadow mb-3">
+            <div class="card-body">
+                <div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="font-weight-bold text-primary text-uppercase mb-1">Données</div>
+                        <button type="button" class="btn btn-primary my-1" (click)="addDataset()">Ajouter</button>
+                    </div>
+                    <div formArrayName="datasets" class="row">
+                        <div class="col-md-6 col-12" *ngFor="let dataset of getDatasets(configForm); let datasetIndex=index;">
+                            <div class="card shadow mb-3">
+                                <div class="card-body" [formGroupName]="datasetIndex">
+                                    <button class="btn btn-outline-danger float-right" *ngIf="getDatasets(configForm).length > 1" (click)="removeDataset(datasetIndex)"><i class="fa fa-times"> </i></button>
+                                    <div class="formSep">
+                                        <div class="d-flex formSep flex-wrap align-items-center justify-content-center">
+                                            <div class="col-12 mb-2">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control" formControlName="libelle" placeholder="libelle">
+                                                    <input type="color" class="form-control" formControlName="couleur" value="#f6b73c">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <app-custom-select-icon formControlName="chartType" [items]="chartSelectItems" [limit]="10"></app-custom-select-icon>
+                                            </div>
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button type="button" class="btn btn-sm btn-link" (click)="addFilter(datasetIndex)">Ajouter filtre</button>
+                                            </div>
+                                        </div>
+                                        <table class="table" formArrayName="filters">
+                                            <tbody>
+                                                <tr *ngFor="let filter of getFilters(dataset); let filterIndex=index" [formGroupName]="filterIndex">
+                                                    <th>
+                                                        <select class="custom-select" formControlName="type">
+                                                            <option value="personnel_id">Createur</option>
+                                                            <option value="departement_id">Departement</option>
+                                                            <option value="imputation_id">Imputation</option>
+                                                            <option value="localite_id">Localite</option>
+                                                            <option value="membre_equipe_id">Membre de l'equipe</option>
+                                                            <option value="niveau_id">Niveau</option>
+                                                            <option value="pays_id">Pays</option>
+                                                            <option value="moyen_transport">Transport</option>
+                                                            <option value="type_id">Type de mission</option>
+                                                        </select>
+                                                    </th>
+                                                    <td>
+                                                        <ng-container [ngSwitch]="filter.get('type').value">
+                                                            <div [class.loading]="!(service.allDepartements$ | async)" *ngSwitchCase="'departement_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le departement</option>
+                                                                    <ng-container *ngFor="let item of (service.allDepartements$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allImputations$ | async)" *ngSwitchCase="'imputation_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le imputation</option>
+                                                                    <ng-container *ngFor="let item of (service.allImputations$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allTypes$ | async)" *ngSwitchCase="'type_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le type</option>
+                                                                    <ng-container *ngFor="let item of (service.allTypes$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allLocalites$ | async)" *ngSwitchCase="'localite_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez la localité</option>
+                                                                    <ng-container *ngFor="let item of (service.allLocalites$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allPays$ | async)" *ngSwitchCase="'pays_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le pays</option>
+                                                                    <ng-container *ngFor="let item of (service.allPays$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allNiveauMissions$ | async)" *ngSwitchCase="'niveau_id'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le niveau</option>
+                                                                    <ng-container *ngFor="let item of (service.allNiveauMissions$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allTransports$ | async)" *ngSwitchCase="'moyen_transport'">
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le transport</option>
+                                                                    <ng-container *ngFor="let item of (service.allTransports$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.name}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                            <div [class.loading]="!(service.allPersonnels$ | async)" *ngSwitchDefault>
+                                                                <select class="custom-select" formControlName="value">
+                                                                    <option [value]="null">choississez le membre</option>
+                                                                    <ng-container *ngFor="let item of (service.allPersonnels$ | async)">
+                                                                        <option [ngValue]="item.id">{{item.nom }} {{item.prenom}}</option>
+                                                                    </ng-container>
+                                                                </select>
+                                                            </div>
+                                                        </ng-container>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-outline-danger float-right" (click)="removeFilter(dataset, filterIndex)"><i class="fa fa-times"> </i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button [disabled]="shouldDisableSubmit()" type="button" class="btn btn-primary" (click)="onChartSelected()">Enregistrer</button>
+    <!-- dashboard element -->
+</section>

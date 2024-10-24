@@ -1,0 +1,267 @@
+<div class="row">
+
+  <div class="col-md-3 mt-2 p-0 pr-1">
+    <div class="card">
+      <div *ngIf="!billetMode" class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0">{{'SEARCH' | translate}}</h6>
+      </div>
+      <div class="card-body p-2">
+        <form *ngIf="!billetMode" [formGroup]="forms.search" (ngSubmit)="search()" class="form" role="form"
+          autocomplete="off">
+          <div class="input-group">
+            <input formControlName="keyword" class="form-control input--air" type="search"
+              [placeholder]="'nomAndPrenom' | translate">
+            <div class="input-group-append" id="button-addon1">
+              <button [disabled]="forms.search.invalid || requesting" class="btn btn-outline-warning">
+                <i *ngIf="!requestings.search" class="fas fa-search"></i>
+                <i *ngIf="requestings.search" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <ul *ngIf="searchResult?.length" class="list-group mt-2">
+          <li *ngIf="!billetMode"
+            class="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1 bg-light text-dark">
+            {{'searchResults' | translate}}
+            <a (click)="restoreView()" [title]="'CLOSE' | translate" class="float-right handMe">
+              <i class="text-secondary fas fa-fw fa-times"></i>
+            </a>
+          </li>
+
+          <li *ngFor="let item of searchResult | paginate: { itemsPerPage: 5, currentPage: p }"
+            (click)="details(item, -1)" [title]="'clickToViewDetails' | translate"
+            class="list-group-item d-flex justify-content-between align-items-center handMe">
+            {{item?.nom+' '+item?.prenom}}
+            <span class="float-right fas fa-fw fa-user-circle"></span>
+          </li>
+        </ul>
+
+        <div *ngIf="searchResult?.length" class="mt-2">
+          <pagination-controls (pageChange)="p = $event" previousLabel="P" nextLabel="S" class="mt-2">
+          </pagination-controls>
+        </div>
+
+        <ul *ngIf="SOURCE?.data?.length>0 && !service.isLoading()" class="list-group mt-2">
+          <li class="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1 bgTheme text-white">
+            {{'membresEquipe' | translate}}
+          </li>
+          <li *ngFor="let item of SOURCE.data; let i=index" (click)="details(item, i)"
+            [title]="'clickToViewDetails' | translate"
+            class="list-group-item d-flex justify-content-between align-items-center handMe">
+            {{item?.personnel?.nom+' '+item?.personnel?.prenom}}
+            <span class="float-right fas fa-fw fa-user-circle fa-chevron-circle-right"></span>
+          </li>
+        </ul>
+
+        <div *ngIf="service.isLoading()">
+          <app-loading></app-loading>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9 card mb-4 mt-2 p-0">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0">
+        <span *ngIf="currentItem?.nom">{{currentItem?.nom+' '+currentItem?.prenom}}</span>
+        <span *ngIf="currentItem?.personnel">{{currentItem?.personnel?.nom+' '+currentItem?.personnel?.prenom}}</span>
+        <span *ngIf="!currentItem">{{'DETAILS' | translate}}</span>
+      </h6>
+      <small class="float-right">
+        <i class="text-secondary fas fa-fw fa-user-circle"></i>
+      </small>
+    </div>
+    <!-- CLIST ELEMENT -->
+    <div *ngIf="currentItem" class="row pl-3 pr-3 pt-2 pb-3">
+      <div class="col-md-3 pr-1 animated slideInLeft text-center">
+        <img *ngIf="currentItem?.sexe == 'Masculin' || currentItem?.personnel?.sexe == 'Masculin'"
+          src="assets/images/users/male.png" class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+        <img *ngIf="currentItem?.sexe == 'Feminin' || currentItem?.personnel?.sexe == 'Feminin'"
+          src="assets/images/users/female.png" class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+
+        <div class="modal-actions text-left mt-2">
+          <button *ngIf="!currentItem?.personnel" (click)="initAddForm()"
+            class="btn btn-primary btn-md btn-bloc noRadius">
+            <i class="fas fa-plus-square"></i> {{'INTEGRER' | translate}}
+          </button> <br>
+        </div>
+
+        <div *ngIf="currentItem?.personnel && currentIndex>=0" class="modal-actions text-left">
+
+          <button *ngIf="currentView == 'list' && billetMode" (click)="initBilletEdit()"
+            [title]="'updateBilltet' | translate" type="button" class="btn btn-light btn-md btn-bloc noRadius">
+            <i class="text-primary fas fa-plane-departure"></i> {{'editBillet' | translate}}
+          </button> <br *ngIf="billetMode && currentView != 'billet'">
+
+
+          <a *ngIf="currentView == 'list' && currentItem?.billet" target="_blank"
+            [href]="service.getApiFileLocation()+currentItem?.billet?.url"
+            class="btn btn-light btn-md btn-bloc noRadius">
+            <i class="text-success fas fa-download"></i> {{'downloadBillet' | translate}}
+          </a> <br *ngIf="currentView == 'list' && currentItem?.billet">
+
+          <button *ngIf="currentView == 'list' && !billetMode" (click)="initEditForm()" [title]="'EDIT' | translate"
+            type="button" class="btn btn-light btn-md btn-bloc noRadius">
+            <i class="text-primary fas fa-circle"></i> {{'EDIT' | translate}}
+          </button> <br *ngIf="currentView == 'list'">
+
+          <button *ngIf="currentView == 'edit' && !billetMode" (click)="toggleView('list')"
+            [title]="'CLOSE' | translate" type="button" class="btn btn-light btn-md btn-bloc noRadius">
+            <i class="text-secondary fas fa-window-close"></i> {{'CLOSE' | translate}}
+          </button> <br *ngIf="currentView == 'edit'">
+
+
+          <button *ngIf="currentView == 'list' && !billetMode" [disabled]="requesting"
+            (click)="initDelete(currentItem?.id, currentIndex); delete(null, false, 'restoreViewAfterDeleting')"
+            [title]="'DELETE' | translate" type="button" class="btn btn-light btn-md btn-bloc noRadius">
+            <i *ngIf="!requestings?.delete" class="text-danger fas fa-circle"></i> Supprimer
+            <i *ngIf="requestings?.delete" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+
+      </div>
+      <div class="col-md-9 animated slideInRight border shadow">
+        <!-- LIST -->
+        <div *ngIf="currentView == 'list'" class="row">
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'NAME' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.nom || currentItem?.personnel?.nom}}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'PRENOM' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.prenom || currentItem?.personnel?.prenom}}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'SEXE' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.sexe || currentItem?.personnel?.sexe}}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'POSTE' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.poste?.name || currentItem?.personnel?.poste?.name}}
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'DEPARTEMENT' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.departement?.name || currentItem?.personnel?.departement?.name}}
+            </div>
+          </div>
+          <div *ngIf="currentItem?.role" class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'ROLE' | translate}} </label>
+            <div class="col-sm-12 form-control form-control-lg pl-1">
+              {{currentItem?.role?.name}}
+            </div>
+          </div>
+          <div *ngIf="currentItem?.description" class="form-group col-md-12">
+            <label class="col-sm-12 col-form-label form-control-label pl-0 pb-0"> {{'DESCRIPTION' | translate}} </label>
+            <div class="col-sm-12 border p-2">
+              {{currentItem?.description}}
+            </div>
+          </div>
+        </div>
+        <!-- ADD FORM -->
+        <div *ngIf="currentView == 'add'  && !billetMode" class="row p-2">
+          <form [formGroup]="forms.add" (ngSubmit)="add()" class="form col-md-12 pb-4" role="form" autocomplete="off">
+            <div class="form-group row">
+              <label class="col-sm-12 col-form-label form-control-label pl-0 pr-0"> {{'ROLE' | translate}} <span
+                  class="text-danger requiredField">*</span>
+              </label>
+              <div class="col-sm-12 pl-0 pr-0">
+                <select formControlName="role_id" class="form-control form-control-lg">
+                  <option *ngFor="let item of service.roleService.allData | async" [value]="item.id">{{item?.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-12 col-form-label form-control-label pl-0 pr-0"> {{'DESCRIPTION' | translate}} <span
+                  class="text-danger requiredField">*</span>
+              </label>
+              <div class="col-sm-12 pl-0 pr-0">
+                <textarea formControlName="description" class="form-control form-control-lg" cols="30"
+                  rows="7"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button (click)="toggleView('list')" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+                  {{ 'CLOSE' | translate}}
+                </button>
+                <button [disabled]="forms.add.invalid || requesting" type="submit"
+                  class="btn btn-sm btn-primary shadow-primary">
+                  <i *ngIf="!requesting" class="fas fa-check-circle noRadius"></i> {{ 'VALIDATE' | translate }}
+                  <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- EDIT FORM -->
+        <div *ngIf="currentView == 'edit'  && !billetMode " class="row p-2">
+          <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form col-md-12 pb-4" role="form" autocomplete="off">
+            <div class="form-group row">
+              <label class="col-sm-12 col-form-label form-control-label pl-0 pr-0"> {{'ROLE' | translate}} <span
+                  class="text-danger requiredField">*</span>
+              </label>
+              <div class="col-sm-12 pl-0 pr-0">
+                <select formControlName="role_id" class="form-control form-control-lg">
+                  <option *ngFor="let item of service.roleService.allData | async" [value]="item.id">{{item?.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-12 col-form-label form-control-label pl-0 pr-0"> {{'DESCRIPTION' | translate}} <span
+                  class="text-danger requiredField">*</span>
+              </label>
+              <div class="col-sm-12 pl-0 pr-0">
+                <textarea formControlName="description" class="form-control form-control-lg" cols="30"
+                  rows="7"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button (click)="toggleView('list')" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+                  {{ 'CLOSE' | translate}}
+                </button>
+                <button [disabled]="forms.edit.invalid || requesting" type="submit"
+                  class="btn btn-sm btn-primary shadow-primary">
+                  <i *ngIf="!requesting" class="fas fa-check-circle noRadius"></i> {{ 'VALIDATE' | translate }}
+                  <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+        <div *ngIf="currentView == 'billet'" class="row p-2">
+          <div class="col-md-12">
+            <h5 class="text-center mt-4"> {{'billetAvion' | translate}} </h5>
+            <app-file-manager [fileConfig]="fileConfig" (result)="updateFilePath($event)"> </app-file-manager>
+          </div>
+          <div class="col-md-12 text-center" (click)="billetDone()">
+            <button class="btn btn-md btn-warning noRadius"> {{'DONE' | translate}} </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf="!currentItem" class="card-body p-0 p-1 text-center">
+      <br><br><br><br>
+      <a> {{'noItemSelected' | translate}}</a>
+      <br><br><br><br>
+    </div>
+  </div>

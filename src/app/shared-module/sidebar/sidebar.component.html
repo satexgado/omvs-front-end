@@ -1,0 +1,135 @@
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="">
+  <!-- rotate-n-15 -->
+  <div class="sidebar-brand-icon">
+    <i class="fas fa-th-large"></i>
+  </div>
+  <div class="sidebar-brand-text mx-3">OMVS</div>
+</a>
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- HIDDEN FOR DEMANDEUR (1) -->
+<div *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="sidebar-heading">
+  {{'STATISTIQUES' | translate}}
+</div>
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+    <i class="fas fa-fw fa-comment-alt "></i>
+    <span>{{'DASHBOARD' | translate}}</span></a>
+</li>
+
+<!-- Divider -->
+<hr *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+  {{'MODULES' | translate}}
+</div>
+
+
+<li class="nav-item" routerLinkActive="active">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseF" aria-expanded="true"
+    aria-controls="collapseF">
+    <i class="fas fa-fw fa-map-marker-alt"></i>
+    <span>{{'LOCALISATION' | translate}}</span>
+  </a>
+  <div id="collapseF" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" routerLink="/localisation">Pays</a>
+      <a class="collapse-item" routerLink="/localisation/ville">Localité</a>
+    </div>
+  </div>
+</li>
+
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/materiel" routerLinkActive="active">
+    <i class="fas fa-fw fa-car"></i>
+    <span>{{'MATERIEL' | translate}}</span>
+  </a>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/transport" routerLinkActive="active">
+    <i class="fas fa-fw fa-car"></i>
+    <span>{{'TRANSPORT' | translate}}</span>
+  </a>
+</li>
+
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item" routerLinkActive="active">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+    aria-controls="collapseFour">
+    <i class="fas fa-fw fa-user-circle"></i>
+    <span>{{'RH' | translate}}</span>
+  </a>
+  <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" routerLink="/rh/departement">{{'DEPARTEMENT' | translate}}</a>
+      <a class="collapse-item" routerLink="/rh/poste">{{'POSTE' | translate}}</a>
+      <a class="collapse-item" routerLink="/rh">{{'PERSONNEL' | translate}}</a>
+    </div>
+  </div>
+</li>
+
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item" routerLinkActive="active">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+    aria-controls="collapseFive">
+    <i class="fas fa-fw fa-hiking"></i>
+    <span>{{'MISSION' | translate}}</span>
+  </a>
+  <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" routerLink="/mission/type">{{'typeMission' | translate}}</a>
+      <a class="collapse-item" routerLink="/mission">{{'listeMission' | translate}}</a>
+      <a class="collapse-item" routerLink="/mission/calendrier">{{'CALENDRIER' | translate}}</a>
+    </div>
+  </div>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/mission/archive" routerLinkActive="active">
+    <i class="fas fa-fw fa-folder-open"></i>
+    <span>{{'ARCHIVES' | translate}}</span>
+  </a>
+</li>
+
+<li *ngIf="[1].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/mission" routerLinkActive="active">
+    <i class="fas fa-fw fa-hiking"></i>
+    <span>{{'myMissions' | translate}}</span>
+  </a>
+</li>
+
+<!-- <li  class="nav-item">
+  <a class="nav-link" routerLink="/mission/billet" routerLinkActive="active">
+    <i class="fas fa-fw fa-plane-departure"></i>
+    <span>{{'billetAvion' | translate}}</span>
+  </a>
+</li> -->
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/mission/evaluation" routerLinkActive="active">
+    <i class="fas fa-fw fa-comment-alt "></i>
+    <span>{{'EVALUATION' | translate}}</span></a>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/configuration" routerLinkActive="active">
+    <i class="fas fa-fw fa-wrench"></i>
+    <span>{{'SETTING' | translate}}</span></a>
+</li>
+
+
+
+
+
+<!-- Divider -->
+<hr class="sidebar-divider d-none d-md-block">
+
+<!-- Sidebar Toggler (Sidebar) -->
+<div class="text-center">
+  <button class="rounded-circle border-0" id="sidebarToggle"></button>
+</div>

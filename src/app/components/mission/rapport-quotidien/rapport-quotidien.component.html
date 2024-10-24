@@ -1,0 +1,136 @@
+<div class="card shadow mb-2 p-0 animated zoomIn">
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold">
+      <span *ngIf="!currentItem?.name">{{'historiqueRapport' | translate}}</span>
+      <span *ngIf="currentItem?.name">{{ currentItem?.name }}</span>
+    </h6>
+    <small class="float-right">
+      <a (click)="toggleView('list');restoreTitle()" *ngIf="currentView != 'list'" class="text-secondary mr-2 text-dark">
+        <i class="fa fa-table"></i> {{'LIST' | translate}}
+      </a>
+      <a (click)="initAddForm()" class="text-secondary" *ngIf="currentView != 'add'">
+        <i class="fa fa-plus-circle"></i> {{'ADD' | translate}}
+      </a>
+    </small>
+  </div>
+
+  <div *ngIf="currentView=='list'" class="card-body p-1">
+    <!-- LIST -->
+    <div class="row">
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading()" class="col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th> {{'TITLE' | translate}} </th>
+              <th>{{'DATE' | translate}}</th>
+              <th>
+                <i class="float-right fas fa-cog"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of SOURCE?.data; let i=index" class="handMe animated slideInDown">
+              <td>
+                <a (click)="details(item)">{{item?.name}}</a>
+              </td>
+              <td>
+                {{item?.created_at | date:'d MMM y' }}
+              </td>
+              <td>
+                <div class="float-right btn-group" role="group" aria-label="Basic example">
+                  <button (click)="details(item)" [title]="'SHOW' | translate" type="button"
+                    class="btn btn-sm btn-light">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button (click)="initEditForm(item, i)" title="Modifier" type="button" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-edit"></i>
+                  </button>
+                  <button (click)="initDelete(item.id, i); delete(null)" title="Supprimer" class="btn btn-sm btn-light">
+                    <i class="text-secondary fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <app-nodata *ngIf="!SOURCE?.data?.length && !service.isLoading()"></app-nodata>
+
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+  </div>
+
+  <div *ngIf="currentView == 'add'" class="card-body">
+    <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4" role="form" autocomplete="off">
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'TITLE' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="name" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'DESCRIPTION' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <angular-editor formControlName="description" [config]="textEditorConfig">
+          </angular-editor>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button (click)="toggleView('list');restoreTitle()" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+            {{ 'CLOSE' | translate}}
+          </button>
+          <button [disabled]="forms.add.invalid || requesting" type="submit"
+            class="btn btn-sm btn-primary shadow-primary">
+            <i *ngIf="!requesting" class="fas fa-plus-circle"></i> {{ 'ADD' | translate }}
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="currentView == 'edit'" class="card-body">
+    <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form" autocomplete="off">
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'TITLE' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="name" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0"> {{'DESCRIPTION' | translate}} <span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <angular-editor formControlName="description" [config]="textEditorConfig">
+          </angular-editor>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button (click)="toggleView('list');restoreTitle()" type="button" class="btn btn-sm btn-light shadow-danger mr-2">
+            {{ 'CLOSE' | translate}}
+          </button>
+          <button [disabled]="forms.edit.invalid || requesting" type="submit"
+            class="btn btn-sm btn-primary shadow-primary">
+            <i *ngIf="!requesting" class="fas fa-edit"></i> {{ 'VALIDATE' | translate }}
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="currentView == 'details'" class="card-body ">
+    <div [innerHtml]="currentItem?.description"></div>
+  </div>
+
+</div>

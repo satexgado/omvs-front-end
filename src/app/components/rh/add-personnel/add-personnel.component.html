@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-12">
+    <form [formGroup]="forms.add" (ngSubmit)="add()" class="form row" role="form" autocomplete="off">
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Departement<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="departement_id" class="form-control form-control-lg">
+            <option *ngFor="let item of service.departementService.allData | async" [value]="item.id">{{item?.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Poste<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="poste_id" class="form-control form-control-lg">
+            <option *ngFor="let item of service.posteService.allData | async" [value]="item.id">{{item?.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Nom<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="nom" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Prenom<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="prenom" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Sexe<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="sexe" class="form-control form-control-lg">
+            <option *ngFor="let item of service.sexes" [value]="item">{{item}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Situation Matrimoniale<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="situation_matrimoniale" class="form-control form-control-lg">
+            <option *ngFor="let item of service.situations_matrimoniales" [value]="item">{{item}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-12">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Adresse<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="adresse" class="form-control form-control-lg" type="text">
+        </div>
+      </div>
+      <div class="col-sm-12 text-center">
+        <button [disabled]="forms.add.invalid || requesting" type="submit"
+          class="btn btn-sm btn-primary shadow-primary">
+          <i *ngIf="!requesting" class="fas fa-check-circle"></i> Ajouter
+          <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

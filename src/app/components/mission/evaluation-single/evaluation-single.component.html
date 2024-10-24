@@ -1,0 +1,260 @@
+<div class="card shadow mb-2 p-0 animated zoomIn">
+  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold">
+      {{'EVALUATION' | translate}}
+    </h6>
+    <small class="float-right">
+      <a (click)="toggleView('list');restoreTitle()" *ngIf="currentView != 'list'"
+        class="text-secondary mr-2 text-dark">
+        <i class="fa fa-times-circle"></i> {{'CLOSE' | translate}}
+      </a>
+      <a *ngIf="!SOURCE?.data?.length && currentView != 'add'" (click)="initAddForm()" class="text-secondary">
+        <i class="fa fa-plus-circle"></i> {{'ADD' | translate}}
+      </a>
+      <a *ngIf="SOURCE?.data?.length && currentView != 'edit'" (click)="initEditForm(SOURCE?.data[0], 0)"
+        class="text-secondary">
+        <i class="fa fa-edit"></i> {{'EDIT' | translate}}
+      </a>
+    </small>
+  </div>
+
+  <div *ngIf="currentView=='list'" class="card-body p-1">
+    <!-- LIST -->
+    <div class="row">
+      <div *ngIf="SOURCE?.data?.length && !service.isLoading()" class="col-md-12">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#objectif-tab">
+              {{'evaluationObjectifs' | translate}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#impact-tab" role="tab">
+              {{'IMPACT' | translate}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#orientation-tab" role="tab">
+              {{'ORIENTATIONS' | translate}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#note-tab" role="tab">
+              {{'NOTE' | translate}}
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent-service">
+
+          <div class="tab-pane fade show active p-2" id="objectif-tab" role="tabpanel">
+            <div [innerHTML]="SOURCE?.data[0]?.evaluation_objectif"></div>
+          </div>
+
+          <div class="tab-pane fade p-2" id="impact-tab" role="tabpanel">
+            <div [innerHTML]="SOURCE?.data[0]?.impact"></div>
+          </div>
+
+          <div class="tab-pane fade p-2" id="orientation-tab" role="tabpanel">
+            <div [innerHTML]="SOURCE?.data[0]?.orientation"></div>
+          </div>
+
+          <div class="tab-pane fade p-2" id="note-tab" role="tabpanel">
+            <div class="row mt-4">
+              <div class="offset-md-4 col-md-4">
+                <div class="circle text-white bg-primary">
+                  {{SOURCE?.data[0]?.note?.name+' ('+SOURCE?.data[0]?.note?.note+')'}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <app-nodata *ngIf="!SOURCE?.data?.length && !service.isLoading()"></app-nodata>
+
+    <app-loading *ngIf="service.isLoading()"></app-loading>
+  </div>
+
+  <div *ngIf="currentView == 'add'" class="card-body">
+    <div class="">
+      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#objectif-tab">
+            {{'evaluationObjectifs' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#impact-tab" role="tab">
+            {{'IMPACT' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#orientation-tab" role="tab">
+            {{'ORIENTATIONS' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#note-tab" role="tab">
+            {{'NOTE' | translate}}
+          </a>
+        </li>
+      </ul>
+      <form [formGroup]="forms.add" (ngSubmit)="add()">
+        <div class="tab-content" id="myTabContent-service">
+
+          <div class="tab-pane fade show active card card-body p-0" id="objectif-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor3" formControlName="evaluation_objectif" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="impact-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor1" formControlName="impact" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="orientation-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor2" formControlName="orientation" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="note-tab" role="tabpanel">
+            <div class="row mt-5 mb-5">
+              <div class="offset-md-3 col-md-6 form-group p-0">
+                <label class="col-sm-12 col-form-label form-control-label">{{'NOTE' | translate}}<span
+                    class="text-danger requiredField">*</span>
+                </label>
+                <div class="col-sm-12">
+                  <select formControlName="note" class="form-control form-control-lg">
+                    <option></option>
+                    <option *ngFor="let item of service.noteService.allData | async" [value]="item.id">{{item?.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 mt-3 text-center">
+            <button class="btn btn-md btn-light noRadius mr-2" type="button" (click)="toggleView('list')">
+              {{'CLOSE' | translate}}
+            </button>
+            <button [disabled]="forms.add.invalid || requesting" type="submit"
+              class="btn btn-md btn-warning text-white noRadius">
+              <i *ngIf="!requesting" class="fas fa-check-circle"></i>
+              <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              {{'SUBMIT' | translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="currentView == 'edit'" class="card-body">
+    <div class="">
+      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#objectif-tab">
+            {{'evaluationObjectifs' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#impact-tab" role="tab">
+            {{'IMPACT' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#orientation-tab" role="tab">
+            {{'ORIENTATIONS' | translate}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#note-tab" role="tab">
+            {{'NOTE' | translate}}
+          </a>
+        </li>
+      </ul>
+      <form [formGroup]="forms.edit" (ngSubmit)="edit()">
+        <div class="tab-content" id="myTabContent-service">
+
+          <div class="tab-pane fade show active card card-body p-0" id="objectif-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor3" formControlName="evaluation_objectif" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="impact-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor1" formControlName="impact" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="orientation-tab" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+                <angular-editor id="editor2" formControlName="orientation" [config]="textEditorConfig">
+                </angular-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="note-tab" role="tabpanel">
+            <div class="row mt-5 mb-5">
+              <div class="offset-md-3 col-md-6 form-group p-0">
+                <label class="col-sm-12 col-form-label form-control-label">{{'NOTE' | translate}}<span
+                    class="text-danger requiredField">*</span>
+                </label>
+                <div class="col-sm-12">
+                  <select formControlName="note" class="form-control form-control-lg">
+                    <option></option>
+                    <option *ngFor="let item of service.noteService.allData | async" [value]="item.id">{{item?.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 mt-3 text-center">
+            <button class="btn btn-md btn-light noRadius mr-2" type="button" (click)="toggleView('list')">
+              {{'CLOSE' | translate}}
+            </button>
+            <button [disabled]="forms.edit.invalid || requesting" type="submit"
+              class="btn btn-md btn-warning text-white noRadius">
+              <i *ngIf="!requesting" class="fas fa-check-circle"></i>
+              <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+              {{'VALIDATE' | translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card mg-b-20">
+            <div class="card-header bg-white">
+                <div class="input-group float-right col-md-4 col-12">
+                    <input aria-describedby="basic-addon2" (keydown.enter)="getPage(1)" [(ngModel)]="search"
+                        aria-label="Search" class="form-control bg-light border-0 small" placeholder="Recherche..."
+                        type="text">
+                    <div class="input-group-append"><button (click)="getPage(1)" class="btn btn-primary"
+                            type="button"><i class="fas fa-search fa-sm"></i></button></div>
+                </div>
+            </div>
+            <div class="card-body p-0 collapse show" [class.loading]="loading">
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead class="tx-10 tx-uppercase">
+                            <tr>
+                                <th>Mission</th>
+                                <th>Type</th>
+                                <th>Pays</th>
+                                <th>Localite</th>
+                                <th>Departement</th>
+                                <th class="text-center">Personnes</th>
+                                <th>Note</th>
+                                <th>Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="missions">
+                            <tr *ngFor="let mission of missions">
+                                <td>
+                                    <a class="text-dark" [routerLink]="'/mission/details/'+mission?.id+'/tab/default'">
+                                        {{(mission.name.length>20)? (mission.name | slice:0:20)+'..':(mission.name)}}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{mission?.type?.name}}
+                                </td>
+                                <td>
+                                    {{mission?.ville.pay.name}}
+                                </td>
+                                <td>
+                                    {{mission?.ville.name}}
+                                </td>
+                                <td>
+                                    {{mission?.departement.name}}
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                        <li *ngFor="let equipe of mission.equipes | slice:0:4" class="mg-l--10"
+                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                            data-html="true" title="" data-original-title="Alison G">
+                                            <div class="avatar"
+                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                    src="assets/images/users/male.png"
+                                                    class="avatar-initial border border-secondary rounded-circle">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                    src="assets/images/users/female.png"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    alt="">
+                                            </div>
+                                        </li>
+                                        <li *ngIf="mission.equipes?.length > 4" class="mg-l--10" data-original-title=""
+                                            title="">
+                                            <div class="avatar"><span
+                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{mission.equipes.length - 4}}+</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>{{mission.avg_note ? mission.avg_note : 'Aucune note'}}</td>
+                                <td>
+                                    {{mission.total_budget}} ECO
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between flex-wrap ">
+                <ul class="pagination flex-wrap pagination-sm col-10" *ngIf="1 < page_last">
+                    <li class="page-item">
+                        <a class="page-link" (click)="getPage(1)">‹‹</a>
+                    </li>
+                    <ng-container *ngFor="let pageNumber of [].constructor(page_last); let i=index">
+                        <li class="page-item" [class.active]="i == page_current" *ngIf="canDisplayPage(i) && i > 0">
+                            <a class="page-link" (click)="getPage(i)">{{ i }}</a>
+                        </li>
+                    </ng-container>
+                    <li class="page-item">
+                        <a class="page-link" (click)="getPage(page_last)">››</a>
+                    </li>
+                </ul>
+                <div class="input-group input-group-sm mb-3 col-2">
+                    <input type="number" class="form-control" name="page" [max]="page_last" [ngModel]="page_current"
+                        (ngModelChange)="changed($event)">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">/{{page_last}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

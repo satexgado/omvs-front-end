@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+  <span aria-hidden="true"><i class="icon-close"></i></span>
+</button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label for="" class="control-label">Direction</label>
+                    <app-custom-select-icon formControlName="direction" [selected]="editForm.get('direction').value" [items]="direction_select"></app-custom-select-icon>
+                    <div *ngIf="shouldShowRequiredError('direction')" class="invalid-feedback">veillez choisir la direction.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label for="" class="control-label">Periode</label>
+                    <app-custom-select-icon formControlName="periode" [selected]="editForm.get('periode').value" [items]="periode_select"></app-custom-select-icon>
+                    <div *ngIf="shouldShowRequiredError('periode')" class="invalid-feedback">veillez choisir la periode.</div>
+                </div>
+            </div>
+            <!-- <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+          <div class="col-10">
+              <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'ville_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'ville_id'), 'is-valid': isValid('ville_id')}" required>
+                  <ng-container *ngFor="let item of (allVilles$ | async)">
+                      <option [ngValue]="item.id">{{item.libelle}}</option>
+                  </ng-container>
+              </select>
+              <span class="custom-span">ville</span>
+              <div *ngIf="shouldShowRequiredError('ville_id')" class="invalid-feedback">veillez choisir la ville.</div>
+          </div>
+      </div> -->
+
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <select appSelect2Default style="width: 100%" [data]="villePreselectedData" multiple="multiple" [formControlName]="'ville_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'ville_id'), 'is-valid': isValid('ville_id')}" required class="form-control"
+                        placeholder="Select">
+              </select>
+                    <span class="custom-span">ville</span>
+                    <div *ngIf="shouldShowRequiredError('ville_id')" class="invalid-feedback">veillez choisir la ville.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

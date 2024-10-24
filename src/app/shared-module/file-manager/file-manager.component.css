@@ -1,0 +1,54 @@
+.myButtons button {
+    margin-right: 3%;
+  }
+  
+  .deleteBtn {
+    position: absolute;
+    top: 0px;
+    right: 40%;
+    top: 40%;
+    visibility: hidden;
+  }
+  
+  .imgBlock:hover > .card > .deleteBtn {
+    visibility: visible;
+  }
+  
+  .uploadfilecontainer {
+    background-image:  url(cloud.png);
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: center;
+    height: 100px;
+    margin: 20px auto;
+    border: 2px dashed #1c8adb;
+    border-radius: 10px;
+  }
+  
+  .uploadfilecontainer:hover {
+    background-color: #9ecbec !important;
+    opacity: 0.8;
+  }
+  
+  .files-list {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto;
+    background: #ffffff;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 5px;
+    color: #1c8adb;
+  }
+  
+  .files-list .delete-file {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .files-list .delete-file img {
+    width: 30px;
+  }
+  

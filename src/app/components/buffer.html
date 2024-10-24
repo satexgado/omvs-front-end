@@ -1,0 +1,368 @@
+<!-- START CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="row justify-content-center mt-2">
+      <div class="col-md-4">
+        <!-- form card login -->
+        <div class="card rounded shadow shadow-sm">
+          <div class="card-header text-center bg-theme text-white">
+            <h3 class="mb-0">{{'LOGIN' | translate}}</h3>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="login()" class="form" autocomplete="off" id="formLogin">
+              <div class="form-group">
+                <label for="uname1">{{'EMAIL' | translate}}</label>
+                <input type="mail" formControlName="email" class="form-control form-control-lg rounded-0">
+              </div>
+              <div class="form-group">
+                <label>{{'PASSWORD' | translate}}</label>
+                <input formControlName="password" type="password" class="form-control form-control-lg rounded-0">
+              </div>
+              <div class="form-group text-center">
+                <button type="submit" [disabled]="form.invalid || requesting" class="btn bg-theme text-white btn-lg"
+                  id="btnLogin">
+                  {{'getLogin' | translate}}
+                  <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                </button>
+              </div>
+              <div class="form-group">
+                <a routerLink="/account/reset-password"
+                  class="float-right small text-dark">{{'passsordForgotten' | translate}}</a>
+              </div>
+            </form>
+          </div>
+          <!--/card-block-->
+        </div>
+        <!-- /form card login -->
+
+      </div>
+      <!--/col-->
+    </div>
+  </div>
+</section>
+<!-- END CONTACT -->
+
+
+<section>
+  <div id="PopoverContent" class="d-none">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Recipient's username"
+        aria-label="Recipient's username with two button addons" aria-describedby="button-addon1">
+      <div class="input-group-append" id="button-addon1">
+        <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+          data-html="true" data-title="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Test modal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Recipient's username"
+                    aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+                  <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-primary" type="button" data-toggle="popover">
+                      <i class="fas fa-user-plus"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" type="button">
+                      <i class="fas fa-user-minus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <div class="row">
+    <div class="col mt-5">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-sm-12 text-center">
+    <button (click)="toggleView('list')" type="button" class="btn btn-sm btn-danger shadow-danger mr-2">
+      Annuler
+    </button>
+    <button [disabled]="forms.edit.invalid || requesting" type="submit" class="btn btn-sm btn-primary shadow-primary">
+      <i *ngIf="!requesting" class="fas fa-check-circle"></i> Valider
+      <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+    </button>
+  </div>
+</div>
+
+
+<!-- STATISTIQUES -->
+<div class="col-md-2">
+  <div class="card shadow mb-4">
+    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+      Statistiques
+    </div>
+    <!-- Card Body -->
+    <div class="card-body p-1">
+      <div class="row">
+
+        <!-- TOTAL-->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    {{ 'totalMission' | translate }}
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">45</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-hiking fa-1x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- En cours -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                    {{ 'missionEnCours' | translate }}</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-running fa-1x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminé -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                    {{ 'missionTermine' | translate }}
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-check-circle fa-1x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- En cours -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                    {{ 'missionAnnule' | translate }}</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-times-circle fa-1x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="card shadow mb-4">
+    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+      Etat des missions
+    </div>
+    <!-- Card Body -->
+    <div class="card-body p-1">
+      <div class="row">
+
+        <!-- TOTAL-->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    {{ 'totalMission' | translate }}
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">45</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-hiking fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- En cours -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                    {{ 'missionEnCours' | translate }}</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-running fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminé -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                    {{ 'missionTermine' | translate }}
+                  </div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- En cours -->
+        <div class="col-12 mb-1 animated zoomIn">
+          <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body p-2">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                    {{ 'missionAnnule' | translate }}</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ACTION -->
+<td>
+  <div class="float-right dropdown no-arrow" title="Plus d'actions">
+    <a class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown">
+      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+    </a>
+    <div class="dropdown-menu shadow animated--fade-in">
+      <a (click)="onEdit(item, i, 'addOrEdit')" class="dropdown-item">
+        <i class="text-primary fas fa-circle"></i> {{'editDemande' | translate}}
+      </a>
+      <a (click)="initDelete(item.id, i)" data-toggle="modal" data-target="#modal__flat" class="dropdown-item handMe">
+        <i class="text-danger fas fa-circle"></i> {{'DELETE' | translate}}
+      </a>
+      <a (click)="initEditForm(item, i)" class="dropdown-item">
+        <i class="text-warning fas fa-circle"></i> {{'manageStatut' | translate}}
+      </a>
+      <div class="dropdown-divider"></div>
+      <a (click)="onEdit(item, i, 'charge')" class="dropdown-item">
+        <i class="text-dark fas fa-money-bill-alt"></i> {{'manageCharge' | translate}}
+      </a>
+      <a (click)="onEdit(item, i, 'materiel')" class="dropdown-item">
+        <i class="text-secondary fas fa-desktop"></i> {{'manageMateriel' | translate}}
+      </a>
+      <a (click)="onEdit(item, i, 'equipe')" class="dropdown-item">
+        <i class="text-secondary fas fa-users"></i> {{'manageEquipe' | translate}}
+      </a>
+      <a (click)="onEdit(item, i, 'itineraire')" class="dropdown-item">
+        <i class="text-secondary fas fa-road"></i> {{'planifierItineraire' | translate}}
+      </a>
+      <!-- <div class="dropdown-divider"></div>
+      <a [routerLink]="'/mission/details/'+item?.id+'/tab/validation'" class="dropdown-item">
+        <i class="text-primary fas fa-check-circle"></i> {{'traitementValidation' | translate}}
+      </a> -->
+      <div class="dropdown-divider"></div>
+      <a [routerLink]="'/mission/details/'+item?.id+'/tab/default'" class="dropdown-item">
+        <i class="text-secondary fas fa-hiking"></i> {{'detailsGlobal' | translate}}
+      </a>
+      <a (click)="onEdit(item, i, 'equipe', true)" class="dropdown-item text-dark">
+        <i class="fas fa-plane-departure"></i> {{'billetAvion' | translate}}
+      </a>
+      <a [routerLink]="'/mission/details/'+item?.id+'/tab/rapport_quotidien'" class="dropdown-item">
+        <i class="text-secondary fas fa-book"></i> {{'rapportsQuotidiensAndSuivi' | translate}}
+      </a>
+      <a [routerLink]="'/mission/details/'+item?.id+'/tab/rapport_final'" class="dropdown-item">
+        <i class="text-secondary fas fa-book-open"></i> {{'rapportFinal' | translate}}
+      </a>
+      <div class="dropdown-divider"></div>
+      <a [routerLink]="'/mission/details/'+item?.id+'/tab/evaluation'" class="dropdown-item">
+        <i class=" text-secondary fas fa-fw fa-comment-alt"></i> {{'EVALUATION' | translate}}
+      </a>
+    </div>
+
+  </div>
+</td>
+
+TABLE dropddown
+<th scope="col" class="dropdown">
+  <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    {{'STATUT' | translate}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+    aria-labelledby="dropdownMenuLink">
+    <a *ngFor="let item of service.statuts" class="dropdown-item">{{item?.name | translate}}</a>
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-header text-primary">{{'clickToFilter' | translate}}</div>
+  </div>
+</th>

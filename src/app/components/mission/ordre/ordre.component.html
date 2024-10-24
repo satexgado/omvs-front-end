@@ -1,0 +1,80 @@
+<div style="margin: 0;" id="ordre">
+
+  <div id="p1" style="overflow: hidden; position: relative; background-color: white; width: 909px; height: 1286px;">
+
+    <!--  background -->
+    <div id="pg1Overlay"
+      style="width:100%; height:100%; position:absolute; z-index:1; background-color:rgba(0,0,0,0); -webkit-user-select: none;">
+    </div>
+    <div id="pg1" style="-webkit-user-select: none;">
+      <object width="909" height="1286" data="../../../../assets/1/1.svg" type="image/svg+xml" id="pdf1"
+        style="width:909px; height:1286px; -moz-transform:scale(1); z-index: 0;"></object>
+    </div>
+    <!--  background -->
+
+
+    <div id="nom_personne" class="t s1">M. {{item?.personnel?.nom+' '+item?.personnel?.prenom}}</div>
+    <div id="fonction_personne" class="t s1">Fonction: {{item?.personnel?.poste?.name}}</div>
+    <div id="t7_1" class="t s3">OBJET DE LA MISSION :</div>
+    <div id="objet_mission" class="t s5">
+      {{item?.name}}
+    </div>
+    <div id="tc_1" class="t s3">LIEU DE LA MISSION :</div>
+    <div id="lieu_mission" class="t s8">………… {{item?.localite?.name}}({{item?.localite?.pays?.name}})
+      ……………………….………………………….…</div>
+    <div id="ti_1" class="t s3">ITINERAIRE :</div>
+    <div id="itineraire_mission" class="t s8">
+      …………………… {{item?.depart?.name}} – {{item?.localite?.name}}/
+      <ng-container *ngFor="let itineraire of item.itineraires">
+        {{itineraire?.localite?.name}}/
+      </ng-container>
+      {{item?.localite?.name}} – {{item?.depart?.name}} ….……....
+    </div>
+    <div id="tn_1" class="t s3">MOYEN DE TRANSPORT</div>
+    <div id="moyen_transport" class="t s8"> : …………..…… {{item?.moyen_transport || 'Avion'}} ……………………………………………….......
+    </div>
+    <div id="tr_1" class="t s3">DATE DE DEPART : </div>
+    <div id="datedepart_mission" class="t s8">……{{item?.start | date:'d MMM y' }}………</div>
+    <div id="tu_1" class="t s3">DATE DE RETOUR</div>
+    <div id="dateretour_mission" class="t s8"> : ……{{item?.end | date:'d MMM y' }}....…..........</div>
+    <div id="tz_1" class="t s3">IMPUTATION : …</div>
+    <div id="imputation_mission" class="t s4">…………{{imputations}} ……..…………………………………..</div>
+    <div id="t11_1" class="t s3">LE HAUT-COMMISSAIRE </div>
+    <div id="t12_1" class="t s3">Vu au départ de</div>
+    <div id="lieudepart_un" class="t s4">………………</div>
+    <div id="t14_1" class="t s3">le </div>
+    <div id="t15_1" class="t s4">…………..</div>
+    <div id="t16_1" class="t s3">Vu à l’arrivée de </div>
+    <div id="lieuarrivé_un" class="t s4">……………….</div>
+    <div id="t18_1" class="t s3">le</div>
+    <div id="t19_1" class="t s4">…………</div>
+    <div id="t1a_1" class="t s3">Vu au départ de</div>
+    <div id="lieudepart_deux" class="t s4">………………</div>
+    <div id="t1c_1" class="t s3">le </div>
+    <div id="t1d_1" class="t s4">…………..</div>
+    <div id="t1e_1" class="t s3">Vu à l’arrivée de </div>
+    <div id="t1f_1" class="t s4">……………….</div>
+    <div id="t1g_1" class="t s3">le</div>
+    <div id="t1h_1" class="t s4">…………</div>
+    <div id="t1i_1" class="t s3">Vu au départ de</div>
+    <div id="lieudepart_troix" class="t s4">………………</div>
+    <div id="t1k_1" class="t s3">le </div>
+    <div id="t1l_1" class="t s4">…………..</div>
+    <div id="t1m_1" class="t s3">Vu à l’arrivée de </div>
+    <div id="t1n_1" class="t s4">……………….</div>
+    <div id="t1o_1" class="t s3">le</div>
+    <div id="t1p_1" class="t s4">…………</div>
+    <div id="t1q_1" class="t sa">ORDRE DE MISSION</div>
+    <div id="t1r_1" class="t s6">N°…… {{item?.id}} /ER/HC……….</div>
+    <div id="t1s_1" class="t s9">Dakar, le {{today | date:'d MMM y' }}</div>
+  </div>
+</div>
+
+
+<div class="row mt-2 mb-3">
+  <div class="col-md-12 text-center">
+    <button (click)="printNow('ordre')" class="btn btn-md bgTheme text-white noRadius shadow">
+      {{'PRINT' | translate}}
+    </button>
+  </div>
+</div>

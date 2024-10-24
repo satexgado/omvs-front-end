@@ -1,0 +1,203 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <app-sidebar></app-sidebar>
+  </ul>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Topbar -->
+      <app-header></app-header>
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row  mb-4">
+          <h4 class="col-md-6 mb-0 text-gray-800">
+            <i class="fas fa-fw fa-wrench"></i> {{ 'typeMission' | translate }}
+          </h4>
+
+          <div class="col-md-6">
+            <app-helper-menu></app-helper-menu>
+          </div>
+        </div>
+
+        <div class="row mb-4 animated slideInUp">
+          <div class="col-md-12">
+            <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
+              <a routerLink="/mission" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-hiking fa-sm"></i> {{'listMission' | translate}}
+              </a>
+              <a routerLink="/mission/calendrier" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-calendar fa-sm"></i> {{'CALENDRIER' | translate}}
+              </a>
+              <a routerLink="/mission/evaluation" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-comment-alt fa-sm"></i> {{'EVALUATION' | translate}}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card shadow mb-4">
+              <!-- Card Header - Dropdown -->
+              <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">{{'typeMission' | translate}}</h6>
+              </div>
+              <!-- CLIST ELEMENT -->
+              <div *ngIf="currentView == 'list'">
+                <div *ngIf="SOURCE?.data?.data.length>0 && !service.isLoading()" class="card-body">
+                  <div class="card">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Pays</th>
+                          <th scope="col">{{'MISSION' | translate}}</th>
+                          <th scope="col">{{'PERSONNES' | translate}}</th>
+                          <th scope="col">{{'MATERIEL' | translate}}</th>
+                          <th scope="col">{{'BUDGET' | translate}}</th>
+                          <th scope="col">
+                            <i class="float-right fas fa-wrench"></i>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of SOURCE.data.data; let i=index" class="handMe animated slideInDown">
+                          <td>{{item?.name}}</td>
+                          <td>--</td>
+                          <td>--</td>
+                          <td>--</td>
+                          <td>--</td>
+                          <td>
+                            <div class="float-right btn-group tableAction" role="group" aria-label="Basic example">
+                              <button (click)="initEditForm(item, i)" title="Modifier" type="button"
+                                class="btn btn-sm btn-light">
+                                <i class="text-secondary fas fa-edit"></i>
+                              </button>
+                              <button (click)="initDelete(item.id, i)" title="Supprimer" data-toggle="modal"
+                                data-target="#modal__flat" class="btn btn-sm btn-light">
+                                <i class="text-secondary fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <app-nodata *ngIf="!SOURCE.data?.data?.length>0 && !service.isLoading()"></app-nodata>
+
+                <app-loading *ngIf="service.isLoading()"></app-loading>
+
+                <div *ngIf="!service.isLoading()" class="col-md-12">
+                  <br><br>
+                  <app-pagination></app-pagination>
+                </div>
+              </div>
+
+              <div *ngIf="currentView == 'edit'" class="row mt-5 mb-5">
+                <div class="offset-md-3 col-md-6 p-3 border shadow">
+                  <div class="card">
+                    <div
+                      class="card-header py-2 d-flex flex-row align-items-center justify-content-between text-center bgTheme">
+                      <h6 class="m-0 font-weight-bold text-white">{{'EDITING' | translate}}</h6>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form"
+                      autocomplete="off">
+                      <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+                            class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                          <input formControlName="name" class="form-control form-control-lg" type="text">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12 text-center">
+                          <button (click)="toggleView('list')" type="button"
+                            class="btn btn-sm btn-danger shadow-danger mr-2">
+                            Annuler
+                          </button>
+                          <button [disabled]="forms.edit.invalid || requesting" type="submit"
+                            class="btn btn-sm btn-primary shadow-primary">
+                            <i *ngIf="!requesting" class="fas fa-check-circle"></i> Valider
+                            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <app-plugin-mission></app-plugin-mission>
+          </div>
+
+        </div>
+
+
+      </div>
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+    <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+  <button popoverPlacement="top-right" [popoverOnHover]="false" [popover]="addPopover" type="button"
+    class="btn btn-primary btn-circle btn-lg">
+    <i class="fas fa-plus-circle"></i>
+  </button>
+  <popover-content #addPopover title="Nouveau type de mission" [animation]="true" [closeOnClickOutside]="true" placement="top">
+    <app-add-type-mission></app-add-type-mission>
+  </popover-content>
+</div>
+
+
+
+
+<!-- DELETE Modal flat-->
+<div class="modal fade" id="modal__flat" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="modal__flat" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body py-4">
+        <p class="text-center">
+          Voulez-vous vraiment supprimer cet élement ?
+        </p>
+        <div class="mt-2 text-center">
+          <button class="btn btn-danger btn-sm mr-2" data-dismiss="modal">Non</button>
+          <button class="btn btn-primary btn-sm" [disabled]="requesting" type="button" (click)="delete('#modal__flat')">
+            Oui <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

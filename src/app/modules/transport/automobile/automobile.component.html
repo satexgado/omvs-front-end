@@ -1,0 +1,43 @@
+<div class="card card-2 card-accent-primary">
+    <div class="d-flex p-2  border-bottom">
+        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+    <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+  </button>
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                <thead class="tx-10 tx-uppercase">
+                    <tr>
+                        <th scope="col">Automobile</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
+                        <td>
+                            {{automobile.libelle}}
+                        </td>
+                        <td>
+                            <a class="table-action cursor-pointer  mg-r-10" [routerLink]="[ './', automobile.id ]"><i class="fal fa-search tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+            </section>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>

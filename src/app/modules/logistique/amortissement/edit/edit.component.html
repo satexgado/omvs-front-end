@@ -1,0 +1,81 @@
+<div class="modal-header">
+    <h4 class="modal-title title">{{title | capitalizeFirst}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true"><i class="icon-close"></i></span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div *ngIf="!materielId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="materiel_id">Materiel</label>
+                    <select class="form-control form-control-sm" [class.loading]="allMateriels$ | async" required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}"
+                        required>
+                    <option value="">--choississez le materiel --</option>
+                    <ng-container *ngFor="let item of (allMateriels$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                    </ng-container>
+                </select>
+                    <div *ngIf="shouldShowRequiredError('materiel_id')" class="invalid-feedback">veillez choisir le materiel.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10" [class.loading]="editForm.get('etat_id').status === 'PENDING'">
+                    <label class="control-label" for="libelle">Etat</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="etat_id" [formControlName]="'etat_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'etat_id') , 'is-valid': isValid('etat_id')}" required>
+                    <ng-container *ngFor="let item of (allEtatMateriels$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle}}</option>
+                    </ng-container>
+                  </select>
+                    <div *ngIf="shouldShowRequiredError('etat_id')" class="invalid-feedback">veillez choisir l'etat.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Localisation</label>
+                    <input type="text" class="form-control form-control-sm" required [formControlName]="'localisation'" [ngClass]="{'is-invalid': shouldShowRequiredError('localisation'), 'is-valid': isValid('localisation')}" name="localisation" required>
+                    <div *ngIf="shouldShowRequiredError('localisation')" class="invalid-feedback">veillez saisir le libellé.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Affecter à</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="user_id" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id') , 'is-valid': isValid('user_id')}" required>
+                    <ng-container *ngFor="let item of (allUsers$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle}} ({{item.idcam}})</option>
+                    </ng-container>
+                  </select>
+                    <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label for="" class="control-label">Acquisition</label>
+                    <app-custom-select-icon formControlName="acquisition" [selected]="editForm.get('acquisition').value" [items]="acquisition_select"></app-custom-select-icon>
+                    <div *ngIf="shouldShowRequiredError('acquisition')" class="invalid-feedback">veillez choisir la transmission.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Date acquisition</label>
+                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date'" [ngClass]="{'is-invalid': shouldShowRequiredError('date'), 'is-valid': isValid('date')}" required>
+                    <div *ngIf="shouldShowRequiredError('date')" class="invalid-feedback">veillez saisir la date.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="salle">Prix</label>
+                    <input type="number" class="form-control form-control-sm" required [formControlName]="'prix'" [ngClass]="{'is-invalid': shouldShowRequiredError('prix'), 'is-valid': isValid('prix')}" name="prix">
+                    <div *ngIf="shouldShowRequiredError('prix')" class="invalid-feedback">veillez saisir la prix.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>
