@@ -37,25 +37,25 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <app-select-formgroup label="serie" formControlName="serie_id" [selected]="editForm.get('serie_id').value" [dataSource]="allSerie$" [createModal]="serieEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="serie" formControlName="serie_id" [selected]="editForm.get('serie_id').value" [dataSource]="allSerie$" [createModal]="serieEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('serie')" class="invalid-feedback">veillez choisir la série.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <app-select-formgroup label="marque" formControlName="marque_id" [selected]="editForm.get('marque_id').value" [dataSource]="allMarque$" [createModal]="marqueEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="marque" formControlName="marque_id" [selected]="editForm.get('marque_id').value" [dataSource]="allMarque$" [createModal]="marqueEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('marque_id')" class="invalid-feedback">veillez choisir la marque.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <app-select-formgroup label="modele" formControlName="modele_id" [selected]="editForm.get('modele_id').value" [dataSource]="allModele$" [createModal]="modeleEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="modele" formControlName="modele_id" [selected]="editForm.get('modele_id').value" [dataSource]="allModele$" [createModal]="modeleEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('modele_id')" class="invalid-feedback">veillez choisir la modele.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <app-select-formgroup label="genre" formControlName="genre_id" [selected]="editForm.get('genre_id').value" [dataSource]="allGenre$" [createModal]="genreEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="genre" formControlName="genre_id" [selected]="editForm.get('genre_id').value" [dataSource]="allGenre$" [createModal]="genreEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('genre_id')" class="invalid-feedback">veillez choisir le genre.</div>
                 </div>
             </div>
@@ -81,23 +81,13 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'type_carburant_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_carburant_id'), 'is-valid': isValid('type_carburant_id')}" required>
-                      <ng-container *ngFor="let item of (allTypeCarburants$ | async)">
-                          <option [ngValue]="item.id">{{item.libelle}}</option>
-                      </ng-container>
-                  </select>
-                    <span class="custom-span">Carburant</span>
+                    <app-select-formgroup [small]="true" label="carburant" formControlName="type_carburant_id" [selected]="editForm.get('type_carburant_id').value" [dataSource]="allTypeCarburants$" [createModal]="carburantEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('type_carburant_id')" class="invalid-feedback">veillez choisir la type carburant.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'type_automobile_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_automobile_id'), 'is-valid': isValid('type_automobile_id')}" required>
-                  <ng-container *ngFor="let item of (allTypeAutomobiles$ | async)">
-                      <option [ngValue]="item.id">{{item.libelle}}</option>
-                  </ng-container>
-              </select>
-                    <span class="custom-span">Type d'automobile</span>
+                    <app-select-formgroup [small]="true" label="Type d'automobile" formControlName="type_automobile_id" [selected]="editForm.get('type_automobile_id').value" [dataSource]="allTypeAutomobiles$" [createModal]="automobileTypeEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('type_automobile_id')" class="invalid-feedback">veillez choisir la type d'automobile.</div>
                 </div>
             </div>
@@ -117,7 +107,7 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <app-select-formgroup label="couleur" formControlName="couleur_id" [selected]="editForm.get('couleur_id').value" [dataSource]="allCouleur$" [createModal]="couleurEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="couleur" formControlName="couleur_id" [selected]="editForm.get('couleur_id').value" [dataSource]="allCouleur$" [createModal]="couleurEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('couleur_id')" class="invalid-feedback">veillez choisir la couleur.</div>
                 </div>
             </div>

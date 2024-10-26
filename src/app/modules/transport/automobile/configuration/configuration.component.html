@@ -1,0 +1,79 @@
+<div class="col-lg-12">
+    <h5 class="text-dark"><i class="fal fa-line-columns" style="padding: 6px; border-radius: 50%;"></i> Proprietés Courriers </h5>
+</div>
+
+<div class="d-flex flex-wrap justify-content-between bd-t">
+    <div class=" col-12 col-sm-3 p-0 bd-r bd-2" style="background:#FFFF;">
+        <nav class="monmenu nav flex-row flex-sm-column flex-nowrap">
+            <a [class.active]="fragment == 'type'" routerLink="." [fragment]="'type'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-car tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Types</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'carburant'" routerLink="." [fragment]="'carburant'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-lightbulb tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Carburants</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'couleur'" routerLink="." [fragment]="'couleur'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-palette  tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Couleurs</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'genre'" routerLink="." [fragment]="'genre'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-palette tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Genres</span>
+                </div>
+            </a>
+
+            <a [class.active]="fragment == 'marque'" routerLink="." [fragment]="'marque'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-copyright tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Marques</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'modele'" routerLink="." [fragment]="''" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-car-bus tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Modeles</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'serie'" routerLink="." [fragment]="'serie'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-cars tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Series</span>
+                </div>
+            </a>
+            <a [class.active]="fragment == 'masque-itineraire'" routerLink="." [fragment]="'masque-itineraire'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-map-signs tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Masques Itineraires</span>
+                </div>
+            </a>
+        </nav>
+    </div>
+    <div class="col-12 col-sm-9 bg-light">
+        <div [ngSwitch]="fragment">
+            <div *ngSwitchCase="'carburant'">
+                <app-carburant></app-carburant>
+            </div>
+            <div *ngSwitchCase="'couleur'">
+                <app-couleur></app-couleur>
+            </div>
+            <div *ngSwitchCase="'genre'">
+                <app-genre></app-genre>
+            </div>
+            <div *ngSwitchCase="'marque'">
+                <app-genre></app-genre>
+            </div>
+            <div *ngSwitchCase="'modele'">
+                <app-modele></app-modele>
+            </div>
+            <div *ngSwitchCase="'serie'">
+                <app-serie></app-serie>
+            </div>
+            <div *ngSwitchCase="'masque-itineraire'">
+                <app-masque-itineraire></app-masque-itineraire>
+            </div>
+            <div *ngSwitchDefault>
+                <app-automobile-type></app-automobile-type>
+            </div>
+        </div>
+    </div>
+</div>

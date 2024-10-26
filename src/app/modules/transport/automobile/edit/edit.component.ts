@@ -16,6 +16,8 @@ import { EditComponent as MarqueEditComponent} from '../../marque/edit/edit.comp
 import { EditComponent as ModeleEditComponent} from '../../modele/edit/edit.component';
 import { EditComponent as GenreEditComponent} from '../../genre/edit/edit.component';
 import { EditComponent as CouleurEditComponent} from '../../couleur/edit/edit.component';
+import { EditComponent as CarburantEditComponent} from '../../carburant/edit/edit.component';
+import { EditComponent as AutomobileTypeEditComponent} from '../../automobile-type/edit/edit.component';
 import { MarqueFactory } from 'src/app/core/services/transport/marque';
 import { ModeleFactory } from 'src/app/core/services/transport/modele';
 import { GenreFactory } from 'src/app/core/services/transport/genre';
@@ -33,10 +35,13 @@ export class EditComponent extends BaseEditComponent  {
     shareReplay(1),
     map(data => data.data)
   );
+  readonly carburantEditComponent  = CarburantEditComponent;
   allTypeAutomobiles$ = new AutomobileTypeFactory().list().pipe(
     shareReplay(1),
     map(data => data.data)
   );
+  readonly automobileTypeEditComponent  = AutomobileTypeEditComponent;
+
   allSerie$ = new TransSerieFactory().list(
     QueryAllOptionWithIns
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));

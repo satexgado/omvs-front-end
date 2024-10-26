@@ -9,6 +9,7 @@ import { IAutomobile } from 'src/app/core/models/transport/automobile';
 import { QueryAllOptionWithIns } from 'src/app/shared/models/query-options/query-options.model';
 import { map } from 'rxjs/operators';
 import { BaseEditComponent } from 'src/app/shared/components/edit/base-edit.component';
+import { EditComponent as ItineraireEditComponent} from '../../itineraire/edit/edit.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class EditComponent extends BaseEditComponent implements OnDestroy {
         return data.data
     }
   ));
+  readonly itineraieEditComponent  = ItineraireEditComponent;
   hoveredDate: NgbDate;
 
   constructor(

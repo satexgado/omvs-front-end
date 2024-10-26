@@ -1,0 +1,161 @@
+<div class="w-box-header">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)=" onShowCreateForm();" class="btn btn-light float-right mt-1 pt-0 pb-0 tx-13"> <i class="fal fa-layer-plus" style="color: #99600b "></i> Ajouter</button>
+</div>
+<div class="w-box-content" [class.loading]="dataHelper.loading$ | async ">
+    <table class="table invE_table ">
+        <thead>
+            <tr>
+                <th>Itineraire</th>
+                <th>Debut</th>
+                <th>Fin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngIf="dataHelper.data$ | async as items ">
+            <ng-container *ngIf="items.length; else noItem ">
+                <tr *ngFor="let automobile_itineraire of items; trackBy: dataHelper.trackByFn ">
+                    <td>{{automobile_itineraire.itineraire?.libelle}}</td>
+                    <td>{{automobile_itineraire.date_debut | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{automobile_itineraire.date_fin | date: 'dd/MM/yyyy'}}</td>
+                    <td>
+                        <button class="btn btn-light p-0 mx-2 tx-13" type="button " (click)="openModal(content, automobile_itineraire) "> <i class="fal fa-search-plus" style="color: #99600b "></i></button>
+                        <button class="btn btn-light p-0 mx-2 tx-13" (click)="onShowUpdateForm(automobile_itineraire) "> <i class="fal fa-edit" style="color: #99600b "></i> </button>
+                        <button class="btn btn-light p-0 mx-2 tx-13" (click)="onDelete(automobile_itineraire) "> <i class="fal fa-times-square" style="color: #99600b "></i></button>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+    <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+    </section>
+</div>
+
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title ">
+            Information Itineraire
+        </h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true ">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body ">
+        <div class="row ">
+            <ul class="p-0 col-md-12 ">
+                <li class="d-flex ">
+                    <div class="choose-title col-6 text-muted "> Itineraire </div>
+                    <div class="choose-title col-6 ">
+                        {{modalData.itineraire?.libelle | titlecase}}
+                    </div>
+                </li>
+                <li class="d-flex ">
+                    <div class="choose-title col-6 text-muted ">Masque </div>
+                    <div class="choose-title col-6 ">
+                        {{modalData.itineraire?.masque.ville.libelle | titlecase}} - {{modalData.itineraire?.masque.direction | titlecase}} - {{modalData.itineraire?.masque.periode | titlecase}}
+                    </div>
+                </li>
+                <li class="d-flex ">
+                    <div class="choose-title col-6 text-muted "> Date </div>
+                    <div class="choose-title col-6 ">
+                        {{ modalData.date_debut | date: 'dd/MM/yyyy' }} - {{ modalData.date_fin | date: 'dd/MM/yyyy' }}
+                    </div>
+                </li>
+            </ul>
+            <section class="col-md-12 " *ngIf="modalData.libelle ">
+                <header class="p-3 boder-0 ">
+                    <h5 class="m-0 ">
+                        Commentaire
+                    </h5>
+                </header>
+                <article class="p-3 ">
+                    <p>{{modalData.libelle}}</p>
+                </article>
+            </section>
+
+            <header class="px-3 col-12 mx-auto ">
+                <h5>
+                    Point d'arret
+                </h5>
+            </header>
+            <!-- <table class="table ">
+                <tbody>
+                    <tr>
+                        <td>{{modalData.itineraire.heure_depart}}</td>
+                        <td>{{modalData.itineraire.point_depart.libelle}}</td>
+                    </tr>
+                    <tr *ngFor="let point_arret of modalData.itineraire.point_arrets; let i=i ndex ">
+                        <td></td>
+                        <td>{{point_arret.libelle}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{modalData.itineraire.heure_arrive}}</td>
+                        <td>{{modalData.itineraire.lieu_arrivee.libelle}}</td>
+                    </tr>
+                </tbody>
+            </table> -->
+
+            <!-- max 12 -->
+            <div class="flex-parent ">
+                <div class="input-flex-container ">
+                    <input type="radio" checked name="timeline-dot " [attr.data-description]="modalData.itineraire.point_depart.libelle ">
+                    <div class="dot-info " [attr.data-description]="modalData.itineraire.point_depart.libelle ">
+                        <span class="year ">{{modalData.itineraire.heure_depart}}</span>
+                        <span class="label ">{{modalData.itineraire.point_depart.libelle}}</span>
+                    </div>
+                    <ng-container *ngFor="let point_arret of modalData.itineraire.point_arrets; let i=index;  ">
+                        <input type="radio" name="timeline-dot " [checked]="checked_point_arret[i] " (checked)="checked_point_arret[i]=$event " [attr.data-description]="point_arret.libelle ">
+                        <div class="dot-info " [attr.data-description]="point_arret.libelle ">
+                            <span class="year "></span>
+                            <span class="label ">{{point_arret.libelle}}</span>
+                        </div>
+                    </ng-container>
+                    <input type="radio" name="timeline-dot " [attr.data-description]="modalData.itineraire.lieu_arrivee.libelle ">
+                    <div class="dot-info " [attr.data-description]="modalData.itineraire.lieu_arrivee.libelle ">
+                        <span class="year ">{{modalData.itineraire.heure_arrive}}</span>
+                        <span class="label ">{{modalData.itineraire.lieu_arrivee.libelle}}</span>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <!-- <ul class="timeline " id="timeline ">
+                <li class="li complete ">
+                    <div class="timestamp ">
+                        <span class="author ">{{modalData.itineraire.point_depart.libelle}}</span>
+                        <span class="date ">{{modalData.itineraire.heure_depart}}</span>
+                    </div>
+                    <div class="status ">
+
+                    </div>
+                </li>
+                <li class="li " *ngFor="let point_arret of modalData.itineraire.point_arrets; let i=i ndex; trackBy:trackByIndex; ">
+                    <div class="timestamp ">
+                        <span class="author ">{{point_arret.libelle}}</span>
+                        <span class="date "></span>
+                    </div>
+                    <div class="status ">
+
+                    </div>
+                </li>
+                <li class="li ">
+                    <div class="timestamp ">
+                        <span class="author ">{{modalData.itineraire.lieu_arrivee.libelle}}</span>
+                        <span class="date ">{{modalData.itineraire.heure_arrive}}</span>
+                    </div>
+                    <div class="status ">
+
+                    </div>
+                </li>
+            </ul> -->
+        </div>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit'] " style="color: #99600b "></i> Modifier</button>
+        <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>

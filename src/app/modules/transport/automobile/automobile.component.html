@@ -1,37 +1,189 @@
-<div class="card card-2 card-accent-primary">
-    <div class="d-flex p-2  border-bottom">
-        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
-    <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
-  </button>
-        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+<div class="grid-container">
+    <div class="sidebarlist" [class.sidebar_small]="selectedAuto">
+        <div class="card card-2 card-accent-primary">
+            <div class="d-flex p-2  border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+            </div>
+            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+                <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+                    <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                        <thead class="tx-10 tx-uppercase">
+                            <tr>
+                                <th scope="col">Automobile</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
+                                <td>
+                                    {{automobile.libelle}}
+                                </td>
+                                <td>
+                                    <a class="table-action cursor-pointer  mg-r-10" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+                    </section>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
-        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
-            <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
-                <thead class="tx-10 tx-uppercase">
-                    <tr>
-                        <th scope="col">Automobile</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
-                        <td>
-                            {{automobile.libelle}}
-                        </td>
-                        <td>
-                            <a class="table-action cursor-pointer  mg-r-10" [routerLink]="[ './', automobile.id ]"><i class="fal fa-search tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
+</div>
+<div class="main-content2 scroll-11 " [class.main-content_large]="selectedAuto">
+    <div class="card shadow mb-2 p-0" *ngIf="selectedAuto">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-2  text-center">
+            <button class="btn btn-link  mr-3" [routerLink]="['./']">
+                <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
+                    style="padding:6px; border-radius:50%"></i>
+            </button>
+          <h6 class="m-0 font-weight-bold text-secondary text-center">
+            {{selectedAuto.libelle}} 
+          </h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body p-1 pb-3">
+            <div class="row row-xs clearfix  mg-0 pd-0">
+                <div class="col-lg-2 p-0 " style="background:#f4f8f9; height:100vh ">
+                    <nav class="monmenu nav flex-column  ">
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'details'"
+                            [class.bg-white]="fragment == 'details'"
+                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                            <a class="nav-link3 tx-echos"><i
+                                    class="fal fa-info-circle tx-16  mg-r-10"></i> Détails</a>
+                        </a>
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'itineraire'"
+                            [class.bg-white]="fragment == 'itineraire'"
+                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                                Itineraire</a>
+                        </a>
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'affectation'"
+                            [class.bg-white]="fragment == 'affectation'"
+                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                                Affectation</a>
+                        </a>
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'panne'"
+                            [class.bg-white]="fragment == 'panne'"
+                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                                Panne</a>
+                        </a>
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'copie'"
+                            [class.bg-white]="fragment == 'copie'"
+                            class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                                Calendrier</a>
+                        </a>
+                    </nav>
+                </div>
 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="col-lg-10">
+                    <div [ngSwitch]="fragment">
+                        <div *ngSwitchCase="'itineraire'">
+                            <app-automobile-itineraire 
+                                [initAutomobile]="selectedAuto"></app-automobile-itineraire>
+                        </div>
+                        <div *ngSwitchCase="'panne'">
+                        </div>
+                        <div *ngSwitchCase="'affectation'">
+                       </div>
+                        <div *ngSwitchCase="'calendrier'">
 
-            <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
-            </section>
+                        </div>
+                        <div *ngSwitchDefault>
+                            <section class="py-2 col-md-11  d-block mx-auto">
+                                <ul class="row pl-0 mb-0">
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Acquisition: </span> {{selectedAuto.type_acquisition | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Montant: </span> {{selectedAuto.montant}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Etat à l'acquisition: </span> {{selectedAuto.etat_achat | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Date de l'acquisition: </span> {{selectedAuto.date_achat | date: 'dd/MM/yyyy'}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Kilometrage à l'acquisition: </span> {{selectedAuto.kilometrage_durant_achat}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Immatriculation: </span> {{selectedAuto.immatriculation | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Numero chassis: </span> {{selectedAuto.numero_chassis}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Serie: </span> {{selectedAuto.serie?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Marque: </span> {{selectedAuto.marque?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Modele: </span> {{selectedAuto.modele?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Genre: </span> {{selectedAuto.genre?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Carburant: </span> {{selectedAuto.type_carburant?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Type: </span> {{selectedAuto.type_automobile?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Nombre de places: </span> {{selectedAuto.nombre_place}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Nombre de portes: </span> {{selectedAuto.nombre_porte}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Couleur: </span> {{selectedAuto.couleur?.libelle | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Transmission: </span> {{selectedAuto.type_transmission | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Emission CO2: </span> {{selectedAuto.emission_co2 | titlecase}}
+                                        </p>
+                                    </li>
+                                    <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
+                                        <p class="formSep m-0"><span class="text-muted">Nombre de chevaux: </span> {{selectedAuto.nombre_chevaux}}
+                                        </p>
+                                    </li>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -41,3 +193,16 @@
         {{ 'Aucun Element' }}
     </h4>
 </ng-template>
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>

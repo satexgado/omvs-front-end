@@ -9,12 +9,7 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'itineraire_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'itineraire_id'), 'is-valid': isValid('itineraire_id')}" required>
-                <ng-container *ngFor="let item of (allItineraire$ | async)">
-                    <option [ngValue]="item.id">{{item.libelle}}</option>
-                </ng-container>
-            </select>
-                    <span class="custom-span">itineraire</span>
+                    <app-select-formgroup [small]="true" label="itineraire" formControlName="itineraire_id" [selected]="editForm.get('itineraire_id').value" [dataSource]="allItineraire$" [createModal]="itineraieEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('itineraire_id')" class="invalid-feedback">veillez choisir le itineraire.</div>
                 </div>
             </div>

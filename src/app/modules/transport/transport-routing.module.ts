@@ -17,6 +17,7 @@ import { ModeleComponent } from './modele/modele.component';
 import { SerieComponent } from './serie/serie.component';
 import { LieuComponent } from './lieu/lieu.component';
 import { MasqueItineraireComponent } from './masque-itineraire/masque-itineraire.component';
+import { ConfigurationTransportComponent } from './automobile/configuration/configuration.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -25,12 +26,17 @@ const butsRoutes: Routes = [
     breadcrumb: 'Mes Autos'
   },
   children: [
-    {path: '', component: TemplateComponent, pathMatch:'full',children: [
-      {path: '', component: AutomobileComponent}
+    {path: '', component: TemplateComponent,children: [
+      {path: '', component: AutomobileComponent,children: [
+        {
+          path: ':idauto',
+          resolve: { courrier: AutomobileDetailsEditResolver}
+        }
+      ]}
     ]},
-    {path: ':idauto', component: AutomobileDetailsEditComponent,
-      resolve: { automobile: AutomobileDetailsEditResolver}
-    }
+    // {path: ':idauto', component: AutomobileDetailsEditComponent,
+    //   resolve: { automobile: AutomobileDetailsEditResolver}
+    // }
   ]},
   { path: 'mes-conducteurs',
   data: {
@@ -76,14 +82,7 @@ const butsRoutes: Routes = [
     breadcrumb: 'Configuration'
   },
    component: TemplateComponent,children: [
-    {path: '', pathMatch:'full', redirectTo: 'couleurs'},
-    {path: 'lieux', component: LieuComponent},
-    {path: 'couleurs', component: CouleurComponent},
-    {path: 'genres', component: GenreComponent},
-    {path: 'marques', component: MarqueComponent},
-    {path: 'modeles', component: ModeleComponent},
-    {path: 'series', component: SerieComponent},
-    {path: 'masques-itineraires', component: MasqueItineraireComponent},
+    {path: '', component:ConfigurationTransportComponent}
   ]},
 ];
 

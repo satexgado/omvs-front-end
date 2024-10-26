@@ -13,11 +13,16 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input';
 import { AutomobileItineraireModule } from '../automobile-itineraire/automobile-itineraire.module';
 import { AutomobileDetailsEditComponent } from './details/edit/automobile-details-edit.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CarburantModule } from '../carburant/carburant.module';
+import { AutomobileTypeModule } from '../automobile-type/automobile-type.module';
+import { ConfigurationTransportComponent } from './configuration/configuration.component';
+import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.module';
 
 @NgModule({
     declarations: [
         AutomobileComponent,
         AutomobileDetailsEditComponent,
+        ConfigurationTransportComponent,
         EditComponent
     ],
     imports: [
@@ -29,12 +34,16 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
         ModeleModule,
         GenreModule,
         CouleurModule,
+        CarburantModule,
+        AutomobileTypeModule,
         CustomInputModule,
         AutomobileItineraireModule,
+        MasqueItineraireModule,
         InfiniteScrollModule
     ],
     exports: [
-        AutomobileComponent
+        AutomobileComponent,
+        ConfigurationTransportComponent
     ],
     entryComponents: [EditComponent]
 })

@@ -16,7 +16,7 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-12 col-sm-10">
-                    <app-select-formgroup label="masque" formControlName="masque_id" [selected]="editForm.get('masque_id').value" [dataSource]="allMasque$" [createModal]="masqueEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="masque" formControlName="masque_id" [selected]="editForm.get('masque_id').value" [dataSource]="allMasque$" [createModal]="masqueEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('masque_id')" class="invalid-feedback">veillez choisir le masque.</div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-12 col-sm-10">
-                    <app-select-formgroup label="lieu de depart" formControlName="point_depart_id" [selected]="editForm.get('point_depart_id').value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="lieu de depart" formControlName="point_depart_id" [selected]="editForm.get('point_depart_id').value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('point_depart')" class="invalid-feedback">veillez choisir le lieu.</div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-12 col-sm-10">
-                    <app-select-formgroup label="lieu d'arrivee" formControlName="lieu_arrivee_id" [selected]="editForm.get('lieu_arrivee_id').value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
+                    <app-select-formgroup [small]="true" label="lieu d'arrivee" formControlName="lieu_arrivee_id" [selected]="editForm.get('lieu_arrivee_id').value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('lieu_arrivee_id')" class="invalid-feedback">veillez choisir le lieu.</div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             <div formArrayName="point_arrets" *ngFor="let point_arret of editForm.get('point_arrets').controls; let y = index;" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-12 col-sm-10 d-flex">
                     <div class="flex-fill">
-                        <app-select-formgroup label="point arret {{ y + 1}}" [formControlName]="y" [selected]="editForm.get('point_arrets').get(''+y).value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
+                        <app-select-formgroup [small]="true" label="point arret {{ y + 1}}" [formControlName]="y" [selected]="editForm.get('point_arrets').get(''+y).value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
                     </div>
                     <i (click)="removePointArret(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
                 </div>

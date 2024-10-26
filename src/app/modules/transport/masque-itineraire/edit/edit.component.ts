@@ -9,6 +9,7 @@ import { SelectIconItem } from 'src/app/shared/components/custom-input/custom-se
 import { map } from 'rxjs/operators';
 import { CacheService } from 'src/app/shared/services';
 import { ItineraireMasqueFactory } from 'src/app/core/services/transport/itineraire-masque';
+import { VilleService } from 'src/app/services/ville.service';
 
 @Component({
   selector: 'app-edit',
@@ -32,23 +33,26 @@ export class EditComponent extends BaseEditComponent implements OnDestroy {
     {libelle:'Intermediaire',iconClass:null},
   ];
 
-  allVilles$ = this.cacheService.get('allVilles',new VilleFactory().list().pipe(
-    map( (data: any) => {
-        return data.data
-    })));
+  allVilles$ = this.villeService.allData;
 
     constructor(
       protected cacheService: CacheService,
+      protected villeService: VilleService,
       protected cdRef: ChangeDetectorRef,
       activeModal: NgbActiveModal) {
       super(new ItineraireMasqueFactory(), cdRef, activeModal);
+      this.initExtraData();
+    }
+
+    initExtraData() {
+      this.villeService.getAll();
     }
 
   createFormGroup(item: IItineraireMasque) {
     this.villePreselectedData = this.allVilles$.pipe(
       map((data: any)=>{
         data = data.map((element)=>{
-          let result = {id : element.id ,  text: element.libelle};
+          let result = {id : element.id ,  text: element.name};
           if(item.ville_id == element.id)
           {
             result['selected']= true;

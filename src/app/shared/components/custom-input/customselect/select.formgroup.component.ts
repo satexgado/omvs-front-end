@@ -25,13 +25,15 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
   @Input() small = false;
   @Input() selected: string | null = null;
   @Input() alreadySelected: any[] = [];
+  @Input() libelleColumn = 'libelle';
   items: any[] = [];
   @Input() label = 'Selectionnez';
   @Input('createModal') createModal;
   @Input() createCallback: Function;
   @Input() createAdditionalParam: {name: string, value: any}[];
   @Output() selectedItemEmitter = new EventEmitter<any>(); ;
-  @Output() itemCreated = new EventEmitter<any>(); ;
+  @Output() itemCreated = new EventEmitter<any>();
+  @Input() required = true;
   @Input('dataSource')
   set dataSource$(dataSource: Observable<[]>) {
     this.loading = true;
@@ -39,6 +41,7 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
       (data)=>{
         this.items = data;
         this.loading = false;
+        console.log(this.selected);
       }
     )
   };
@@ -99,4 +102,3 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
   }
 
 }
-
