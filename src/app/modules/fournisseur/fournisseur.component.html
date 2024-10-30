@@ -1,0 +1,66 @@
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <app-sidebar></app-sidebar>
+    </ul>
+    <!-- End of Sidebar -->
+  
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+  
+      <!-- Main Content -->
+      <div id="content">
+  
+        <!-- Topbar -->
+        <app-header></app-header>
+        <!-- End of Topbar -->
+  
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+  
+          <!-- Page Heading -->
+          <div class="row  mb-4">
+            <h5 class="col-md-6 mb-0 text-gray-800">
+              <i class="fas fa-fw fa-car"></i>
+              <span>Fournisseur</span>
+            </h5>
+  
+            <div class="col-md-6">
+            </div>
+          </div>
+          <div class="row mb-4 animated slideInUp">
+            <div class="col-md-12">
+              <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
+                <a routerLink="/fournisseur/liste" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-bus-school"></i> Fournisseur
+                </a>
+                <a routerLink="/fournisseur/groupe" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-route"></i> Groupe Fournisseur
+                </a>
+                <a routerLink="/fournisseur/type" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-user-tie"></i> Type Fournisseur
+                </a>
+              </div>
+            </div>
+          </div>
+          <router-outlet></router-outlet>
+  
+  
+        </div>
+        <!-- /.container-fluid -->
+  
+      </div>
+      <!-- End of Main Content -->
+  
+      <!-- Footer -->
+      <app-footer></app-footer>
+      <!-- End of Footer -->
+  
+    </div>
+    <!-- End of Content Wrapper -->
+  
+  </div>
+  <!-- End of Page Wrapper -->
+  

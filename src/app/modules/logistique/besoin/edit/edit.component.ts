@@ -9,6 +9,7 @@ import { BesoinFactory } from 'src/app/core/services/logistique/besoin';
 import { CacheService } from 'src/app/shared/services/cache.service';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
 import { MaterielFactory } from 'src/app/core/services/materiel';
+import { MaterielService } from 'src/app/services/materiel.service';
 
 @Component({
   selector: 'app-edit',
@@ -17,7 +18,7 @@ import { MaterielFactory } from 'src/app/core/services/materiel';
 export class EditComponent extends BaseEditComponent implements OnInit {
   heading = 'besoin';
   @Input() item: IBesoin = new Besoin();
-  allMateriels$;
+  allMateriels$ = this.materielService.allData;
   protected readonly allNiveaus$ = new NiveauUrgenceFactory().list().pipe(
     shareReplay(1),
     map(data => data.data)
@@ -27,6 +28,7 @@ export class EditComponent extends BaseEditComponent implements OnInit {
 
   constructor(
     protected cacheService: CacheService,
+    protected materielService: MaterielService,
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
   {
@@ -37,22 +39,9 @@ export class EditComponent extends BaseEditComponent implements OnInit {
     if(this.materielId) {
       return super.ngOnInit();
     }
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const filter = [
-          {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-        ];
-        const materielQueryOption: QueryOptions = new QueryOptions(filter);
-        materielQueryOption.sort = [new Sort('libelle_materiel','ASC')];
-        this.allMateriels$ = new MaterielFactory().list(materielQueryOption).pipe(
-            shareReplay(1),
-            map(data => data.data)
-        );
-        super.ngOnInit();
-      },()=> {
-        this.notificationService.onError('Un problème est survenue');
-      }
-    )
+
+    this.materielService.getAll();
+    super.ngOnInit(); 
   }
 
   createFormGroup(item: IBesoin) {

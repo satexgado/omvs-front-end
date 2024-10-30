@@ -7,4 +7,7 @@
       {{item.libelle | titlecase }}
       <i [ngClass]="item.checked ? 'fas fa-check-square' : 'fal fa-square'"></i>
     </button>
+    <button *ngIf="createModal" (click)="onShowCreateForm()" class="btn m-1 card-1 btn-primary">
+      <i class="fas fa-plus-circle"></i>
+    </button>
 </div>

@@ -3,7 +3,7 @@ import { hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
 import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter/adaptable-map';
 import { IMaterielEtat, MaterielEtat } from './materiel-etat';
 import { IBase } from '../base.interface';
-import { IFournisseur, Fournisseur } from './fournisseur';
+import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
 
 export interface IMaterielPannePersonne extends IBase {
     date_sortie: Date;
@@ -13,7 +13,7 @@ export interface IMaterielPannePersonne extends IBase {
     etat_id: number;
     etat: IMaterielEtat;
     fournisseur_id: number;
-    fournisseur: IFournisseur;
+    fournisseur: ICrCoordonnee;
     panne_id: number;
 }
 
@@ -45,8 +45,8 @@ export class MaterielPannePersonne implements IMaterielPannePersonne {
     @adaptableMap('fournisseur')
     fournisseur_id: number = 0;
 
-    @hasOneMap({field:'visi_fournisseur_materiel', class: Fournisseur})
-    fournisseur: IFournisseur = null;
+    @hasOneMap({field:'cr_coordonnee', class: CrCoordonnee})
+    fournisseur: ICrCoordonnee = null;
 
     @adaptableMap('panne')
     panne_id: number = 0;

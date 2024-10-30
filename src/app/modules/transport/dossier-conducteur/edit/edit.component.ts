@@ -15,6 +15,17 @@ import { UserService } from 'src/app/services/account/user.service';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
+  styles: [`
+    header {
+        padding: 8px 0 2px;
+        background: #e9e9e9;
+        border-bottom: 1px solid #cfcfcf;
+        -webkit-box-shadow: 0 1px 0 #fff;
+        -moz-box-shadow: 0 1px 0 #fff;
+        -ms-box-shadow: 0 1px 0 #fff;
+        box-shadow: 0 1px 0 #fff;
+    }  
+  `],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class EditComponent extends BaseEditComponent implements OnInit, OnDestroy {

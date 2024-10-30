@@ -10,6 +10,7 @@ export class Ville implements IVille {
     @adaptableMap('id')
     id: number = 0;
 
+    @adaptableMap('name')
     libelle: string = '';
 
     @adaptableMap('pays')

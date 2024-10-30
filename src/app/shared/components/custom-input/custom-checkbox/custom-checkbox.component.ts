@@ -2,6 +2,7 @@ import { checkBoxRow } from 'src/app/shared/models/query-options/checkbox-row.mo
 import { IBase } from 'src/app/core/models/base.interface';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -22,7 +23,11 @@ export class CustomCheckBoxComponent implements ControlValueAccessor {
   @Output() itemSelectedEmitter = new EventEmitter<any>();
   @Input() selected: string | null = null;
   checkboxItems: checkBoxRow<string>[] = [];
-
+  @Input('createModal') createModal;
+  @Input() createCallback: Function;
+  @Input() createAdditionalParam: {name: string, value: any}[];
+  @Output() itemCreated = new EventEmitter<any>();
+ 
   @Input() set items(items: IBase[]) {
     this.checkboxItems = [];
     items.forEach(element => {
@@ -35,9 +40,38 @@ export class CustomCheckBoxComponent implements ControlValueAccessor {
     this.onSetCheckBoxChecked();
   }
 
-  constructor() {
+  constructor(protected modalSelect: NgbModal) {
   }
 
+  onShowCreateForm() {
+    if(this.createModal){
+        const modalRef = this.modalSelect.open(this.createModal, { size: 'lg', centered: true, backdrop: 'static' });
+        const instance = modalRef.componentInstance;
+        instance.title = 'Créer';
+        instance.isUpdating = false;
+
+        if(this.createAdditionalParam && this.createAdditionalParam.length) {
+          this.createAdditionalParam.forEach(element => {
+            instance[element.name]= element.value;
+          });
+        }
+
+        instance.newItem.subscribe(
+          (data: any)=>{
+            this.checkboxItems.push({
+              checked: false,
+              libelle: data.libelle,
+              value: data.libelle
+            });
+            this.onSetSelected();
+            this.itemCreated.emit(data);
+            if(this.createCallback) {
+              this.createCallback();
+            }
+          }
+        )
+    }
+  }
   onSetSelected() {
     let temp = '';
     let i = 0;

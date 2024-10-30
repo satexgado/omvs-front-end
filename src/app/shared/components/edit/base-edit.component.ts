@@ -73,7 +73,7 @@ export class BaseEditComponent implements OnInit {
   }
 
   shouldDisableSubmit() {
-    return this.isLoading || ( this.editForm.valid && !(this.editForm.dirty || this.editForm.touched) ) || this.editForm.invalid;
+    return this.isLoading || ( this.editForm && this.editForm.valid && !(this.editForm.dirty || this.editForm.touched) ) || ( this.editForm && this.editForm.invalid );
   }
 
   doUpdateItem(closeModalAfter: boolean = true) {

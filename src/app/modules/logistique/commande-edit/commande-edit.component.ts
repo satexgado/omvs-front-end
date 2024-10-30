@@ -10,6 +10,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { IMaterielCommande, MaterielCommande } from 'src/app/core/models/materiel-commande';
 import { MaterielCommandeFactory } from 'src/app/core/services/materiel-commande';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
+import { MaterielService } from 'src/app/services/materiel.service';
 
 @Component({
   selector: 'app-commande-edit',
@@ -22,12 +23,13 @@ import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/n
 export class CommandeEditComponent extends BaseEditComponent implements OnInit  {
   heading = 'commande';
   @Input() item: IMaterielCommande = new MaterielCommande();
-  allMateriels$;
+  allMateriels$ = this.materielService.allData;
   materielId: number;
 
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
+    protected materielService: MaterielService,
     activeModal: NgbActiveModal)
   {
     super(new MaterielCommandeFactory(), cdRef, activeModal);
@@ -37,24 +39,8 @@ export class CommandeEditComponent extends BaseEditComponent implements OnInit  
     if(this.materielId) {
       return super.ngOnInit();
     }
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const queryOptions: QueryOptions = new QueryOptions(
-          [
-            {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-          ],
-        );
-
-        queryOptions.sort = [new Sort('libelle_materiel','ASC')];
-        this.allMateriels$ = new MaterielFactory().list(queryOptions).pipe(
-            shareReplay(1),
-            map(data => data.data)
-        );
-        super.ngOnInit();
-      },()=> {
-        this.notificationService.onError('Un problème est survenue');
-      }
-    )
+    this.materielService.getAll();
+    super.ngOnInit();
   }
 
   createFormGroup(item: IMaterielCommande) {

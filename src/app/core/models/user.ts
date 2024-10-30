@@ -15,7 +15,6 @@ export interface IUser extends IBase {
 }
 
 export class User implements IUser {
-    @adaptableMap('id_inscription')
     id: number = 0;
 
     @dateAdaptableMap('date_naissance')

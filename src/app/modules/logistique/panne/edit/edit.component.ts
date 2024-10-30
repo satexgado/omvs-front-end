@@ -11,6 +11,7 @@ import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options'
 import { MaterielFactory } from 'src/app/core/services/materiel';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepicker.custom';
+import { MaterielService } from 'src/app/services/materiel.service';
 
 @Component({
   selector: 'app-edit',
@@ -23,7 +24,7 @@ import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepi
 export class EditComponent extends BaseEditComponent implements OnInit {
   heading = 'panne';
   @Input() item: IPanne = new Panne();
-  allMateriels$;
+  allMateriels$=this.materielService.allData;
   materielId: number;
 
     protected readonly allPanneNiveau$ = this.cacheService.get(
@@ -36,6 +37,7 @@ export class EditComponent extends BaseEditComponent implements OnInit {
 
   constructor(
     protected cacheService: CacheService,
+    protected materielService: MaterielService,
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
   {
@@ -46,24 +48,8 @@ export class EditComponent extends BaseEditComponent implements OnInit {
     if(this.materielId) {
       return super.ngOnInit();
     }
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const queryOptions: QueryOptions = new QueryOptions(
-          [
-            {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-          ],
-        );
-
-        queryOptions.sort = [new Sort('libelle_materiel','ASC')];
-        this.allMateriels$ = new MaterielFactory().list(queryOptions).pipe(
-            shareReplay(1),
-            map(data => data.data)
-        );
-        super.ngOnInit();
-      },()=> {
-        this.notificationService.onError('Un problème est survenue');
-      }
-    )
+    this.materielService.getAll();
+    super.ngOnInit();
   }
 
   createFormGroup(item: IPanne) {

@@ -1,7 +1,7 @@
-<div class="modal-header">
-    <h4 class="modal-title title">{{title}}</h4>
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
-  <span aria-hidden="true"><i class="icon-close"></i></span>
+<span aria-hidden="true">×</span>
 </button>
 </div>
 <ng-container *ngIf="editForm">
@@ -35,7 +35,7 @@
 
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <select appSelect2Default style="width: 100%" [data]="villePreselectedData" multiple="multiple" [formControlName]="'ville_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'ville_id'), 'is-valid': isValid('ville_id')}" required class="form-control"
+                    <select appSelect2Default style="width: 100%" [data]="villePreselectedData" [formControlName]="'ville_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'ville_id'), 'is-valid': isValid('ville_id')}" required class="form-control"
                         placeholder="Select">
               </select>
                     <span class="custom-span">ville</span>

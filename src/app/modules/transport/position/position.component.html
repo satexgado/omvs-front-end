@@ -14,9 +14,9 @@
     <div class="col-12">
         <div class="card mg-b-20">
             <div class="card-header">
-                <h4 class="card-header-title">
+                <h5 class="card-header-title">
                     Liste des positions
-                </h4>
+                </h5>
             </div>
             <div class="card-body pd-0 collapse show" id="batimentList" [class.loading]="dataHelper.loading$ | async">
                 <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
@@ -33,10 +33,10 @@
                                     {{position.libelle}}
                                 </td>
                                 <td>
-                                    <a class="table-action cursor-pointer  mg-r-10" (click)="openModal(content, position)"><i class="fal fa-search tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(position) "><i class="fal fa-edit tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(position) "><i class="fal fa-clone tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(position) "><i class="fal fa-times-square tx-second "></i></a>
+                                    <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, position)"><i class="fal fa-search tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(position) "><i class="fal fa-edit tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(position) "><i class="fal fa-clone tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(position) "><i class="fal fa-times-square tx-second "></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -50,15 +50,15 @@
 </div>
 
 <ng-template #noItem>
-    <h4 class="text-center title m-2 p-5 ">
+    <h5 class="text-center title m-2 p-5 ">
         {{ 'Aucun Element' }}
-    </h4>
+    </h5>
 </ng-template>
 
 <ng-template #content let-modal>
-    <div class="modal-header ">
-        <h4 class="modal-title ">
-            {{modalData.libelle}}</h4>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
         <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
             <span aria-hidden="true ">&times;</span>
             </button>

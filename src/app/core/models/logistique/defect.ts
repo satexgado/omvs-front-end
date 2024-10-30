@@ -1,10 +1,10 @@
-import { IFournisseur, Fournisseur } from './fournisseur';
 import { IUser } from 'src/app/core/models/user';
 import { IBase } from 'src/app/core/models/base.interface';
 import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter/adaptable-map';
 import { hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
 import { IMateriel, Materiel } from '../materiel';
 import { User } from '../user';
+import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
 
 
 export interface IDefect extends IBase {
@@ -16,7 +16,7 @@ export interface IDefect extends IBase {
     quantite: number;
     user: IUser;
     user_id:  number;
-    fournisseur: IFournisseur;
+    fournisseur: ICrCoordonnee;
     fournisseur_id: number;
 }
 
@@ -50,6 +50,6 @@ export class Defect implements IDefect {
     @adaptableMap('fournisseur')
     fournisseur_id: number = null;
 
-    @hasOneMap({field:'visi_fournisseur_materiel',class: Fournisseur})
-    fournisseur : IFournisseur= null;
+    @hasOneMap({field:'cr_coordonnee',class: CrCoordonnee})
+    fournisseur : ICrCoordonnee= null;
 }

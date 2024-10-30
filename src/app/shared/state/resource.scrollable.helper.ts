@@ -1,3 +1,4 @@
+// import { DefaultQueryOption } from './../models/query-options/query-options.model';
 import { Factory } from './../../core/services/factory';
 import { Subject, BehaviorSubject, Observable, throwError } from 'rxjs';
 import { QueryOptions, Filter } from '../models/query-options';
@@ -26,6 +27,7 @@ export class ResourceScrollableHelper {
     _searchTerm: string;
     hasMoreData: boolean;
     withoutPaginate: boolean;
+    keepData = true;
     private _data$ = new BehaviorSubject<IBase[]>([]);
 
     get data$() {
@@ -40,7 +42,7 @@ export class ResourceScrollableHelper {
         //create a copy of queryoptions to avoid some error
         this._queryOptions = JSON.parse(JSON.stringify(queryOptions));
 
-        this._queryOptions.paginate = 64;
+        this._queryOptions.paginate = 25;
         this._queryOptions.page = 1;
 
         this._search$.pipe(
@@ -49,15 +51,22 @@ export class ResourceScrollableHelper {
             switchMap(() => this.search(this._queryOptions)),
             tap(() => this._loading$.next(false))
           ).subscribe(result => {
-            let data = this._data$.value && this.page != 1  ? this._data$.value : [] ;
-            data = [...data, ...result.data];
+            let data;
 
-            // retirer les potentiels duplicata
-            data = data.filter((item, index, self) =>
-                index === self.findIndex((t) => (
-                t.id === item.id
-                ))
-            );
+            if(this.keepData) {
+              data = this._data$.value && this.page != 1  ? this._data$.value : [] ;
+              data = [...data, ...result.data];
+
+              // retirer les potentiels duplicata
+              data = data.filter((item, index, self) =>
+                  index === self.findIndex((t) => (
+                  t.id === item.id
+                  ))
+              );
+            } else {
+              data = result.data;
+            }
+
             this._listResult$.next(result);
             this._data$.next(data);
             this.hasMoreData = this._queryOptions.page < result.last_page;
@@ -85,15 +94,23 @@ export class ResourceScrollableHelper {
         // localStorage.setItem('pageSize', `${paginate}`);
         // this._search$.next();
     }
+
     get searchTerm() { return this._searchTerm; }
     set searchTerm(searchTerm: string) {
         this._searchTerm = searchTerm;
         if ((!searchTerm.length) || /\S/.test(searchTerm)) {
             this.page = 1;
+            this.clearData();
             this._search$.next();
         }
     }
     get currentData() {return this._data$.getValue(); }
+
+    get query() { return this._queryOptions.filter_groups; }
+
+    set query(filter_groups: filterGrp[]) {
+        this._queryOptions.filter_groups = filter_groups;
+    }
 
     get relations() { return this._queryOptions.includes; }
 
@@ -104,6 +121,7 @@ export class ResourceScrollableHelper {
     set sortColumn(sortColumn: string) {
         this._queryOptions.sort[0].key = sortColumn;
         this.page = 1;
+        this.clearData();
     }
 
     set sortDirection(sortDirection: SortDirection) {
@@ -113,6 +131,7 @@ export class ResourceScrollableHelper {
             this._queryOptions.sort[0].key = 'updated_at';
         }
         this.page = 1;
+        this.clearData();
     }
 
     trackByFn(index, item) {
@@ -125,6 +144,12 @@ export class ResourceScrollableHelper {
         }
         this._search$.next();
     }
+
+    checkData() {
+        if(this.hasMoreData) {
+          this.loadData();
+        }
+      }
 
     search(queryOptions: QueryOptions) {
         const query: QueryOptions = JSON.parse(JSON.stringify(queryOptions));
@@ -156,6 +181,26 @@ export class ResourceScrollableHelper {
         this._data$.next(data);
     }
 
+    addItemTo(item: IBase, index = 0) {
+      const data = this._data$.value ? this._data$.value : [] ;
+      data.splice( index, 0, item);
+      this._data$.next(data);
+    }
+
+    findItemByColumn(val: number, column: string = 'id') {
+        let data = this._data$.value ? this._data$.value : [] ;
+        return data.find(
+            (item) => (item[column]) == val
+        );
+    }
+
+    findIndexItemByColumn(val: number, column: string = 'id') {
+        let data = this._data$.value ? this._data$.value : [] ;
+        return data.findIndex((element) => {
+            return (element[column]) == val;
+        });
+    }
+
     updateItem(item: IBase) {
         let data = this._data$.value ? this._data$.value : [] ;
         data = data.map(element => {
@@ -172,6 +217,12 @@ export class ResourceScrollableHelper {
         const index = data.findIndex(element => element.id === id);
         data.splice(index, 1);
         this._data$.next(data);
+        return index;
+    }
+
+    clearData(loading = true) {
+        this._data$.next([]);
+        this._loading$.next(loading);
     }
 
     private handleError(error: Response | any) {

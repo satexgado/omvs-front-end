@@ -13,6 +13,7 @@ import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options'
 import { MaterielFactory } from 'src/app/core/services/materiel';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepicker.custom';
+import { MaterielService } from 'src/app/services/materiel.service';
 
 @Component({
   selector: 'app-edit',
@@ -25,7 +26,7 @@ import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepi
 export class EditComponent extends BaseEditComponent implements OnInit {
   heading = 'defect';
   @Input() item: IDefect = new Defect();
-  allMateriels$;
+  allMateriels$=this.materielService.allData;
   allFounisseurs$;
   protected readonly allUsers$ = new UserFactory().list().pipe(
     shareReplay(1),
@@ -36,6 +37,7 @@ export class EditComponent extends BaseEditComponent implements OnInit {
 
   constructor(
     protected cacheService: CacheService,
+    protected materielService: MaterielService,
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
   {
@@ -46,29 +48,8 @@ export class EditComponent extends BaseEditComponent implements OnInit {
     if(this.materielId) {
       return super.ngOnInit();
     }
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const filter = [
-          {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-        ];
-        const materielQueryOption: QueryOptions = new QueryOptions(filter);
-        materielQueryOption.sort = [new Sort('libelle_materiel','ASC')];
-        this.allMateriels$ = new MaterielFactory().list(materielQueryOption).pipe(
-            shareReplay(1),
-            map(data => data.data)
-        );
-
-        const fournisseurQueryOption: QueryOptions = new QueryOptions(filter);
-        fournisseurQueryOption.includes = ['fournisseur_inscription'];
-        this.allFounisseurs$ = new FournisseurFactory().list(fournisseurQueryOption).pipe(
-          shareReplay(1),
-          map(data => data.data)
-        );
-        super.ngOnInit();
-      },()=> {
-        this.notificationService.onError('Un problème est survenue');
-      }
-    )
+    this.materielService.getAll();
+    super.ngOnInit();
   }
 
   createFormGroup(item: IDefect) {

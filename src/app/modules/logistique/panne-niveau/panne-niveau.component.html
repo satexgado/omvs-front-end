@@ -1,0 +1,75 @@
+<div class="card card-2 card-accent-primary">
+    <div class="d-flex p-2  border-bottom">
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                <thead class="tx-10 tx-uppercase">
+                    <tr>
+                        <th scope="col">Niveau de la panne</th>
+                        <th scope="col">Couleur</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let niveau of items;trackBy: dataHelper.trackByFn">
+                        <td (click)="openModal(content, niveau)">
+                            {{niveau.libelle}}
+                        </td>
+                        <td>
+                            <span class="badge badge-secondary" [style.background-color]="niveau.couleur">
+                              {{niveau.couleur}}
+                            </span>
+                        </td>
+                        <td>
+                            <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(couleur) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(couleur) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(couleur) "><i class="fal fa-times-square tx-second "></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+            </section>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItem>
+    <h5 class="text-center title m-2 p-5 ">
+        {{ 'Aucun Element' }}
+    </h5>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+            <span aria-hidden="true ">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body">
+        <h5>Description</h5>
+        <p style="font-size: 18px;">{{modalData.description}}</p>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>

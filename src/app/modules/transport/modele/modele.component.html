@@ -1,8 +1,5 @@
 <div class="card card-2 card-accent-primary">
     <div class="d-flex p-2  border-bottom">
-        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
-        <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
-      </button>
         <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
     </div>
     <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
@@ -20,10 +17,10 @@
                             {{modele.libelle}}
                         </td>
                         <td>
-                            <a class="table-action cursor-pointer  mg-r-10" (click)="openModal(content, modele)"><i class="fal fa-search tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(modele) "><i class="fal fa-edit tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(modele) "><i class="fal fa-clone tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(modele) "><i class="fal fa-times-square tx-second "></i></a>
+                            <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, modele)"><i class="fal fa-search tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(modele) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(modele) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(modele) "><i class="fal fa-times-square tx-second "></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -36,15 +33,15 @@
 </div>
 
 <ng-template #noItem>
-    <h4 class="text-center title m-2 p-5 ">
+    <h5 class="text-center title m-2 p-5 ">
         {{ 'Aucun Element' }}
-    </h4>
+    </h5>
 </ng-template>
 
 <ng-template #content let-modal>
-    <div class="modal-header ">
-        <h4 class="modal-title ">
-            {{modalData.libelle}}</h4>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
         <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
             <span aria-hidden="true ">&times;</span>
             </button>
@@ -58,3 +55,16 @@
         <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>

@@ -4,25 +4,31 @@
             <app-logistique-materiel-sidebar (selectedMateriel)="onSetSelectedMateriel($event)"></app-logistique-materiel-sidebar>
         </div>
         <div class="col-lg-8 p-0 border-0">
-            <ul ngbNav #nav="ngbNav" [activeId]="route.fragment | async" class="nav-tabs nav-fill">
-                <li [ngbNavItem]="'panne'">
-                    <a ngbNavLink class="tx-16" routerLink="." [fragment]="'panne'">
-                        <i class="fal fa-archive tx-facebook bold"></i> Pannes
-                    </a>
-                    <ng-template ngbNavContent>
-                        <app-panne-materiel [materielId]="selectedMaterielId"></app-panne-materiel>
-                    </ng-template>
+            <ul class="nav nav-tabs nav-fill bgTheme text-white" role="tablist">
+                <li class="nav-item">
+                  <a [routerLink]="['./']" [fragment]="'panne'"
+                     [class.active]="fragment == 'panne'" class="nav-link text-white" role="tab" aria-selected="true">
+                    <i class="fas fa-archive mr-1"></i>
+                    Pannes
+                  </a>
                 </li>
-                <li [ngbNavItem]="'defectueux'">
-                    <a ngbNavLink class="tx-16" routerLink="." [fragment]="'defectueux'">
-                        <i class="fal fa-stars tx-facebook bold"></i> Défectueux
+                <li class="nav-item">
+                    <a [routerLink]="['./']" [fragment]="'defectueux'"
+                       [class.active]="fragment == 'defectueux'" class="nav-link text-white" role="tab" aria-selected="true">
+                      <i class="fas fa-stars mr-1"></i>
+                      Défectueux
                     </a>
-                    <ng-template ngbNavContent>
-                        <app-defect-materiel [materielId]="selectedMaterielId"></app-defect-materiel>
-                    </ng-template>
-                </li>
-            </ul>
-            <div [ngbNavOutlet]="nav"></div>
+                  </li>
+              </ul>
+              <div class="tab-content">
+                <!-- RESSOURCES -->
+                <div class="tab-pane fade" [ngClass]="{'show active p-1': fragment == 'panne'}" role="tabpanel">
+                    <app-panne-materiel [materielId]="selectedMaterielId"></app-panne-materiel>
+                </div>
+                <div class="tab-pane fade" [ngClass]="{'show active p-1': fragment == 'defectueux'}" role="tabpanel">
+                    <app-defect-materiel [materielId]="selectedMaterielId"></app-defect-materiel>
+                </div>
+              </div>
         </div>
     </div>
 </div>

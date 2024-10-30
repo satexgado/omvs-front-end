@@ -50,6 +50,12 @@ export class EditableListComponent extends ItemSelectHelper implements OnInit {
     this.changePage.next(page);
   }
 
+  checkData() {
+    if(this.dataHelper.hasMoreData) {
+      this.dataHelper.loadData();
+    }
+  }
+
   onSort({column, direction}: SortEvent) {
     // resetting other headers
     this.headers.forEach(header => {

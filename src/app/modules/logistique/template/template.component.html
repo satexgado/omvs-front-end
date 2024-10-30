@@ -1,42 +1,75 @@
-<div class="card mb-3">
-    <div class="card-header flex-wrap p-0">
-        <a role="button" class="btn btn-default tx-yeto2 btn-lg">
-            <i class="fad fa-plus fa-sm"></i> <span> Nouveau</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/materiel']" queryParamsHandling="merge">
-            <i class="fal fa-film-alt fa-sm"></i> <span> Materiels</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/suivie']" queryParamsHandling="merge">
-            <i class="fal fa-bell-on fa-sm"></i> <span> Suivi du matériel</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/besoin']" queryParamsHandling="merge">
-            <i class="fal fa-image fa-sm"></i> <span> Besoins Matériels</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/fournisseur']" queryParamsHandling="merge">
-            <i class="fal fa-stars fa-sm"></i> <span> Fournisseurs</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/inventaire']" queryParamsHandling="merge">
-            <i class="fal fa-rss fa-sm"></i> <span> Inventaires</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/amortissement']" queryParamsHandling="merge">
-            <i class="fal fa-rss fa-sm"></i> <span> Amortissements</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
-            <i class="fal fa-image fa-sm"></i> <span> Calendriers Livraisons</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
-            <i class="fad fa-balance-scale fa-sm"></i> <span> Balance</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
-            <i class="fad fa-bring-forward fa-sm"></i> <span> Journaux</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg text-muted" routerLinkActive="btn-label-primary">
-            <i class="fad fa-books fa-sm"></i> <span> Grand Livre</span>
-        </a>
-        <a role="button" class="btn btn-default btn-lg" routerLinkActive="btn-label-primary" [routerLink]="[ '/logistique/plan-comptable']" queryParamsHandling="merge">
-            <i class="fad fa-ballot-check fa-sm"></i> <span> Plan Comptable</span>
-        </a>
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <app-sidebar></app-sidebar>
+    </ul>
+    <!-- End of Sidebar -->
+  
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+  
+      <!-- Main Content -->
+      <div id="content">
+  
+        <!-- Topbar -->
+        <app-header></app-header>
+        <!-- End of Topbar -->
+  
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+  
+          <!-- Page Heading -->
+          <div class="row  mb-4">
+            <h5 class="col-md-6 mb-0 text-gray-800">
+              <i class="fas fa-fw fa-box"></i>
+              <span>Logistique</span>
+            </h5>
+  
+            <div class="col-md-6">
+            </div>
+          </div>
+          <div class="row mb-4 animated slideInUp">
+            <div class="col-md-12">
+              <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
+                <a routerLink="/logistique/materiel"  routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-film-alt"></i> Materiels
+                </a>
+                <a routerLink="/logistique/suivie" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-bell-on"></i> Suivi du matériel
+                </a>
+                <a routerLink="/logistique/besoin" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                    <i class="fas fa-image"></i> Besoins Matériels
+                  </a>
+                  <a routerLink="/logistique/inventaire" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                    <i class="fas fa-rss"></i> Inventaires
+                  </a>
+                  <a routerLink="/logistique/amortissement" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                    <i class="fas fa-rss"></i> Amortissements
+                  </a>
+                  <a routerLink="/logistique/calendrier" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                    <i class="fas fa-image"></i> Calendriers Livraisons
+                  </a>
+              </div>
+            </div>
+          </div>
+        <router-outlet>
+        </router-outlet>
+        </div>
+        <!-- /.container-fluid -->
+  
+      </div>
+      <!-- End of Main Content -->
+  
+      <!-- Footer -->
+      <app-footer></app-footer>
+      <!-- End of Footer -->
+  
     </div>
-</div>
-<router-outlet>
-</router-outlet>
+    <!-- End of Content Wrapper -->
+  
+  </div>
+  <!-- End of Page Wrapper -->
+  
+

@@ -48,6 +48,22 @@ const routes: Routes = [
     canActivate: [AccountGuard], 
     loadChildren: './modules/transport/transport.module#TransportModule'
   },
+  {path: 'fournisseur',
+    data: {
+      breadcrumb: 'fournisseur',
+      action: 'logged' 
+    },
+    canActivate: [AccountGuard], 
+    loadChildren: './modules/fournisseur/fournisseur.module#FournisseurModule'
+  },
+  {path: 'logistique',
+    data: {
+      breadcrumb: 'logistique',
+      action: 'logged' 
+    },
+    canActivate: [AccountGuard], 
+    loadChildren: './modules/logistique/logistique.module#LogistiqueModule'
+  },
   // {
   //   path: 'user',
   //   loadChildren: './components/user/user.module#UserModule'

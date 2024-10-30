@@ -1,0 +1,19 @@
+<div class="custom-placeholder">
+  <div class="input-group">
+    <input class="form-control" container="body" [ngbTooltip]="tipContent" [class.is-valid]="selected" (click)="onChooseItineraires()" type="text" [placeholder]="libelle" readonly>
+    <span class="custom-span" *ngIf="label">{{label}}</span>
+    <div class="input-group-append" *ngIf="libelle">
+      <button class="btn btn-outline-secondary" (click)="onSetSelected()" type="button" id="button-addon2">
+        <i class="fa fa-times-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #tipContent>
+  <ul *ngIf="selected && selected.length">
+    <li *ngFor="let user of selected">
+      {{user.libelle}}
+    </li>
+  </ul>  
+</ng-template>

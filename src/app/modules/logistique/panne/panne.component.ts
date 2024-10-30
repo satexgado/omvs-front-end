@@ -62,7 +62,7 @@ export class PanneComponent extends EditableListComponent {
       [
           {or: false, filters:[new Filter('panne', panne.id, 'eq')]},
       ],
-      ['personne_inscription', 'visi_etat_materiel', 'visi_fournisseur_materiel.fournisseur_inscription'],
+      ['personne_inscription', 'visi_etat_materiel', 'cr_coordonnee'],
       8,
       1,
       [new Sort('updated_at','DESC')]

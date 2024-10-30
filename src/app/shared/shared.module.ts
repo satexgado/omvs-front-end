@@ -11,12 +11,28 @@ import { NotificationModule } from './notification';
 // import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { TreeviewModule } from 'ngx-treeview';
 import { Select2Directive, Select2DefaultDirective, SelectFirstOptionDirective, NgbdSortableHeader } from './directives';
-import { ShortenPipe, CapitalizeFirstPipe, SlugifyPipe, ReplaceBarPipe, ShortNumberPipe, SortByPipe, RemoveBarPipe } from './pipes';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CallbackPipe } from './pipes/callback.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule as SharedOppo } from 'src/app/shared-module/shared.module';
 
+import {
+  ShortenPipe,
+  CapitalizeFirstPipe,
+  SlugifyPipe,
+  ReplaceBarPipe,
+  ShortNumberPipe,
+  SortByPipe,
+  RemoveBarPipe,
+  SearchFilterPipe,
+  FichierTypeFilterPipe,
+  CountPipe,
+  SelectedSortPipe,
+  SearchFilterObsPipe,
+  BaseColumnIdFilterPipe,
+  ConvertToArrayPipe,
+  BaseColumnFilterPipe
+} from './pipes';
 
 @NgModule({
   declarations: [
@@ -34,7 +50,15 @@ import { SharedModule as SharedOppo } from 'src/app/shared-module/shared.module'
     CallbackPipe,
     DateagoPipeFr,
     DateagoPipe,
-    FormatFileSizePipe
+    FormatFileSizePipe,
+    SearchFilterPipe,
+  FichierTypeFilterPipe,
+  CountPipe,
+  SelectedSortPipe,
+  SearchFilterObsPipe,
+  BaseColumnIdFilterPipe,
+  ConvertToArrayPipe,
+  BaseColumnFilterPipe
   ],
   imports: [
     CommonModule,
@@ -48,6 +72,7 @@ import { SharedModule as SharedOppo } from 'src/app/shared-module/shared.module'
     // CKEditorModule,
     TreeviewModule,
     InfiniteScrollModule,
+    
     SharedOppo
   ],
   exports: [
@@ -76,7 +101,15 @@ import { SharedModule as SharedOppo } from 'src/app/shared-module/shared.module'
     CallbackPipe,
     DateagoPipeFr,
     DateagoPipe,
-    FormatFileSizePipe
+    FormatFileSizePipe,
+    FichierTypeFilterPipe,
+    CountPipe,
+    SelectedSortPipe,
+    SearchFilterObsPipe,
+    BaseColumnIdFilterPipe,
+    ConvertToArrayPipe,
+    BaseColumnFilterPipe,
+    SearchFilterPipe
   ]
 })
 export class SharedModule {

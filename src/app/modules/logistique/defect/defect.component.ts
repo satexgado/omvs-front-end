@@ -50,7 +50,7 @@ export class DefectComponent extends EditableListComponent {
     this.dataHelper.relations = [
       'visi_materiel',
       'personne_inscription',
-      'visi_fournisseur_materiel.fournisseur_inscription',
+      'cr_coordonnee',
     ];
   }
 

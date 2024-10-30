@@ -45,6 +45,7 @@ import { ArchiveService } from './services/archive.service';
 import { RoleService } from './services/role.service';
 import { ImputationService } from './services/imputation.service';
 import { NoteService } from './services/note.service';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NoteService } from './services/note.service';
         deps: [HttpClient]
       }
     }),
+    TreeviewModule.forRoot(),
     SnotifyModule,
     BrowserAnimationsModule
   ],

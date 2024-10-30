@@ -5,7 +5,7 @@
         </div>
         <div class="col-lg-8 p-0 border-0">
             <div class="grid-container scrollable-y-75 scroll-11">
-                <div class="sidebar" [class.sidebar_small]="selectedBesoin">
+                <div class="sidebarlist" [class.sidebar_small]="selectedBesoin">
                     <div class="row row-xs mg-0 pd-0 bg-light p-0">
                         <div class="col-lg-4 d-flex">
                             <div>
@@ -143,9 +143,9 @@
 <ng-template #noItem>
     <tr>
         <td colspan="6">
-            <h4 class="text-center title m-2 p-5" *ngIf="!(dataHelper.loading$ | async)">
+            <h5 class="text-center title m-2 p-5" *ngIf="!(dataHelper.loading$ | async)">
                 {{ 'Aucun Element' }}
-            </h4>
+            </h5>
         </td>
     </tr>
 </ng-template>

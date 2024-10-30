@@ -19,10 +19,10 @@
                                     {{automobile.libelle}}
                                 </td>
                                 <td>
-                                    <a class="table-action cursor-pointer  mg-r-10" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
+                                    <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
+                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
 
                                 </td>
                             </tr>
@@ -39,7 +39,7 @@
 <div class="main-content2 scroll-11 " [class.main-content_large]="selectedAuto">
     <div class="card shadow mb-2 p-0" *ngIf="selectedAuto">
         <!-- Card Header - Dropdown -->
-        <div class="card-header py-2  text-center">
+        <div class="card-header py-2 d-flex align-items-center text-center">
             <button class="btn btn-link  mr-3" [routerLink]="['./']">
                 <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
                     style="padding:6px; border-radius:50%"></i>
@@ -50,37 +50,37 @@
         </div>
         <!-- Card Body -->
         <div class="card-body p-1 pb-3">
-            <div class="row row-xs clearfix  mg-0 pd-0">
+            <div class="d-flex clearfix  mg-0 pd-0">
                 <div class="col-lg-2 p-0 " style="background:#f4f8f9; height:100vh ">
                     <nav class="monmenu nav flex-column  ">
                         <a [routerLink]="['./', selectedAuto.id]" [fragment]="'details'"
                             [class.bg-white]="fragment == 'details'"
                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                            <a class="nav-link3 tx-echos"><i
-                                    class="fal fa-info-circle tx-16  mg-r-10"></i> Détails</a>
+                            <a class="nav-link3 mx-2 tx-echos"><i
+                                    class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
                         </a>
                         <a [routerLink]="['./', selectedAuto.id]" [fragment]="'itineraire'"
                             [class.bg-white]="fragment == 'itineraire'"
                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                            <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
                                 Itineraire</a>
                         </a>
                         <a [routerLink]="['./', selectedAuto.id]" [fragment]="'affectation'"
                             [class.bg-white]="fragment == 'affectation'"
                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                            <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
                                 Affectation</a>
                         </a>
                         <a [routerLink]="['./', selectedAuto.id]" [fragment]="'panne'"
                             [class.bg-white]="fragment == 'panne'"
                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                            <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
                                 Panne</a>
                         </a>
-                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'copie'"
-                            [class.bg-white]="fragment == 'copie'"
+                        <a [routerLink]="['./', selectedAuto.id]" [fragment]="'calendrier'"
+                            [class.bg-white]="fragment == 'calendrier'"
                             class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                            <a class="nav-link3 tx-echos"><i class="fal fa-copy tx-16  mg-r-10"></i>
+                            <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
                                 Calendrier</a>
                         </a>
                     </nav>
@@ -93,11 +93,12 @@
                                 [initAutomobile]="selectedAuto"></app-automobile-itineraire>
                         </div>
                         <div *ngSwitchCase="'panne'">
+                            <app-panne-automobile [automobileId]="selectedAuto.id"></app-panne-automobile>
                         </div>
                         <div *ngSwitchCase="'affectation'">
                        </div>
                         <div *ngSwitchCase="'calendrier'">
-
+                            <app-calendar-ui [eventParent]="{name: 'trans_auto', id: selectedAuto.id}"></app-calendar-ui>
                         </div>
                         <div *ngSwitchDefault>
                             <section class="py-2 col-md-11  d-block mx-auto">
@@ -189,9 +190,9 @@
 </div>
 
 <ng-template #noItem>
-    <h4 class="text-center title m-2 p-5">
+    <h5 class="text-center title m-2 p-5">
         {{ 'Aucun Element' }}
-    </h4>
+    </h5>
 </ng-template>
 
 <!-- ADD -->

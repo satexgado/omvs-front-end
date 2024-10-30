@@ -4,7 +4,7 @@
     transition: 1s ease;
 }
 
-.sidebar {
+.sidebarlist {
     overflow: auto;
     width: 100%;
     transition: 1s ease;

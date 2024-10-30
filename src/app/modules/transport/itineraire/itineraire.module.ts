@@ -12,11 +12,14 @@ import { CouleurModule } from '../couleur/couleur.module';
 import { CustomInputModule } from 'src/app/shared/components/custom-input';
 import { LieuModule } from '../lieu/lieu.module';
 import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.module';
+import { ChooseItemModule } from '../../choose-item';
+import { ItineraireSelectComponent } from './itineraire-select/itineraire-select.component';
 
 @NgModule({
     declarations: [
         ItineraireComponent,
-        EditComponent
+        EditComponent,
+        ItineraireSelectComponent
     ],
     imports: [
         CommonModule,
@@ -24,12 +27,14 @@ import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.m
         InlineEditorModule,
         LieuModule,
         CustomInputModule,
-        MasqueItineraireModule
+        MasqueItineraireModule,
+        ChooseItemModule
     ],
     exports: [
-        ItineraireComponent
+        ItineraireComponent,
+        ItineraireSelectComponent
     ],
-    entryComponents: [EditComponent]
+    entryComponents: [EditComponent,ItineraireSelectComponent]
 })
 export class ItineraireModule {
 

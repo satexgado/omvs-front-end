@@ -17,6 +17,9 @@ import { CarburantModule } from '../carburant/carburant.module';
 import { AutomobileTypeModule } from '../automobile-type/automobile-type.module';
 import { ConfigurationTransportComponent } from './configuration/configuration.component';
 import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.module';
+import { LieuModule } from '../lieu/lieu.module';
+import { PanneModule } from './panne/panne.module';
+import { CalendrierModule } from '../../calendrier/calendrier.module';
 
 @NgModule({
     declarations: [
@@ -39,7 +42,10 @@ import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.m
         CustomInputModule,
         AutomobileItineraireModule,
         MasqueItineraireModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        LieuModule,
+        PanneModule,
+        CalendrierModule
     ],
     exports: [
         AutomobileComponent,

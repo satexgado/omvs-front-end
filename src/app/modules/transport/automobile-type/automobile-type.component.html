@@ -17,10 +17,10 @@
                             {{typeAutomobile.libelle}}
                         </td>
                         <td>
-                            <!-- <a class="table-action cursor-pointer  mg-r-10" (click)="openModal(content, typeAutomobile)"><i class="fal fa-search tx-second "></i></a> -->
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowUpdateForm(typeAutomobile) "><i class="fal fa-edit tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onShowCreateForm(typeAutomobile) "><i class="fal fa-clone tx-second "></i></a>
-                            <a class="table-action cursor-pointer mg-r-10 " (click)="onDelete(typeAutomobile) "><i class="fal fa-times-square tx-second "></i></a>
+                            <!-- <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, typeAutomobile)"><i class="fal fa-search tx-second "></i></a> -->
+                            <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(typeAutomobile) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(typeAutomobile) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(typeAutomobile) "><i class="fal fa-times-square tx-second "></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -33,15 +33,15 @@
 </div>
 
 <ng-template #noItem>
-    <h4 class="text-center title m-2 p-5 ">
+    <h5 class="text-center title m-2 p-5 ">
         {{ 'Aucun Element' }}
-    </h4>
+    </h5>
 </ng-template>
 
 <ng-template #content let-modal>
-    <div class="modal-header ">
-        <h4 class="modal-title ">
-            {{modalData.libelle}}</h4>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
         <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
           <span aria-hidden="true ">&times;</span>
           </button>

@@ -4,7 +4,7 @@
   <div class="sidebar-brand-icon">
     <i class="fas fa-th-large"></i>
   </div>
-  <div class="sidebar-brand-text mx-3">OMVS</div>
+  <div class="sidebar-brand-text mx-3">Mokano</div>
 </a>
 <!-- Divider -->
 <hr class="sidebar-divider">
@@ -54,6 +54,20 @@
   <a class="nav-link" routerLink="/transport" routerLinkActive="active">
     <i class="fas fa-fw fa-car"></i>
     <span>{{'TRANSPORT' | translate}}</span>
+  </a>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/fournisseur" routerLinkActive="active">
+    <i class="fas fa-fw fa-people-carry"></i>
+    <span>Fournisseur</span>
+  </a>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/logistique" routerLinkActive="active">
+    <i class="fas fa-fw fa-boxes"></i>
+    <span>Logistique</span>
   </a>
 </li>
 

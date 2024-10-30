@@ -13,6 +13,7 @@ import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepi
 import { SelectIconItem } from 'src/app/shared/components/custom-input/custom-select-icon/custom-select-icon.component';
 import { MaterielEtatFactory } from 'src/app/core/services/logistique/materiel-etat';
 import { UserFactory } from 'src/app/core/services/user.factory';
+import { MaterielService } from 'src/app/services/materiel.service';
 
 @Component({
   selector: 'app-edit',
@@ -25,11 +26,12 @@ import { UserFactory } from 'src/app/core/services/user.factory';
 export class EditComponent extends BaseEditComponent implements OnInit {
   heading = 'inventaire';
   @Input() item: IInventaire = new Inventaire();
-  allMateriels$;
+  allMateriels$=this.materielService.allData;
   materielId: number;
 
   constructor(
     protected cacheService: CacheService,
+    protected materielService: MaterielService,
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
   {
@@ -40,24 +42,8 @@ export class EditComponent extends BaseEditComponent implements OnInit {
     if(this.materielId) {
       return super.ngOnInit();
     }
-    this.cacheService.get('affectation-parent').subscribe(
-      (data: {relationName: string,relationId: number})=>{
-        const queryOptions: QueryOptions = new QueryOptions(
-          [
-            {or: false, filters: [new Filter(`${data.relationName}_by_id`, data.relationId, 'eq')]}
-          ],
-        );
-
-        queryOptions.sort = [new Sort('libelle_materiel','ASC')];
-        this.allMateriels$ = new MaterielFactory().list(queryOptions).pipe(
-            shareReplay(1),
-            map(data => data.data)
-        );
-        super.ngOnInit();
-      },()=> {
-        this.notificationService.onError('Un problème est survenue');
-      }
-    )
+    this.materielService.getAll();
+    super.ngOnInit();
   }
 
   createFormGroup(item: IInventaire) {

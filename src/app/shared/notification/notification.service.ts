@@ -63,25 +63,62 @@ export class NotificationService {
     	this.snotifyService.warning($body, $title, this.getConfig());
   	}
 
-  	onConfirmation(yesAction, noAction = ()=>{}) {
-    	this.position = SnotifyPosition.centerCenter;
-    	const {timeout, closeOnClick, ...config} = this.getConfig(); // Omit props what i don't need
-	    this.snotifyService.confirm(this.body, this.title, {
-	      	...config,
-	      	buttons: [
-	        	{text: 'Oui', action: (toast) => {
-              yesAction();
-              this.snotifyService.remove(toast.id);
-              this.position = SnotifyPosition.rightTop;
-            }, bold: false},
-	        	{text: 'Non', action: (toast) => {
-              noAction();
-              this.snotifyService.remove(toast.id)
-              this.position = SnotifyPosition.rightTop;
-            }, bold: true},
-	      	]
+  	onCancel(callback = ()=>{}, body, title, type = 'success', text = 'Annuler') {
+
+		switch(type) {
+		  case  'error':
+		  this.snotifyService.error(body, title,
+			{...this.getConfig(),
+			  timeout: 10000,
+			  buttons: [
+				{text: text, action: (toast) => {
+				  // callback();
+				  this.snotifyService.remove(toast.id);
+				  this.position = SnotifyPosition.rightTop;
+				}, bold: false}
+			  ]
+			}
+			).on( "click", () => {
+			  callback();
 			});
-	}
+			break;
+			default:
+			this.snotifyService.success(body, title,
+			  {...this.getConfig(),
+				timeout: 10000,
+				buttons: [
+				  {text: text, action: (toast) => {
+				  //   callback();
+					this.snotifyService.remove(toast.id);
+					this.position = SnotifyPosition.rightTop;
+				  }, bold: false}
+				]
+			  }
+			  ).on( "click", () => {
+				  callback();
+			  });
+		}
+	  }
+  
+		onConfirmation(yesAction, noAction = ()=>{}) {
+		  this.position = SnotifyPosition.centerCenter;
+		  const {timeout, closeOnClick, ...config} = this.getConfig(); // Omit props what i don't need
+		  this.snotifyService.confirm(this.body, this.title, {
+				...config,
+				buttons: [
+				  {text: 'Oui', action: (toast) => {
+				yesAction();
+				this.snotifyService.remove(toast.id);
+				this.position = SnotifyPosition.rightTop;
+			  }, bold: false},
+				  {text: 'Non', action: (toast) => {
+				noAction();
+				this.snotifyService.remove(toast.id)
+				this.position = SnotifyPosition.rightTop;
+			  }, bold: true},
+				]
+			  });
+	  }
 
 	onChoose(options: {text:string, option: any}[], body: string, title: string)
 	{
