@@ -27,7 +27,9 @@ const butsRoutes: Routes = [
   },
   children: [
     {path: '', component: TemplateComponent,children: [
-      {path: '', component: AutomobileComponent,children: [
+      {path: '', component: AutomobileComponent, data: {
+        icon: 'fa-bus-school', title:'Automobiles'
+      }, children: [
         {
           path: ':idauto',
           resolve: { courrier: AutomobileDetailsEditResolver}
@@ -43,12 +45,15 @@ const butsRoutes: Routes = [
     breadcrumb: 'Mes conducteurs'
   },
   children: [
-    {path: '', component: TemplateComponent, pathMatch:'full',children: [
-      {path: '', component: DossierConducteurComponent}
-    ]},
-    {path: ':iddossier', component: DossierConducteurDetailsEditComponent,
-      resolve: { dossierconducteur: DossierConducteurDetailsEditResolver}
-    }
+    {path: '', component: TemplateComponent,children: [
+      {path: '', component: DossierConducteurComponent, data: {
+        icon: 'fa-user-tie', title:'Conducteurs'
+      },children: [
+        {path: ':iddossier', component: DossierConducteurDetailsEditComponent,
+          resolve: { dossierconducteur: DossierConducteurDetailsEditResolver}
+        }
+      ]}
+    ]}
   ]},
   { path: 'mes-documents',
   data: {
@@ -74,7 +79,9 @@ const butsRoutes: Routes = [
   },
   children: [
     {path: '', component: TemplateComponent, pathMatch:'full',children: [
-      {path: '', component: ItineraireComponent}
+      {path: '', component: ItineraireComponent, data: {
+        icon: 'fa-route', title:'Itineraires'
+      }}
     ]},
   ]},
   { path: 'configuration',
@@ -82,7 +89,9 @@ const butsRoutes: Routes = [
     breadcrumb: 'Configuration'
   },
    component: TemplateComponent,children: [
-    {path: '', component:ConfigurationTransportComponent}
+    {path: '', component:ConfigurationTransportComponent, data: {
+      icon: 'fa-wrench', title:'Configuration'
+    }}
   ]},
 ];
 

@@ -48,9 +48,9 @@ const routes: Routes = [
     canActivate: [AccountGuard], 
     loadChildren: './modules/transport/transport.module#TransportModule'
   },
-  {path: 'fournisseur',
+  {path: 'annuaire',
     data: {
-      breadcrumb: 'fournisseur',
+      breadcrumb: 'annuaire',
       action: 'logged' 
     },
     canActivate: [AccountGuard], 

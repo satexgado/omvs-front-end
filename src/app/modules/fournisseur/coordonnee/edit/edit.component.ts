@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectorRef} from '@angular/core';
 import { BaseEditComponent } from 'src/app/shared/components/edit/base-edit.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {  FormControl, Validators } from '@angular/forms';
+import {  FormArray, FormControl, Validators } from '@angular/forms';
 import { CrCoordonnee, ICrCoordonnee } from 'src/app/core/models/cr-coordonnee';
 import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { ICrCoordonneeGroupe } from 'src/app/core/models/cr-coordonnee-groupe';
@@ -13,7 +13,18 @@ import { CrCoordonneeTypeFactory } from 'src/app/core/services/cr-coordonnee-typ
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './edit.component.html'
+  templateUrl: './edit.component.html',
+  styles: [`
+    header {
+        padding: 8px 0 2px;
+        background: #e9e9e9;
+        border-bottom: 1px solid #cfcfcf;
+        -webkit-box-shadow: 0 1px 0 #fff;
+        -moz-box-shadow: 0 1px 0 #fff;
+        -ms-box-shadow: 0 1px 0 #fff;
+        box-shadow: 0 1px 0 #fff;
+    }  
+  `],
 })
 export class EditComponent extends BaseEditComponent  {
   heading = 'coordonnee';
@@ -48,14 +59,7 @@ export class EditComponent extends BaseEditComponent  {
     const typeService = new CrCoordonneeTypeFactory();
     typeService.list().subscribe(
       (data)=>{
-        data.data.forEach(type=>{
-          this.tagList.push(
-            {
-              id:type.libelle,
-              libelle: type.libelle
-            }
-          )
-        });
+        this.tagList = [...this.tagList,...data.data.map(type=>{return {id:type.libelle, libelle: type.libelle}})];
       }
     )
   }
@@ -91,11 +95,29 @@ export class EditComponent extends BaseEditComponent  {
   }
 
   createFormGroup(item: ICrCoordonnee) {
+    let contacts =   this.formBuilder.array([]);
+
+    if(item.contacts && item.contacts.length) {
+      item.contacts.forEach(
+        (field)=> {
+          contacts.push(this.formBuilder.group({
+            'statut': [field.statut, Validators.required],
+            'libelle': [field.libelle, Validators.required],
+            'email': [field.email, Validators.required],
+            'telephone': [field.telephone, Validators.required],
+            id: [field.id]
+          }))
+        }
+      )
+    }
     return this.formBuilder.group({
+      'removedContact': [],
+      'contact': contacts,
       'groupes': [item.groupes ? item.groupes : []],
       'groupes_id': [item.groupes && item.groupes.length ? item.groupes.map(el=>el.id) : null],
       'tag': [item.tag, Validators.required],
-      'email': [item.email, Validators.required, CoordonneeValidator.alreadyUsedEmailValidator(item.email)],
+      'site': [item.site],
+      'email': [item.email, Validators.required],
       'telephone': [item.telephone, Validators.required],
       'adresse': [item.adresse, Validators.required],
       'condition_suivi': [item.condition_suivi],
@@ -104,4 +126,27 @@ export class EditComponent extends BaseEditComponent  {
       'id': [item.id]
     });
   }
+
+  addContact() {
+    const control = this.editForm.get('contact') as FormArray;
+    control.push(this.formBuilder.group({
+      'statut': ['', Validators.required],
+      'libelle': ['', Validators.required],
+      'email': ['', Validators.required],
+      'telephone': ['', Validators.required],
+      id: [0]
+    }));
+  }
+
+  removeContact(child_index) {
+    const control = this.editForm.get('contact') as FormArray;
+    control.markAsDirty();
+    if(control.at(child_index).get('id').value) {
+      const removeControl = this.editForm.get('removedContact') as FormControl;
+      let data = removeControl.value ? removeControl.value : [];
+      data.push(control.at(child_index).get('id').value);
+      removeControl.setValue(data);
+    }
+    control.removeAt(child_index);
+ }
 }

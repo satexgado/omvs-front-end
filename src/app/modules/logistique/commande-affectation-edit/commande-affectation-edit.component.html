@@ -8,11 +8,11 @@
     <div class="modal-body tx-dark" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
             <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
-                <div class="col-10" [class.loading]="editForm.get('user_id').status === 'PENDING'">
+                <div class="col-10" [class.loading]="editForm.get('user_id').status === 'PENDING' || (dashService.loading$ | async)">
                     <label class="control-label" for="libelle">Affecter à</label>
                     <select class="form-control form-control-sm" mySelectFirstOption required name="user_id" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id') , 'is-valid': isValid('user_id')}" required>
                   <ng-container *ngFor="let item of (allUsers$ | async)">
-                      <option [ngValue]="item.id">{{item.libelle}} ({{item.idcam}})</option>
+                      <option [ngValue]="item.id">{{item.nom}} {{item.prenom}}</option>
                   </ng-container>
                 </select>
                     <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir.</div>

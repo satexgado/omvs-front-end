@@ -10,6 +10,8 @@ import { CoordonneeGroupeRoutingModule } from './coordonnee-groupe-routing.modul
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { AffectationCoordonneeGroupeEditComponent } from './affectation/affectation.component';
 import { CoordonneeGroupeHierarchieEditComponent } from './coordonnee-groupe-hierarchie-edit/coordonnee-groupe-hierarchie-edit.component'
+import { CoordonneeGroupeSelectComponent } from './groupe-select/groupe-select.component';
+import { ChooseItemModule } from '../../choose-item';
 
 @NgModule({
     declarations: [
@@ -17,7 +19,8 @@ import { CoordonneeGroupeHierarchieEditComponent } from './coordonnee-groupe-hie
         AffectationCoordonneeGroupeEditComponent,
         CoordonneeGroupeActionComponent,
         CoordonneeGroupeHierarchieEditComponent,
-        EditComponent
+        EditComponent,
+        CoordonneeGroupeSelectComponent
     ],
     imports: [
         CommonModule,
@@ -26,8 +29,12 @@ import { CoordonneeGroupeHierarchieEditComponent } from './coordonnee-groupe-hie
         InlineEditorModule,
         InfiniteScrollModule,
         AngularMultiSelectModule,
+        ChooseItemModule
     ],
-    entryComponents: [EditComponent, AffectationCoordonneeGroupeEditComponent, CoordonneeGroupeActionComponent],
+    exports: [
+        CoordonneeGroupeSelectComponent
+    ],
+    entryComponents: [EditComponent, AffectationCoordonneeGroupeEditComponent, CoordonneeGroupeActionComponent, CoordonneeGroupeSelectComponent],
 })
 export class CoordonneeGroupeModule {
 

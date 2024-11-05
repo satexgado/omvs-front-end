@@ -1,0 +1,11 @@
+<div class="custom-placeholder">
+  <div class="input-group">
+    <input class="form-control" [class.form-control-sm]="small" [class.is-valid]="selected" (click)="onChooseCoordonneeGroupes()" type="text" [placeholder]="libelle" readonly>
+    <span class="custom-span" *ngIf="label">{{label}}</span>
+    <div class="input-group-append" *ngIf="libelle">
+      <button class="btn btn-outline-secondary" [class.btn-sm]="small" (click)="onSetSelected()" type="button" id="button-addon2">
+        <i class="fa fa-times-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>

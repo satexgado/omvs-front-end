@@ -5,6 +5,7 @@ export interface IMateriel extends IBase {
     description: string;
     code: string;
     image: string;
+    quantite: number;
 }
 
 export class Materiel implements IMateriel {
@@ -19,4 +20,5 @@ export class Materiel implements IMateriel {
     description: string = '';
     image: string = '';
 
+    quantite:number = 0;
 }

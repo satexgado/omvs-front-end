@@ -9,19 +9,6 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 
-<!-- HIDDEN FOR DEMANDEUR (1) -->
-<div *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="sidebar-heading">
-  {{'STATISTIQUES' | translate}}
-</div>
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-    <i class="fas fa-fw fa-comment-alt "></i>
-    <span>{{'DASHBOARD' | translate}}</span></a>
-</li>
-
-<!-- Divider -->
-<hr *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="sidebar-divider">
-
 <!-- Heading -->
 <div class="sidebar-heading">
   {{'MODULES' | translate}}
@@ -58,9 +45,9 @@
 </li>
 
 <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/fournisseur" routerLinkActive="active">
-    <i class="fas fa-fw fa-people-carry"></i>
-    <span>Fournisseur</span>
+  <a class="nav-link" routerLink="/annuaire" routerLinkActive="active">
+    <i class="fas fa-fw fa-address-card"></i>
+    <span>Annuaire</span>
   </a>
 </li>
 
@@ -103,12 +90,6 @@
   </div>
 </li>
 
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/mission/archive" routerLinkActive="active">
-    <i class="fas fa-fw fa-folder-open"></i>
-    <span>{{'ARCHIVES' | translate}}</span>
-  </a>
-</li>
 
 <li *ngIf="[1].includes(profile.user_type_id)" class="nav-item">
   <a class="nav-link" routerLink="/mission" routerLinkActive="active">
@@ -130,11 +111,6 @@
     <span>{{'EVALUATION' | translate}}</span></a>
 </li>
 
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/configuration" routerLinkActive="active">
-    <i class="fas fa-fw fa-wrench"></i>
-    <span>{{'SETTING' | translate}}</span></a>
-</li>
 
 
 

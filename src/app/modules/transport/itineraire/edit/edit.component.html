@@ -52,11 +52,11 @@
                 </h5>
             </header>
             <div formArrayName="point_arrets" *ngFor="let point_arret of editForm.get('point_arrets').controls; let y = index;" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-12 col-sm-10 d-flex">
+                <div class="col-12 col-sm-10 d-flex align-items-center">
                     <div class="flex-fill">
                         <app-select-formgroup [small]="true" label="point arret {{ y + 1}}" [formControlName]="y" [selected]="editForm.get('point_arrets').get(''+y).value" [dataSource]="allLieu$" [createModal]="lieuEditComponent"></app-select-formgroup>
                     </div>
-                    <i (click)="removePointArret(y)" class="fal fa-minus-square fal fa-minus-square fa-2x m-2 text-danger cursor-pointer"></i>
+                    <i (click)="removePointArret(y)" class="fal fa-minus-square fal fa-minus-square fa-2x mx-2 text-danger cursor-pointer"></i>
                 </div>
             </div>
             <div class="d-flex justify-content-center">

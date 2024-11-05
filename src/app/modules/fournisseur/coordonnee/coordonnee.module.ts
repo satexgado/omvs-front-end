@@ -11,6 +11,7 @@ import { CoordonneeRoutingModule } from './coordonnee-routing.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { CoordonneeActionComponent } from './coordonnee-action.component'
 import { CustomInputModule } from 'src/app/shared/components/custom-input/custom-input.module';
+import { CoordonneeGroupeModule } from '../coordonnee-groupe/coordonnee-groupe.module';
 @NgModule({
     declarations: [
         CoordonneeComponent,
@@ -26,7 +27,8 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input/custom
         InlineEditorModule,
         InfiniteScrollModule,
         AngularMultiSelectModule,
-        CustomInputModule
+        CustomInputModule,
+        CoordonneeGroupeModule
     ],
     entryComponents: [EditComponent, CoordonneeActionComponent],
 })

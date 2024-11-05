@@ -5,17 +5,20 @@
     </button>
 </div>
 <ng-container *ngIf="editForm">
-    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
+    <div class="modal-body p-0 tx-dark" [ngClass]="{'loading': isLoading || this.is_loading_batiments}">
         <form class="custom-placeholder" [formGroup]="editForm">
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-10">
+            <header class="px-3 mx-auto">
+                <h5>
+                    Information Contact
+                </h5>
+            </header>
+            <div class="formSep form-group   d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-sm-5 mb-3">
                     <label class="control-label" for="salle">Nom</label>
                     <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
-            </div>
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-10">
+                <div class="col-10 col-sm-5 mb-3">
                     <label class="control-label" for="salle">Email</label>
                     <input type="text" class="form-control form-control-sm" required [formControlName]="'email'" [ngClass]="{'is-invalid': shouldShowRequiredError('email') || hasError('email','alreadyUsedEmail'), 'is-valid': isValid('email')}" name="email" required>
                     <div *ngIf="shouldShowRequiredError('email')" class="invalid-feedback">veillez remplir ce champ.</div>
@@ -24,18 +27,26 @@
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-10">
+                <div class="col-10 col-sm-5 mb-3">
                     <label class="control-label" for="salle">Telephone</label>
                     <input type="text" class="form-control form-control-sm" required [formControlName]="'telephone'" [ngClass]="{'is-invalid': shouldShowRequiredError('telephone'), 'is-valid': isValid('telephone')}" name="telephone" required>
                     <div *ngIf="shouldShowRequiredError('telephone')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
+                <div class="col-10 col-sm-5 mb-3">
+                    <label class="control-label" for="salle">Site Web</label>
+                    <input type="text" class="form-control form-control-sm" [formControlName]="'site'" [ngClass]="{'is-invalid': shouldShowRequiredError('site'), 'is-valid': isValid('site')}" name="site">
+                    <div *ngIf="shouldShowRequiredError('site')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
             </div>
-
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-10">
+                <div class="col-10 col-sm-5 mb-">
                     <label class="control-label" for="salle">Adresse</label>
                     <input type="text" class="form-control form-control-sm" required [formControlName]="'adresse'" [ngClass]="{'is-invalid': shouldShowRequiredError('adresse'), 'is-valid': isValid('adresse')}" name="adresse" required>
                     <div *ngIf="shouldShowRequiredError('adresse')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+                <div class="col-10 col-sm-5 mb-3">
+                    <label class="control-label" for="salle">Groupes</label>
+                    <app-coordonnee-groupe-select [small]="true" [formControlName]="'groupes_id'"></app-coordonnee-groupe-select>
                 </div>
             </div>
 
@@ -43,7 +54,7 @@
                 <div class="col-10">
                     <label class="control-label" for="tag">Tag</label>
                     <div class="d-flex justify-content-start flex-wrap">
-                        <app-custom-checkbox [formControlName]="'tag'" [items]="tagList" [createModal]="typeEditComponent"></app-custom-checkbox>
+                        <app-custom-checkbox [formControlName]="'tag'" [items]="tagList|sortBy:'asc':'libelle'" [createModal]="typeEditComponent"></app-custom-checkbox>
                     </div>
                     <div *ngIf="shouldShowRequiredError('tag')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
@@ -64,25 +75,46 @@
                     <div *ngIf="shouldShowRequiredError('commentaire')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
-
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-12 col-sm-10">
-                    <!-- Label -->
-                    <label class="control-label" for="groupes">
-                      Groupes
-                      <i class="fad fa-circle-notch fa-spin"
-                          *ngIf="loading_groupes"></i>
-                    </label>
-  
-                    <angular2-multiselect [data]="allGroupes" formControlName="groupes" [settings]="multiParameter2" [ngClass]="{'is-invalid': shouldShowRequiredError( 'groupes_id'), 'is-valid': isValid('groupes_id')}"
-                        class="form-control p-0 ">
-                    </angular2-multiselect>
-  
-                    <div *ngIf="shouldShowRequiredError('groupes_id')" class="invalid-feedback">veillez remplir ce champ.</div>
-  
-                </div>
+            <header class="px-3 mx-auto">
+                <h5>
+                    Contact Additionnel 
+                </h5>
+            </header>
+            <div class="table-responsive" formArrayName="contact">
+                <table class="table table-sm table-stripped table-hover text-nowrap" *ngIf="editForm.get('contact').controls && editForm.get('contact').controls.length">
+                    <thead>
+                        <tr>
+                            <td>Nom</td>
+                            <td>Statut</td>
+                            <td>Email</td>
+                            <td>Telephone</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let point_arret of editForm.get('contact').controls; let y = index;" [formGroupName]="y">
+                            <td>
+                                <input type="text" [formControlName]="'libelle'" autofocus class="form-control form-control-sm">
+                            </td>
+                            <td>
+                                <input type="text" [formControlName]="'statut'"  class="form-control form-control-sm">
+                            </td>
+                            <td>
+                                <input type="email" [formControlName]="'email'"  class="form-control form-control-sm">
+                            </td>
+                            <td>
+                                <input type="text" [formControlName]="'telephone'"  class="form-control form-control-sm">
+                            </td>
+                            <td>
+                                <i (click)="removeContact(y)" class="fal fa-minus-square fal fa-minus-square fa-2x text-danger cursor-pointer"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
+            <div class="d-flex justify-content-center">
+                <button (click)="addContact()" class="btn btn-light m-2" style="font-size: 13px"> <i class="fal fa-layer-plus" style="color:   #99600b    "></i> Ajouter</button>
+            </div>
         </form>
     </div>
 </ng-container>

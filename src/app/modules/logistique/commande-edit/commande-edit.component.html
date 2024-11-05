@@ -12,7 +12,7 @@
                     <label class="control-label" for="materiel_id">Materiel</label>
                     <select class="form-control form-control-sm" mySelectFirstOption required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}" required>
                         <option value="">--choississez le materiel --</option>
-                        <ng-container *ngFor="let item of items">
+                        <ng-container *ngFor="let item of items | sortBy:'asc':'name'">
                             <option [ngValue]="item.id">{{item.name | titlecase}}</option>
                         </ng-container>
                     </select>
@@ -28,7 +28,7 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="salle">Prix</label>
+                    <label class="control-label" for="salle">Prix Unitaire</label>
                     <input type="number" class="form-control form-control-sm" required [formControlName]="'prix'" [ngClass]="{'is-invalid': shouldShowRequiredError('prix'), 'is-valid': isValid('prix')}" name="prix">
                     <div *ngIf="shouldShowRequiredError('prix')" class="invalid-feedback">veillez saisir le prix.</div>
                 </div>

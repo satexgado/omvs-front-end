@@ -45,7 +45,31 @@
 
     <!-- Nav Item - Alerts -->
     <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item dropdown no-arrow mx-1">
-      <a class="nav-link" routerLink="/mission/calendrier">
+      <a class="nav-link" routerLink="/dashboard" container="body" [ngbTooltip]="'DASHBOARD' | translate">
+        <i class="far fa-chart-area fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <!-- <span class="badge badge-danger badge-counter">8+</span> -->
+      </a>
+    </li>
+     <!-- Nav Item - Alerts -->
+     <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item dropdown no-arrow mx-1">
+      <a class="nav-link" routerLink="/configuration" container="body" [ngbTooltip]="'SETTING' | translate">
+        <i class="far fa-wrench fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <!-- <span class="badge badge-danger badge-counter">8+</span> -->
+      </a>
+    </li>
+    <!-- Nav Item - Alerts -->
+    <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item dropdown no-arrow mx-1">
+      <a class="nav-link" routerLink="/mission/archive" container="body" [ngbTooltip]="'ARCHIVES' | translate">
+        <i class="far fa-folder-open fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <!-- <span class="badge badge-danger badge-counter">8+</span> -->
+      </a>
+    </li>
+    <!-- Nav Item - Alerts -->
+    <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item dropdown no-arrow mx-1">
+      <a class="nav-link" routerLink="/mission/calendrier" container="body" [ngbTooltip]="'CALENDAR' | translate">
         <i class="far fa-calendar-check fa-fw"></i>
         <!-- Counter - Alerts -->
         <!-- <span class="badge badge-danger badge-counter">8+</span> -->

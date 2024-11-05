@@ -227,3 +227,17 @@ INSERT INTO `cal_type_calendrier` (`id_type_calendrier`, `libelle_type`, `couleu
 	(4, 'Evaluation', '#eac459', NULL, NULL, NULL),
 	(5, 'Inscription', '#75785f', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `cal_type_calendrier` ENABLE KEYS */;
+
+CREATE TABLE `cr_coordonnee_contact` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL,
+  `statut` varchar(191) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `telephone` varchar(191) NOT NULL,
+  `inscription_id` int(11) NOT NULL,
+  `coordonnee_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;

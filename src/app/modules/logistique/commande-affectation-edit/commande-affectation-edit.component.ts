@@ -9,6 +9,7 @@ import { CacheService } from 'src/app/shared/services';
 import { shareReplay, map } from 'rxjs/operators';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { IMaterielCommandePersonne, MaterielCommandePersonne } from 'src/app/core/models/materiel-commande-personne';
+import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-commande-affectation-edit',
@@ -23,14 +24,12 @@ export class CommandeAffectationEditComponent extends BaseEditComponent implemen
   @Input() item: IMaterielCommandePersonne = new MaterielCommandePersonne();
   commandeId: number;
 
-  protected readonly allUsers$ = new UserFactory().list().pipe(
-    shareReplay(1),
-    map(data => data.data)
-  );
+  protected readonly allUsers$ = this.dashService.allPersonnels$;
 
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
+    protected dashService: DashboardService,
     activeModal: NgbActiveModal)
   {
     super(new MaterielCommandePersonneFactory(), cdRef, activeModal);

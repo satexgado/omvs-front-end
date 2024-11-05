@@ -12,7 +12,7 @@
                     <label class="control-label" for="libelle">Affecter à</label>
                     <select class="form-control form-control-sm" mySelectFirstOption required name="user_id" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id') , 'is-valid': isValid('user_id')}" required>
                       <ng-container *ngFor="let item of (allUsers$ | async)">
-                          <option [ngValue]="item.id">{{item.libelle}}</option>
+                          <option [ngValue]="item.id">{{item.nom}} {{item.prenom}}</option>
                       </ng-container>
                     </select>
                     <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir.</div>

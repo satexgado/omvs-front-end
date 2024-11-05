@@ -11,6 +11,7 @@ import { GenreModule } from '../genre/genre.module';
 import { CouleurModule } from '../couleur/couleur.module';
 import { CustomInputModule } from 'src/app/shared/components/custom-input';
 import { DossierConducteurDetailsEditComponent } from './details/edit/dossier-conducteur-details-edit.component';
+import { PermiTypeModule } from '../permi-type/permi-type.module';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { DossierConducteurDetailsEditComponent } from './details/edit/dossier-co
         GenreModule,
         CouleurModule,
         CustomInputModule,
+        PermiTypeModule
     ],
     exports: [
         DossierConducteurComponent,

@@ -4,34 +4,50 @@ import { Injectable } from '@angular/core';
 
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { QueryOptions, Filter } from 'src/app/shared/models/query-options';
-import { map } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
+import { CacheService } from 'src/app/shared/services';
+import { TransportUiService } from '../../../transport.service';
 
 @Injectable()
 export class DossierConducteurDetailsEditResolver implements Resolve<Observable<IDossierConducteur>> {
-  constructor() {}
+  constructor(
+    protected cacheService: CacheService,
+    protected transService: TransportUiService
+  ) {}
 
   resolve( route: ActivatedRouteSnapshot ) {
-    const service = new DossierConducteurFactory()
-    const query = new QueryOptions(
-      [
-        {or: false, filters:[
-            new Filter('isIns', true, 'eq'),
-            new Filter('id_dossieur_conducteur', +route.paramMap.get('iddossier'), 'eq')
-        ]},
-      ],
-      ['type_permis','cpt_conducteur','visi_pays']
-    )
-    return service.list(query).pipe(
-      map((data) => {
-          if(data.data[0])
-          {
+    return this.transService.conducteurData$.pipe(
+      first(),
+      switchMap((data) => {
+        if (data && data.id == +route.paramMap.get("iddossier")) {
+          return of(data);
+        }
+
+        const service = new DossierConducteurFactory()
+        const query = new QueryOptions(
+          [
+            {or: false, filters:[
+                new Filter('isIns', true, 'eq'),
+                new Filter('id_dossieur_conducteur', +route.paramMap.get('iddossier'), 'eq')
+            ]},
+          ],
+          ['type_permis','cpt_conducteur','visi_pays']
+        )
+          
+        return service.list(query).pipe(
+          map((data) => {
+            if (data && data.data.length) {
+              this.transService.conducteurData = data.data[0];
               return data.data[0];
-          }else{
-              return null;
-          }
+            }
+            this.transService.conducteurData = null;
+            return null;
+          })
+        );
       })
     );
+    
   }
 }

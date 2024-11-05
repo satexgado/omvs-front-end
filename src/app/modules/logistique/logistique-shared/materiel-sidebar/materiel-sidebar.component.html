@@ -8,7 +8,7 @@
         <ul class="scrollable-y-50 scroll-11 list-group list-group-flush choose-title hoverable-list d-none d-lg-flex" [class.loading]="!(materielHelper | async)">
             <ng-container *ngIf="materielHelper | async as items">
                 <ng-container *ngIf="items.length; else noItemHeaderOnly">
-                    <li class="list-group-item cursor-pointer tx-yeto align-middle" (click)="onSetSelected(materiel)" [class.border-left-primary]="selectedMaterielId && materiel.id == selectedMaterielId" *ngFor="let materiel of items;trackBy: trackByFn">
+                    <li class="list-group-item cursor-pointer tx-yeto align-middle" (click)="onSetSelected(materiel)" [class.border-left-primary]="selectedMaterielId && materiel.id == selectedMaterielId" *ngFor="let materiel of (items| sortBy:'asc':'name');trackBy: trackByFn">
                         <a class="cursor-pointer w-100">
                             <strong class="tx-yeto2">{{materiel.name | titlecase}} </strong>
                         </a>

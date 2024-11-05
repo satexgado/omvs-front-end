@@ -10,7 +10,7 @@
             <div *ngIf="!materielId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="materiel_id">Materiel</label>
-                    <select class="form-control form-control-sm" [class.loading]="allMateriels$ | async" required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}"
+                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allMateriels$ | async" required name="materiel_id" [formControlName]="'materiel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'materiel_id'), 'is-valid': isValid('materiel_id')}"
                         required>
                     <option value="">--choississez le materiel --</option>
                     <ng-container *ngFor="let item of (allMateriels$ | async)">
@@ -33,7 +33,7 @@
                     <select class="form-control form-control-sm" [class.loading]="allPanneNiveau$ | async" required name="type" [formControlName]="'niveau_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'niveau_id'), 'is-valid': isValid('niveau_id')}" required>
                     <option [value]="null">--choississez le niveau --</option>
                     <ng-container *ngFor="let item of (allPanneNiveau$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                        <option [ngValue]="item.id">{{item.libelle | titlecase}} <i class="fal fa-circle" style.background-color]="item.couleur"></i></option>
                     </ng-container>
                 </select>
                     <div *ngIf="shouldShowRequiredError('niveau_id')" class="invalid-feedback">veillez choisir le niveau.</div>

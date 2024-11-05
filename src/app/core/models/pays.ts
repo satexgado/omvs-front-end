@@ -9,6 +9,7 @@ export class Pays implements IPays {
     @adaptableMap('id')
     id: number = 0;
 
+    @adaptableMap('name')
     libelle: string = '';
 
 }

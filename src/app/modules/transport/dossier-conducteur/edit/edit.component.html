@@ -17,7 +17,7 @@
                     <div class="col-12 col-sm-10">
                         <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}">
                             <ng-container *ngFor="let item of (allInscriptions$ | async)">
-                                <option [ngValue]="item.user?.id">{{item.user?.libelle}} ({{item.user?.idcam}})</option>
+                                <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
                             </ng-container>
                         </select>
                         <span class="custom-span">Conducteur</span>
@@ -33,10 +33,7 @@
                 </div>
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                     <div class="col-12 col-sm-10">
-                        <select appSelect2Default required style="width: 100%" [data]="typePermisPreselectedData" multiple="multiple" [formControlName]="'type_permis'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_permis'), 'is-valid': isValid('type_permis')}" class="form-control"
-                            placeholder="Select">
-                </select>
-                        <span class="custom-span">type de permis</span>
+                        <app-select-formgroup [small]="true" label="type de permis" formControlName="type_permis" [selected]="editForm.get('type_permis').value" [dataSource]="allTypePermis$" [createModal]="permiEditComponent"></app-select-formgroup>
                         <div *ngIf="shouldShowRequiredError('type_permis')" class="invalid-feedback">veillez choisir le type de permis.</div>
                     </div>
                 </div>
@@ -52,7 +49,7 @@
                     <div class="col-12 col-sm-10">
                         <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'lieu_obtention_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'lieu_obtention_permis_id'), 'is-valid': isValid('lieu_obtention_permis_id')}"
                             required>
-                                <ng-container *ngFor="let item of (allPays$ | async)">
+                                <ng-container *ngFor="let item of ((allPays$ | async) | sortBy:'asc':'libelle')">
                                     <option [ngValue]="item.id">{{item.libelle}}</option>
                                 </ng-container>
                             </select>

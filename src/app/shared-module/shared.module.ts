@@ -27,6 +27,7 @@ import { FileManagerComponent } from './file-manager/file-manager.component';
 import { DragDropDirective } from './file-manager/dragfile.directive';
 import { InlineEditComponent } from './inline-edit/inline-edit.component';
 import { TranlateObjectPipe } from '../pipes/tranlate-object.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { TranlateObjectPipe } from '../pipes/tranlate-object.pipe';
     ReactiveFormsModule,
     TranslateModule,
     PopoverModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    NgbModule
   ],
   declarations: [
     PaginationComponent, AgePipe, TruncateStrPipe, TranlateObjectPipe, DragDropDirective, AffectateurComponent, FileManagerComponent,

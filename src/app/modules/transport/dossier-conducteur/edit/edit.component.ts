@@ -9,9 +9,9 @@ import { SelectIconItem } from 'src/app/shared/components/custom-input/custom-se
 import { PaysFactory } from 'src/app/core/services/pays';
 import { DossierConducteurFactory } from 'src/app/core/services/transport/dossier-conducteur';
 import { IDossierConducteur, DossierConducteur } from 'src/app/core/models/transport/dossier-conducteur';
-import { QueryOptions } from 'src/app/shared/models/query-options';
 import { UserService } from 'src/app/services/account/user.service';
-
+import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
+import {EditComponent as PermiEditComponent} from '../../permi-type/edit/edit.component';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -36,13 +36,15 @@ export class EditComponent extends BaseEditComponent implements OnInit, OnDestro
         return data.data
     }
   ));
-  allInscriptions$ = this.userService.allData;
+  readonly permiEditComponent = PermiEditComponent;
+  allInscriptions$ = this.dashService.allPersonnels$;
 
   allPays$ = new PaysFactory().list().pipe(
     map( (data: any) => {
         return data.data
     }
   ));
+  
   typePermisPreselectedData  = null;
   subscription: Subscription = new Subscription();
   fumer_alcool_select: SelectIconItem[] = [
@@ -74,13 +76,12 @@ export class EditComponent extends BaseEditComponent implements OnInit, OnDestro
 
   constructor(
     protected cdRef: ChangeDetectorRef,
-    private userService: UserService,
+    private dashService: DashboardService,
     activeModal: NgbActiveModal) {
     super(new DossierConducteurFactory(), cdRef, activeModal);
   }
 
   ngOnInit() {
-    this.userService.getAll();
     super.ngOnInit();
     this.onControlValueChange();
   }

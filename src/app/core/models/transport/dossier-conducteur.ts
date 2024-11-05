@@ -1,14 +1,13 @@
 import { hasOneMap, hasManyMap } from 'src/app/shared/decorator/adapter/relation-map';
 import { Pays } from './../pays';
 import { PermiType, IPermiType } from './permi-type';
-import { User, IUser } from 'src/app/core/models/user';
 
 import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter/adaptable-map';
 import { IBase } from '../base.interface';
 
 export interface IDossierConducteur extends IBase {
   conducteur_id: number;
-  conducteur: User;
+  conducteur: any;
   date_obtention: Date;
   type_permis?: PermiType[];
   lieu_obtention_permis: Pays;
@@ -70,8 +69,8 @@ export class DossierConducteur implements IDossierConducteur {
     @hasOneMap({field: 'visi_pays', class: Pays})
     lieu_obtention_permis = null;
 
-    @hasOneMap({field: 'cpt_conducteur', class: User})
-    conducteur: IUser = null;
+    @adaptableMap('cpt_conducteur')
+    conducteur: any = null;
 
     @adaptableMap('conducteur')
     conducteur_id = 0;
