@@ -393,7 +393,7 @@
               <i class="text-secondary fas fa-users"></i> {{'manageEquipe' | translate}}
             </a> <br>
             <a (click)="onEdit(detailsItem, currentIndex, 'itineraire')" class="btn btn-light btn-md btn-bloc noRadius">
-              <i class="text-secondary fas fa-road"></i> {{'planifierItineraire' | translate}}
+              <i class="text-secondary fas fa-road"></i> {{'planifierItineraire' | translate}} & vehicule
             </a> <br>
             <a *ngIf="detailsItem?.equipes_count" (click)="onEdit(detailsItem, currentIndex, 'equipe', true)"
               class="btn btn-light btn-md btn-bloc noRadius text-dark">

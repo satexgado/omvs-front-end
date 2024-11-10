@@ -22,6 +22,8 @@ import { MarqueFactory } from 'src/app/core/services/transport/marque';
 import { ModeleFactory } from 'src/app/core/services/transport/modele';
 import { GenreFactory } from 'src/app/core/services/transport/genre';
 import { CouleurFactory } from 'src/app/core/services/transport/couleur';
+import { Subscription } from 'rxjs';
+import { requiredFileType } from 'src/app/shared/upload-file.validator';
 
 @Component({
   selector: 'app-edit',
@@ -29,6 +31,7 @@ import { CouleurFactory } from 'src/app/core/services/transport/couleur';
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class EditComponent extends BaseEditComponent  {
+  subscription: Subscription = new Subscription();
   heading = 'bus';
   @Input() item: IAutomobile = new Automobile();
   allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
@@ -87,6 +90,20 @@ export class EditComponent extends BaseEditComponent  {
     super(new AutomobileFactory(), cdRef, activeModal);
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+    this.onImageChange();
+  }
+
+  onImageChange() {
+    const control = this.editForm.get('image');
+    let sub = this.editForm.get('image').valueChanges
+      .subscribe(type => {
+        control.markAsDirty();
+      });
+      this.subscription.add(sub);
+  }
+
   createFormGroup(item: IAutomobile) {
 
     return this.formBuilder.group({
@@ -110,7 +127,13 @@ export class EditComponent extends BaseEditComponent  {
       'type_automobile_id': [item.type_automobile_id, Validators.required],
       'couleur_id': [item.couleur_id, Validators.required],
       'libelle': [item.libelle, Validators.required],
+      'image':[item.image, [Validators.required, requiredFileType(['png','gif','jpeg', 'jpg'])]],
       'id': [item.id]
     });
+  }
+
+  ngOnDestroy()
+  {
+    this.subscription.unsubscribe();
   }
 }

@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ChooseMultiItem2Component } from 'src/app/modules/choose-item/multi2/choose-multi-item2.component';
 import {EditComponent} from '../edit/edit.component';
 import { map, shareReplay } from 'rxjs/operators';
 import { ICrCoordonneeGroupe } from 'src/app/core/models/cr-coordonnee-groupe';
 import { CrCoordonneeGroupeFactory } from 'src/app/core/services/cr-coordonnee-groupe';
+import { ChooseMultiItemBaseComponent } from 'src/app/modules/choose-item/multi/choose-multi-item-base.component';
+import { IBase } from 'src/app/core/models/base.interface';
 
 @Component({
   selector: 'app-coordonnee-groupe-select',
@@ -22,18 +23,17 @@ import { CrCoordonneeGroupeFactory } from 'src/app/core/services/cr-coordonnee-g
 export class CoordonneeGroupeSelectComponent implements ControlValueAccessor {
   onChange: (param: any) => void;
   onTouched: (param: any) => void;
-  selected: number[];
-  items: {id: number, libelle: string}[] = [];
+  selected: IBase[];
   @Input() label = null;
   @Input() small = false;
 
  
   get libelle() {
-    if(!(this.items&&this.items.length)) {
+    if(!(this.selected&&this.selected.length)) {
       return '';
     }
     let kk = '';
-    this.items.forEach(k=>{
+    this.selected.forEach(k=>{
       kk +=`${k.libelle};`
     })
     return kk;
@@ -49,10 +49,6 @@ export class CoordonneeGroupeSelectComponent implements ControlValueAccessor {
     if (this.onChange && this.onTouched) {
       this.onChange(value);
       this.onTouched(true);
-    }
-
-    if(!value) {
-      this.items = [];
     }
   }
 
@@ -71,8 +67,8 @@ export class CoordonneeGroupeSelectComponent implements ControlValueAccessor {
 
   onChooseCoordonneeGroupes()
   {
-    const modalRef = this.modalService.open(ChooseMultiItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
-    const instance = modalRef.componentInstance as ChooseMultiItem2Component;
+    const modalRef = this.modalService.open(ChooseMultiItemBaseComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as ChooseMultiItemBaseComponent;
     instance.createModal = EditComponent;
     instance.dataSource$ = new CrCoordonneeGroupeFactory().list().pipe(
       shareReplay(1),
@@ -85,7 +81,6 @@ export class CoordonneeGroupeSelectComponent implements ControlValueAccessor {
     instance.multipleItemChoosen.subscribe(
       (data)=>{
         this.onSetSelected(data);
-        this.items = instance.items.filter(item=>this.selected.includes(item.id));
       }
     )
   }

@@ -20,12 +20,13 @@ import { EvaluationSingleComponent } from './evaluation-single/evaluation-single
 import { TraitementComponent } from './traitement/traitement.component';
 import { OrdreComponent } from './ordre/ordre.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AutomobileComponent } from './automobile/automobile.component';
 
 
 
 
 @NgModule({
-  declarations: [AddTypeMissionComponent, AddMissionComponent, ChargeComponent, EquipeComponent, MaterielComponent, NoMissionComponent, ItineraireComponent, RapportQuotidienComponent, RapportFinalComponent, EvaluationSingleComponent, TraitementComponent, OrdreComponent],
+  declarations: [AddTypeMissionComponent, AddMissionComponent, ChargeComponent, EquipeComponent, MaterielComponent, NoMissionComponent, ItineraireComponent, RapportQuotidienComponent, RapportFinalComponent, EvaluationSingleComponent, TraitementComponent, OrdreComponent, AutomobileComponent],
   imports: [
     SharedModule,
     AngularEditorModule,
@@ -33,7 +34,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MapsPluginModule,
     NgxPaginationModule
   ],
-  exports: [AddTypeMissionComponent, AddMissionComponent, ChargeComponent, EquipeComponent, MaterielComponent, ItineraireComponent, RapportQuotidienComponent, RapportFinalComponent, EvaluationSingleComponent, TraitementComponent, OrdreComponent]
+  exports: [AddTypeMissionComponent, AddMissionComponent, ChargeComponent, EquipeComponent, MaterielComponent, ItineraireComponent, RapportQuotidienComponent, RapportFinalComponent, EvaluationSingleComponent, TraitementComponent, OrdreComponent, AutomobileComponent]
 })
 
 export class MissionPluginModule { }

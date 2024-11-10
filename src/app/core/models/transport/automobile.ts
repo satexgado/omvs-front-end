@@ -36,6 +36,7 @@ export interface IAutomobile extends IBase {
   type_transmission: string;
   emission_co2: string;
   nombre_chevaux: number;
+  image: string;
 }
 
 export class Automobile implements IAutomobile {
@@ -47,7 +48,7 @@ export class Automobile implements IAutomobile {
     type_acquisition: string = '';
     immatriculation: string = '';
     numero_chassis = 0;
-
+    image: string ='';
     etat_achat: string = '';
     montant = 0;
     nombre_place = 0;

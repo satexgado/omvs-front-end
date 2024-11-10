@@ -89,6 +89,15 @@ a {
     vertical-align: baseline;
     border-radius: 0.75rem;
 }
+    header {
+        padding: 8px 0 2px;
+        background: #e9e9e9;
+        border-bottom: 1px solid #cfcfcf;
+        -webkit-box-shadow: 0 1px 0 #fff;
+        -moz-box-shadow: 0 1px 0 #fff;
+        -ms-box-shadow: 0 1px 0 #fff;
+        box-shadow: 0 1px 0 #fff;
+    }  
   `],
   animations: [
     trigger('flyInOut', [
@@ -143,7 +152,7 @@ export class CoordonneeComponent extends EditableListComponent implements OnInit
     super.ngOnInit();
     this.dataHelper.sortColumn = 'libelle';
     this.dataHelper.sortDirection = 'Asc';
-    this.dataHelper.relations = ['cr_coordonnee_groupes'];
+    this.dataHelper.relations = ['cr_coordonnee_groupes','cr_coordonnee_contacts'];
     this.route.fragment.subscribe(
       (fragment)=> {
 

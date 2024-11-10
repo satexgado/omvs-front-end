@@ -331,14 +331,14 @@
                           </div>
                         </div>
                         <!-- ITINERAIRE -->
-                        <div class="row animated zoomIn">
-                          <div class="col">
+                        <div class="row ">
+                          <div class="col animated zoomIn">
                             <div class="card shadow mb-2">
                               <div class="card-header">
                                 <h6 class="m-0 font-weight-bold">{{'ITINERAIRE' | translate}}</h6>
                               </div>
                               <div class="card-body p-1">
-                                <div *ngIf="service.single?.itineraires?.length" class="row bs-wizard"
+                                <div class="row bs-wizard"
                                   style="border-bottom:0;">
 
                                   <div [class]="'bs-wizard-step complete '+itineraireColSize()">
@@ -389,7 +389,33 @@
                                   </div>
 
                                 </div>
-                                <div *ngIf="!service.single?.itineraires?.length">
+                              </div>
+                            </div>
+                          </div>
+                          <!-- MATERIEL -->
+                          <div class="col animated zoomIn">
+                            <div class="card shadow mb-2">
+                              <div class="card-header">
+                                <h6 class="m-0 font-weight-bold">Vehicule</h6>
+                              </div>
+                              <div class="card-body p-1">
+                                <div *ngIf="service.single?.auto_missions?.length" class="row">
+                                  <div class="col-md-12">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th> Vehicule </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of service.single.auto_missions" class="animated slideInDown">
+                                          <td><a [routerLink]="'/transport/mes-autos/'+item?.auto_id">{{item?.auto.designation}}</a></td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                                <div *ngIf="!service.single?.auto_missions?.length">
                                   <app-nodata></app-nodata>
                                 </div>
                               </div>

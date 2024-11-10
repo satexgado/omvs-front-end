@@ -1,5 +1,7 @@
 <div class="card card-2 card-accent-primary">
-  <div class="d-flex align-items-center justify-content-between p-2 border-bottom">
+  <div
+    class="d-flex align-items-center justify-content-between p-2 border-bottom"
+  >
     <input
       type="text"
       class="form-control form-control-sm"
@@ -11,31 +13,27 @@
       aria-describedby="basic-addon2"
     />
     <button class="btn btn-link" (click)="onChangeView('card')">
-        <span class="tx-primary">
-          <i
-            class="fad fa-th card-1 tx-16"
-            [ngClass]="
-              view == 'card'
-                ? 'bg-primary text-white'
-                : 'text-primary bg-white'
-            "
-            style="padding: 6px; border-radius: 50%"
-          ></i>
-        </span>
-      </button>
-      <button class="btn btn-link" (click)="onChangeView('list')">
-        <span class="tx-primary">
-          <i
-            class="fad fa-list card-1 tx-16"
-            [ngClass]="
-              view == 'list'
-                ? 'bg-primary text-white'
-                : 'text-primary bg-white'
-            "
-            style="padding: 6px; border-radius: 50%"
-          ></i>
-        </span>
-      </button>
+      <span class="tx-primary">
+        <i
+          class="fad fa-th card-1 tx-16"
+          [ngClass]="
+            view == 'card' ? 'bg-primary text-white' : 'text-primary bg-white'
+          "
+          style="padding: 6px; border-radius: 50%"
+        ></i>
+      </span>
+    </button>
+    <button class="btn btn-link" (click)="onChangeView('list')">
+      <span class="tx-primary">
+        <i
+          class="fad fa-list card-1 tx-16"
+          [ngClass]="
+            view == 'list' ? 'bg-primary text-white' : 'text-primary bg-white'
+          "
+          style="padding: 6px; border-radius: 50%"
+        ></i>
+      </span>
+    </button>
   </div>
   <div class="card-body" *ngIf="view == 'card'; else listView">
     <div
@@ -249,7 +247,7 @@
                   class="btn btn-sm btn-link"
                   [routerLink]="['./', coordonnee.id]"
                 >
-                  {{ coordonnee.tag | shorten:30 }}
+                  {{ coordonnee.tag | shorten : 30 }}
                 </a>
               </td>
               <td>
@@ -437,6 +435,39 @@
         </div>
       </li>
     </ul>
+    <header class="px-3 mx-auto">
+      <h5>
+          Contact Additionnel 
+      </h5>
+  </header>
+    <div class="table-responsive" *ngIf="modalData.contacts && modalData.contacts.length">
+      <table class="table table-hover text-nowrap">
+          <thead class="tx-10 tx-uppercase">
+              <tr>
+                  <th>Nom</th>
+                  <th class="tx-center">Statut</th>
+                  <th class="tx-center">Email</th>
+                  <th class="tx-center">Telephone</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contact of modalData.contacts;">
+              <td>
+                  {{contact.libelle}}
+              </td>
+              <td>
+                {{contact.statut}}
+              </td>
+              <td>
+                {{contact.email}}
+              </td>
+              <td>
+                {{contact.telephone}}
+              </td>
+          </tr>
+          </tbody>
+      </table>
+    </div>
   </div>
   <div class="modal-footer">
     <button

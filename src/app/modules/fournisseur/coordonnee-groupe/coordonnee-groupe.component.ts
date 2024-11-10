@@ -209,7 +209,7 @@ export class CoordonneeGroupeComponent  implements OnInit, AfterViewInit, OnDest
 
   onNavigate(groupe: ICrCoordonneeGroupe) {
 
-    this.router.navigate(['/groupe-contact', groupe.id]);
+    this.router.navigate(['/annuaire/groupe', groupe.id]);
   }
 
   openModal(content, data: ICrCoordonnee) {

@@ -20,6 +20,7 @@ import { MasqueItineraireModule } from '../masque-itineraire/masque-itineraire.m
 import { LieuModule } from '../lieu/lieu.module';
 import { PanneModule } from './panne/panne.module';
 import { CalendrierModule } from '../../calendrier/calendrier.module';
+import { UploadModule } from 'src/app/upload';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { CalendrierModule } from '../../calendrier/calendrier.module';
         InfiniteScrollModule,
         LieuModule,
         PanneModule,
-        CalendrierModule
+        CalendrierModule,
+        UploadModule
     ],
     exports: [
         AutomobileComponent,

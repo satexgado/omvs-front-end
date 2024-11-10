@@ -22,7 +22,7 @@
       </div>
       <div (click)="switchStep('itineraire')" [ngClass]="{'f1-step': true, 'active': currentView == 'itineraire'}">
         <div class="f1-step-icon"><i class="fas fa-road"></i></div>
-        <p> {{'ITINERAIRE' | translate}} </p>
+        <p> {{'ITINERAIRE' | translate}} & Vehicule </p>
       </div>
     </div>
   </div>
@@ -244,6 +244,14 @@
 
   <div *ngIf="mission_id" class="col-md-12 p-0">
     <app-itineraire [mission_id]="mission_id"></app-itineraire>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12">
+    <h3 class="text-center"><i class="fas fa-road"></i> Vehicule</h3>
+  </div>
+
+  <div *ngIf="mission_id" class="col-md-12 p-0">
+    <app-automobile [mission_id]="mission_id"></app-automobile>
   </div>
 
 </div>

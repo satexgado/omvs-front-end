@@ -28,7 +28,7 @@ const butsRoutes: Routes = [
   children: [
     {path: '', component: TemplateComponent,children: [
       {path: '', component: AutomobileComponent, data: {
-        icon: 'fa-bus-school', title:'Automobiles'
+        icon: 'fa-bus-school', title:'Vehicule'
       }, children: [
         {
           path: ':idauto',
@@ -73,17 +73,17 @@ const butsRoutes: Routes = [
       {path: '', component: DossierMedicalComponent}
     ]},
   ]},
-  { path: 'mes-itineraires',
-  data: {
-    breadcrumb: 'Mes itineraires'
-  },
-  children: [
-    {path: '', component: TemplateComponent, pathMatch:'full',children: [
-      {path: '', component: ItineraireComponent, data: {
-        icon: 'fa-route', title:'Itineraires'
-      }}
-    ]},
-  ]},
+  // { path: 'mes-itineraires',
+  // data: {
+  //   breadcrumb: 'Mes itineraires'
+  // },
+  // children: [
+  //   {path: '', component: TemplateComponent, pathMatch:'full',children: [
+  //     {path: '', component: ItineraireComponent, data: {
+  //       icon: 'fa-route', title:'Itineraires'
+  //     }}
+  //   ]},
+  // ]},
   { path: 'configuration',
   data: {
     breadcrumb: 'Configuration'

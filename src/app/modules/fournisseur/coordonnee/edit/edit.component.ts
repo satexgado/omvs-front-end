@@ -86,7 +86,7 @@ export class EditComponent extends BaseEditComponent  {
         if(value && value.length) {
           groupesIdControl.setValue(value.map(el=>el.id));
         } else {
-          groupesIdControl.setValue(null);
+          groupesIdControl.setValue([]);
         }
         groupesIdControl.markAsDirty();
         groupesIdControl.markAsTouched();
@@ -103,8 +103,8 @@ export class EditComponent extends BaseEditComponent  {
           contacts.push(this.formBuilder.group({
             'statut': [field.statut, Validators.required],
             'libelle': [field.libelle, Validators.required],
-            'email': [field.email, Validators.required],
-            'telephone': [field.telephone, Validators.required],
+            'email': [field.email],
+            'telephone': [field.telephone],
             id: [field.id]
           }))
         }
@@ -132,8 +132,8 @@ export class EditComponent extends BaseEditComponent  {
     control.push(this.formBuilder.group({
       'statut': ['', Validators.required],
       'libelle': ['', Validators.required],
-      'email': ['', Validators.required],
-      'telephone': ['', Validators.required],
+      'email': [''],
+      'telephone': [''],
       id: [0]
     }));
   }

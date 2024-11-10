@@ -241,3 +241,38 @@ CREATE TABLE `cr_coordonnee_contact` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+CREATE TABLE `trans_auto_mission` (
+  `id` int(11) NOT NULL,
+  `auto_id` int(11) NOT NULL,
+  `mission_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `trans_auto_mission`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_trans_auto__mission_idx` (`mission_id`),
+  ADD KEY `fk_trans_mission__auto_idx` (`auto_id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `trans_auto_mission`
+--
+ALTER TABLE `trans_auto_mission`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `trans_auto_mission`
+--
+ALTER TABLE `trans_auto_mission`
+  ADD CONSTRAINT `fk_trans_mission__auto_idx` FOREIGN KEY (`auto_id`) REFERENCES `trans_auto` (`id_bus`),
+  ADD CONSTRAINT `fk_trans_auto__mission_idx` FOREIGN KEY (`mission_id`) REFERENCES `mission` (`id`);
+COMMIT;

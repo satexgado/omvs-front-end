@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ChooseMultiItem2Component } from 'src/app/modules/choose-item/multi2/choose-multi-item2.component';
 import {EditComponent} from '../edit/edit.component';
 import { IItineraire } from 'src/app/core/models/transport/itineraire';
 import { ItineraireFactory } from 'src/app/core/services/transport/itineraire';
 import { map, shareReplay } from 'rxjs/operators';
+import { ChooseMultiItemBaseComponent } from 'src/app/modules/choose-item/multi/choose-multi-item-base.component';
 
 @Component({
   selector: 'app-itineraire-select',
@@ -64,8 +64,8 @@ export class ItineraireSelectComponent implements ControlValueAccessor {
 
   onChooseItineraires()
   {
-    const modalRef = this.modalService.open(ChooseMultiItem2Component,{ size: 'lg', centered: true,  backdrop: 'static' });
-    const instance = modalRef.componentInstance as ChooseMultiItem2Component;
+    const modalRef = this.modalService.open(ChooseMultiItemBaseComponent,{ size: 'lg', centered: true,  backdrop: 'static' });
+    const instance = modalRef.componentInstance as ChooseMultiItemBaseComponent;
     instance.createModal = EditComponent;
     instance.dataSource$ = new ItineraireFactory().list().pipe(
       shareReplay(1),

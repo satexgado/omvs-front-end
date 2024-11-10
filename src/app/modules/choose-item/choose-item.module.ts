@@ -8,11 +8,13 @@ import { UserChooseItem2Component } from './user-choose/user-choose-item.compone
 import { CoordonneeChooseMultiItem2Component } from './coordonnee-choose/coordonnee-choose-multi-item2.component';
 import { CoordonneeChooseItem2Component } from './coordonnee-choose/coordonnee-choose-item.component';
 import { UserSelectComponent } from './user-select/user-select.component';
+import { ChooseMultiItemBaseComponent } from './multi/choose-multi-item-base.component';
 
 @NgModule({
     declarations: [
         ChooseMultiItem2Component,
         ChooseItem2Component,
+        ChooseMultiItemBaseComponent,
         UserChooseMultiItem2Component,
         UserChooseItem2Component,
         UserSelectComponent,
@@ -27,6 +29,7 @@ import { UserSelectComponent } from './user-select/user-select.component';
         ChooseMultiItem2Component,
         ChooseItem2Component,
         UserChooseMultiItem2Component,
+        ChooseMultiItemBaseComponent,
         UserChooseItem2Component,
         UserSelectComponent,
         CoordonneeChooseMultiItem2Component,
@@ -40,6 +43,7 @@ import { UserSelectComponent } from './user-select/user-select.component';
         CoordonneeChooseMultiItem2Component,
         CoordonneeChooseItem2Component,
         UserSelectComponent,
+        ChooseMultiItemBaseComponent
     ]
 })
 export class ChooseItemModule {

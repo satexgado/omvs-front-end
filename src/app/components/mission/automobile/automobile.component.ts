@@ -1,25 +1,26 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseComponent } from 'src/app/shared-module/base.component';
-import { FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
+import { FormBuilder,  Validators, } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { EquipementService } from 'src/app/services/equipement.service';
 import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { DashboardService } from '../../modules/tableau/dashboard/dashboard.service';
+import { AutomobileService } from 'src/app/services/automobile.service';
+import { AutomobileFactory } from 'src/app/core/services/transport/automobile';
+import { Filter, QueryOptions } from 'src/app/shared/models/query-options';
 
 @Component({
-  selector: 'app-materiel',
-  templateUrl: './materiel.component.html',
-  styleUrls: ['./materiel.component.sass']
+  selector: 'app-automobile',
+  templateUrl: './automobile.component.html',
+  styleUrls: ['./automobile.component.sass']
 })
-export class MaterielComponent extends BaseComponent implements OnInit {
+export class AutomobileComponent extends BaseComponent implements OnInit {
 
   @Input() mission_id: number;
   config: any;
   items: [] = [];
   searchSubject = new BehaviorSubject('');
 
-  constructor(private service: EquipementService,protected dashService: DashboardService, private formBuilder: FormBuilder,
+  constructor(private service: AutomobileService, private formBuilder: FormBuilder,
     private routeObserver: ActivatedRoute, ) {
     super(service, '', '');
 
@@ -37,7 +38,7 @@ export class MaterielComponent extends BaseComponent implements OnInit {
     }
 
     this.config = {
-      displayKey: "name", //if objects array passed which key to be displayed defaults to description
+      displayKey: "libelle", //if objects array passed which key to be displayed defaults to description
       search: true, //true/false for the search functionlity defaults to false,
       height: 'auto', //height of the list so that if there are more no of items it can show a scroll defaults to auto. With auto height scroll will never appear
       placeholder: 'Selectionner',// text to be displayed when no item is selected defaults to Select,
@@ -46,7 +47,7 @@ export class MaterielComponent extends BaseComponent implements OnInit {
       moreText: 'plus', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
       noResultsFound: 'Rien à afficher!', // text to be displayed when no items are found while searching
       searchPlaceholder: 'recherche',// label thats displayed in search input,
-      searchOnKey: 'name', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+      searchOnKey: 'libelle', // key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
       clearOnSelection: false // clears search criteria when an option is selected if set to true, default is false
     }
 
@@ -57,30 +58,36 @@ export class MaterielComponent extends BaseComponent implements OnInit {
         (keyword: string) => {
           if (keyword) {
             this.requestings.search = true;
-            this.service.get('materiel/search/' + keyword).subscribe(
+            const service = new AutomobileFactory();
+            service.list(new QueryOptions().setFilterGroups(
+              [
+                {or: true, filters:[new Filter('searchString', keyword, 'ct')]},
+              ]
+            )).subscribe(
               (res: any) => {
                 this.requestings.search = false;
                 this.items = res.data;
               }
-            );
+            )
           }
         }
       );
 
 
-    this.service.stockService.allData.subscribe(
-      (data: any) => {
-        this.items = data;
-
-      }
-    );
+      const service = new AutomobileFactory();
+      service.list().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.requestings.search = false;
+          this.items = res.data;
+        }
+      )
   }
 
 
   initAddForm(ingoreCurrentView: boolean = true) {
     this.forms.add = this.formBuilder.group({
-      designation: [null, Validators.required],
-      quantite: [null, [Validators.required, Validators.min(1)]]
+      auto: [null, Validators.required],
     })
 
     if (ingoreCurrentView) {
@@ -93,7 +100,7 @@ export class MaterielComponent extends BaseComponent implements OnInit {
     let formValue = this.forms.add.value;
     this.requesting = true;
     formValue.mission_id = this.mission_id;
-    formValue.designation_id = formValue.designation.id;
+    formValue.auto_id = formValue.auto.id;
 
 
     this.service.post(this.service.getServerUrl(), formValue).subscribe(
