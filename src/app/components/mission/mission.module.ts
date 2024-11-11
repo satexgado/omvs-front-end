@@ -2,7 +2,12 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared-module/shared.module';
 import { Routes, RouterModule} from '@angular/router';
 // DOWNLOADED
-import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
+import { FullCalendarModule } from '@fullcalendar-vision/angular';
+import dayGridPlugin from '@fullcalendar-vision/daygrid';
+import timeGridPlugin from '@fullcalendar-vision/timegrid';
+import listPlugin from '@fullcalendar-vision/list';
+import interactionPlugin from '@fullcalendar-vision/interaction';
+import rrulePlugin from '@fullcalendar-vision/rrule'
 
 //PLUSGIN
 import { PluginModule } from 'src/app/plugin/plugin.module';
@@ -17,6 +22,13 @@ import { TypeMissionComponent } from './type-mission/type-mission.component';
 import { DetailsMissionComponent } from './details-mission/details-mission.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { RhPluginModule } from '../rh/rh-plugin.module';
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  interactionPlugin,
+  rrulePlugin
+]);
 
 const appRoute: Routes = [
   { path: '', component: MissionIndexComponent },

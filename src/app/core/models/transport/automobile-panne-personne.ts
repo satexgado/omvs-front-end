@@ -15,6 +15,7 @@ export interface IAutomobilePannePersonne extends IBase {
     fournisseur_id: number;
     fournisseur: ICrCoordonnee;
     panne_id: number;
+    remarque:string;
 }
 
 export class AutomobilePannePersonne implements IAutomobilePannePersonne {
@@ -22,6 +23,7 @@ export class AutomobilePannePersonne implements IAutomobilePannePersonne {
     id: number = 0;
 
     libelle: string = '';
+    remarque:string ='';
 
     @dateAdaptableMap('date_sortie')
     date_sortie: Date = new Date();

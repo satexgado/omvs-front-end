@@ -41,6 +41,11 @@
                     <i class="fal fa-cars tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Series</span>
                 </div>
             </a>
+            <a [class.active]="fragment == 'etat'" routerLink="." [fragment]="'etat'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-wave-square tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Etats</span>
+                </div>
+            </a>
             <!-- <a [class.active]="fragment == 'masque-itineraire'" routerLink="." [fragment]="'masque-itineraire'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
                 <div class="nav-link3 text-center">
                     <i class="fal fa-map-signs tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Masques Itineraires</span>
@@ -70,6 +75,9 @@
             </div>
             <div *ngSwitchCase="'serie'">
                 <app-serie></app-serie>
+            </div>
+            <div *ngSwitchCase="'etat'">
+                <app-etat></app-etat>
             </div>
             <!-- <div *ngSwitchCase="'masque-itineraire'">
                 <app-masque-itineraire></app-masque-itineraire>

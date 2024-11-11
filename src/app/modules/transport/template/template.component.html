@@ -27,7 +27,10 @@
               <span> {{title}} </span>
             </h5>
   
-            <div class="col-md-6">
+            <div class="col-md-6 d-sm-flex align-items-center justify-content-end">
+              <a routerLink="/transport/configuration" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm">
+                <i class="fas fa-cog fa-sm text-primary"></i> {{'SETTING' | translate}}
+              </a>
             </div>
           </div>
           <div class="row mb-4 animated slideInUp">
@@ -51,8 +54,8 @@
                 <a routerLink="/transport/mes-conducteurs" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                   <i class="fas fa-user-tie"></i> cartes rapido
                 </a>
-                <a routerLink="/transport/configuration" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-wrench"></i> Configuration
+                <a routerLink="/transport/panne" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-user-tie"></i> pannes & commandes
                 </a>
               </div>
             </div>

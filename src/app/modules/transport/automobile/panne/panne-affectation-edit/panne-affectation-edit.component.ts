@@ -15,7 +15,7 @@ import { Filter, QueryOptions } from 'src/app/shared/models/query-options';
 import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
 import { CrCoordonnee } from 'src/app/core/models/cr-coordonnee';
 import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
-
+import { EditComponent as EtatEditComponent} from 'src/app/modules/transport/etat/edit/edit.component';
 @Component({
   selector: 'app-panne-affectation-edit',
   templateUrl: './panne-affectation-edit.component.html',
@@ -39,7 +39,7 @@ export class PanneAffectationEditComponent extends BaseEditComponent implements 
     ),
     1800000
   );
-
+  etatEditComponent = EtatEditComponent;
   allFounisseurs$ = this.cacheService.get(
     'allFounisseurs',
     new CrCoordonneeFactory().list().pipe(
@@ -60,6 +60,7 @@ export class PanneAffectationEditComponent extends BaseEditComponent implements 
   createFormGroup(item: IAutomobilePannePersonne) {
     const panneId = this.panneId ? this.panneId : item.panne_id;
     return this.formBuilder.group({
+      'remarque': [item.remarque],
       'panne_id': [panneId],
       'fournisseur_id': [item.fournisseur_id, Validators.required],
       'etat_id': [item.etat_id, Validators.required],

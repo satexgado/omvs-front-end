@@ -18,6 +18,7 @@ import { SerieComponent } from './serie/serie.component';
 import { LieuComponent } from './lieu/lieu.component';
 import { MasqueItineraireComponent } from './masque-itineraire/masque-itineraire.component';
 import { ConfigurationTransportComponent } from './automobile/configuration/configuration.component';
+import { PanneComponent } from './automobile/panne/panne.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -40,6 +41,20 @@ const butsRoutes: Routes = [
     //   resolve: { automobile: AutomobileDetailsEditResolver}
     // }
   ]},
+  { path: 'panne',
+    data: {
+      breadcrumb: 'Mes Pannes'
+    },
+    children: [
+      {path: '', component: TemplateComponent,children: [
+        {path: '', component: PanneComponent, data: {
+          icon: 'fa-exclamation-circle', title:'Panne & Commande'
+        }}
+      ]},
+      // {path: ':idauto', component: AutomobileDetailsEditComponent,
+      //   resolve: { automobile: AutomobileDetailsEditResolver}
+      // }
+    ]},
   { path: 'mes-conducteurs',
   data: {
     breadcrumb: 'Mes conducteurs'

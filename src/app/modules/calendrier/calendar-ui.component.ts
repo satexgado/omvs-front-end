@@ -47,14 +47,9 @@ export class CalendarUiComponent implements OnInit  {
     locale: 'fr',
     locales: [ frLocale ],
     headerToolbar: {
-      left: 'title',
-      center: '',
-      right: 'prevYear,prev,next,nextYear today' 
-    },
-    footerToolbar: {
-      left: '',
-      center: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-      right: '' 
+      left: 'prevYear,prev,today,next,nextYear',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' 
     },
     initialView: 'dayGridMonth',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed

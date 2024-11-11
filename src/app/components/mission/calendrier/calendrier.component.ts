@@ -1,33 +1,47 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 // FULLCALENDAR
-import { FullCalendarComponent } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin, { TimeGridView } from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-import interactionPlugin from '@fullcalendar/interaction';
-import allLocales from '@fullcalendar/core/locales-all';
-import * as frLocale from 'date-fns/locale/fr';
+import { FullCalendarComponent } from '@fullcalendar-vision/angular';
+// import * as frLocale from 'date-fns/locale/fr';
 import { OptionsInput, EventInput } from '@fullcalendar/core';
 import { BaseComponent } from 'src/app/shared-module/base.component';
 import { MissionService } from 'src/app/services/mission.service.';
+import { CalendarOptions } from '@fullcalendar-vision/angular';
+import frLocale from '@fullcalendar-vision/core/locales/fr';
 
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendrier',
   templateUrl: './calendrier.component.html',
-  styleUrls: ['./calendrier.component.css']
+  styleUrls: ['./calendrier.component.scss']
 })
 export class CalendrierComponent extends BaseComponent implements OnInit {
 
   @ViewChild('calendar') calendar: FullCalendarComponent;
-  options: OptionsInput; // calendar config option
+  options: CalendarOptions = {
+    locale: 'fr',
+    locales: [ frLocale ],
+    headerToolbar: {
+      left: 'prevYear,prev,today,next,nextYear',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' 
+    },
+    initialView: 'dayGridMonth',
+    weekends: true,
+    editable: true,
+    selectable: true,
+    selectMirror: true,
+    dayMaxEvents: true,
+    eventClick: this.eventClick.bind(this),
+  }; // calendar config option
   private theme = { textColor: '#000', backgroundColor: '#E9E9E9', borderColor: '#E9E9E9' };
   SOURCE = [];
   private lastAvaibleDate: Date; // contains last date we used to fetch event from server
   private currentDate: string; // is used to get events from database by period
+  changeMonth: Subject<void> = new Subject<void>();
 
   constructor(private service: MissionService) {
     super(service, '/mission/calendrier', '');
@@ -38,26 +52,19 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
     this.purgeCacheBefore = true;
   }
 
-  ngOnInit() {
-    this.options = {
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, bootstrapPlugin],
-      themeSystem: 'bootstrap',
-      defaultView: 'timeGridWeek',
-      locales: allLocales,
-      locale: 'fr',
-      eventLimitClick: 'day',
-      eventLimit: true
-    };
+  changed() {
+    this.changeMonth.next();
+  }
 
+  ngOnInit() {
     this.service.hideBlockSlide();
     this.currentDate = this.service.today();
     this.requestings.stat = true;
     this.getByMonth();
+
+    this.changeMonth.pipe(
+      debounceTime(1500)
+    ).subscribe(() => this.getByMonth());
 
     this.service.dataSubject.subscribe(
       (res: any) => {
@@ -81,13 +88,13 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
                   niveau: item.niveau
                 })
               });
-              this.SOURCE = events;
+              this.options.events = events;
             }
           }
 
         }
         else {
-          this.SOURCE = [];
+          this.options.events = [];
         }
       }
     )
@@ -96,35 +103,44 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
 
   ngAfterViewInit() {
     // attach methods after calendar has rendered navigations button 
-    document.querySelector('.fc-prev-button').addEventListener('click', () => {
-      this.onDateChange('previous');
-    });
+    // document.querySelector('.fc-prev-button').addEventListener('click', () => {
+    //   this.onDateChange('previous');
+    // });
 
-    document.querySelector('.fc-next-button').addEventListener('click', () => {
-      this.onDateChange('next');
-    });
+    // document.querySelector('.fc-next-button').addEventListener('click', () => {
+    //   this.onDateChange('next');
+    // });
 
-    document.querySelector('.fc-today-button').addEventListener('click', () => {
-      this.onDateChange('today');
-    });
+    // document.querySelector('.fc-today-button').addEventListener('click', () => {
+    //   this.onDateChange('today');
+    // });
 
-    this.lastAvaibleDate = this.calendar.getApi().getDate();
+    // document.querySelector('.fc-prevYear-button').addEventListener('click', () => {
+    //   this.onDateChange('prevYear','year');
+    // });
+
+    // document.querySelector('.fc-nextYear-button').addEventListener('click', () => {
+    //   this.onDateChange('nextYear','year');
+    // });
+
+    // this.lastAvaibleDate = this.calendar.getApi().getDate();
 
 
   }
 
 
-  private onDateChange(step: string) {
+  private onDateChange(step: string, range:moment.unitOfTime.StartOf = 'month') {
     let view = this.calendar.getApi().view.title;
     const newDate = this.calendar.getApi().getDate();
-    const monthBefore = moment(newDate).isBefore(this.lastAvaibleDate, 'month');
-    const monthAfter = moment(newDate).isAfter(this.lastAvaibleDate, 'month');
+    const monthBefore = moment(newDate).isBefore(this.lastAvaibleDate, range);
+    const monthAfter = moment(newDate).isAfter(this.lastAvaibleDate, range);
 
 
     if (monthBefore || monthAfter) {
       this.lastAvaibleDate = newDate;
       this.currentDate = this.service.mysql_date_format(newDate);
-      this.getByMonth();
+      this.changed();
+      // this.getByMonth();
     }
 
   }
@@ -142,7 +158,7 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
   private getByMonth(etats = []) {
     let formValue = { anyDate: this.currentDate};
     this.service.setLoading(true);
-    this.service.post('mission/calendrier', formValue).subscribe(
+    this.service.post('mission/calendrier').subscribe(
       (res: any) => {
         if (res.success) {
           this.service.setData(res);
@@ -161,7 +177,10 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
   }
 
   private eventClick(arg: EventInput) {
-    let items  = this.SOURCE.filter(event => event.id == arg.event.id);
+    let items = [];
+    if(Array.isArray(this.options.events)) {
+      items  = this.options.events.filter(event => event.id == arg.event.id);
+    }
     this.service.goTo('mission/details/'+items[0].id+'/tab/default')
     // this.currentItem = items[0];
     // this.service.toggleBlockSlide(true);

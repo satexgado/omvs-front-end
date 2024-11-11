@@ -23,7 +23,7 @@
                     <label class="control-label" for="libelle">Fournisseur</label>
                     <select class="form-control form-control-sm" mySelectFirstOption required name="fournisseur_id" [formControlName]="'fournisseur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fournisseur_id') , 'is-valid': isValid('fournisseur_id')}" required>
                         <ng-container *ngFor="let item of (allFounisseurs$ | async)">
-                            <option [ngValue]="item.id">{{item.user.libelle}} </option>
+                            <option [ngValue]="item.id">{{item.libelle}} </option>
                         </ng-container>
                     </select>
                     <div *ngIf="shouldShowRequiredError('fournisseur_id')" class="invalid-feedback">veillez choisir.</div>
@@ -44,15 +44,18 @@
                     <small class="text-danger" *ngIf="editForm.hasError('dateSuperieur')">La date de retour doit être àpres la sortie</small>
                 </div>
             </div>
-            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
-                <div class="col-10" [class.loading]="editForm.get('etat_id').status === 'PENDING'">
-                    <label class="control-label" for="libelle">Etat</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption required name="etat_id" [formControlName]="'etat_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'etat_id') , 'is-valid': isValid('etat_id')}" required>
-                      <ng-container *ngFor="let item of (allEtatMateriels$ | async)">
-                          <option [ngValue]="item.id">{{item.libelle}}</option>
-                      </ng-container>
-                    </select>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <app-select-formgroup [small]="true" label="Etat" formControlName="etat_id" [selected]="editForm.get('etat_id').value" [dataSource]="allEtatAutomobiles$" [createModal]="etatEditComponent"></app-select-formgroup>
                     <div *ngIf="shouldShowRequiredError('etat_id')" class="invalid-feedback">veillez choisir l'etat.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="remarque">Remarque</label>
+                    <textarea name="remarque" maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'remarque'" [ngClass]="{'is-invalid': shouldShowRequiredError('remarque'), 'is-valid': isValid('remarque')}"></textarea>
+                    <small>{{editForm.get('remarque').value?.length}}/500</small>
+                    <div *ngIf="shouldShowRequiredError('remarque')" class="invalid-feedback">veillez saisir une remarque.</div>
                 </div>
             </div>
         </form>

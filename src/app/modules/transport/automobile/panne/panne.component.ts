@@ -22,6 +22,7 @@ export class PanneComponent extends EditableListComponent {
   editModal = EditComponent;
   _automobileId: number;
   selectedPanne: IPanne;
+  modalData;
   pannePersonneHelper: ResourceScrollableHelper;
   @Input() set automobileId(automobile_id: number) {
     if(automobile_id) {
@@ -96,6 +97,26 @@ export class PanneComponent extends EditableListComponent {
     return result$;
   }
 
+  onShowUpdateForm(item) {
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
+    const modalRef = this.modalService.open(this.editModal, { size: 'lg', centered: true, backdrop: 'static' });
+    const instance = modalRef.componentInstance as EditComponent;
+    instance.isUpdating = true;
+    instance.title =  `Modifier: ${item.libelle}`;
+    instance.item = item;
+
+    instance.automobileId = this._automobileId ? this._automobileId : null;
+    instance.newItem.subscribe(
+      (data: any) => {
+        this.dataHelper.updateItem(data);
+        _result$.next(data);
+      }
+    );
+
+    return result$;
+  }
+
   onShowCreateAffectationForm(item?) {
     if(!this.selectedPanne) {
       return this.notificationService.onError("Selectionnez d'abord une commande");
@@ -162,5 +183,10 @@ export class PanneComponent extends EditableListComponent {
 
     this.notificationService.bodyMaxLength = 80;
     this.notificationService.backdrop =  -1;
+  }
+
+  openModal(content, genre) {
+    this.modalData = genre;
+    this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
   }
 }
