@@ -7,7 +7,7 @@
 <ng-container *ngIf="editForm">
     <div class="modal-body tx-dark p-0" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
-            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+            <div *ngIf="!typeId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="type">Type</label>
                     <select mySelectFirstOption class="form-control form-control-sm" [class.loading]="allTypeCalendar$ | async" required name="type" [formControlName]="'type_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_id'), 'is-valid': isValid('type_id')}"

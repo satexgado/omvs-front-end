@@ -4,7 +4,7 @@ import { AccountGuard } from './services/account/accountGuard.service';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'mission', pathMatch: 'full'
+    path: '', redirectTo: 'dashboard', pathMatch: 'full'
   },
   {
     path: 'localisation',

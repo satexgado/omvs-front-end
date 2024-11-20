@@ -19,6 +19,9 @@ import { LieuComponent } from './lieu/lieu.component';
 import { MasqueItineraireComponent } from './masque-itineraire/masque-itineraire.component';
 import { ConfigurationTransportComponent } from './automobile/configuration/configuration.component';
 import { PanneComponent } from './automobile/panne/panne.component';
+import { AssuranceComponent } from './assurance/assurance.component';
+import { CalendrierTransportComponent } from './calendrier/calendrier.component';
+import { VisiteTechniqueComponent } from './visite-technique/visite-technique.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -55,6 +58,48 @@ const butsRoutes: Routes = [
       //   resolve: { automobile: AutomobileDetailsEditResolver}
       // }
     ]},
+    { path: 'calendrier',
+      data: {
+        breadcrumb: 'Calendrier'
+      },
+      children: [
+        {path: '', component: TemplateComponent,children: [
+          {path: '', component: CalendrierTransportComponent, data: {
+            icon: 'fa-calendar', title:'Calendrier'
+          }}
+        ]},
+        // {path: ':idauto', component: AutomobileDetailsEditComponent,
+        //   resolve: { automobile: AutomobileDetailsEditResolver}
+        // }
+      ]},
+    { path: 'assurance',
+      data: {
+        breadcrumb: 'Mes Assurances'
+      },
+      children: [
+        {path: '', component: TemplateComponent,children: [
+          {path: '', component: AssuranceComponent, data: {
+            icon: 'fa-car-crash', title:'Assurance'
+          }}
+        ]},
+        // {path: ':idauto', component: AutomobileDetailsEditComponent,
+        //   resolve: { automobile: AutomobileDetailsEditResolver}
+        // }
+      ]},
+      { path: 'visite-technique',
+        data: {
+          breadcrumb: 'Mes visites'
+        },
+        children: [
+          {path: '', component: TemplateComponent,children: [
+            {path: '', component: VisiteTechniqueComponent, data: {
+              icon: 'fa-car-mechanic', title:'Visite Technique'
+            }}
+          ]},
+          // {path: ':idauto', component: AutomobileDetailsEditComponent,
+          //   resolve: { automobile: AutomobileDetailsEditResolver}
+          // }
+        ]},
   { path: 'mes-conducteurs',
   data: {
     breadcrumb: 'Mes conducteurs'

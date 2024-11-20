@@ -25,6 +25,7 @@ import { Filter, QueryOptions, Sort } from 'src/app/shared/models/query-options'
 })
 export class CalendrierEventEditModalComponent extends BaseEditComponent implements OnInit, AfterViewInit {
   @Input() item: ICalendrierEvent = new CalendrierEvent();
+  @Input() typeId = null;
   hideRepeter;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
@@ -341,6 +342,8 @@ open(content, event) {
       rruletext = this.getRRuleText(rrule, item.allDay, hour, minute)
     }
 
+    const typeId = this.typeId ? this.typeId : item.type_id;
+
     this.createRRuleFormGroup(item);
     return this.formBuilder.group({
       'id': [item.id],
@@ -348,7 +351,7 @@ open(content, event) {
       'affectable_type': [item.affectable_type],
       'date_debut': [date_debut, Validators.required],
       'date_fin': [date_fin, Validators.required],
-      'type_id': [item.type_id, Validators.required],
+      'type_id': [typeId, Validators.required],
       'libelle': [item.libelle, Validators.required],
       'allDay': [item.allDay],
       'repeter': [repeter],

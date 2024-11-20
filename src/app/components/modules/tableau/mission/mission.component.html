@@ -77,7 +77,7 @@
                                         <select class="custom-select" formControlName="value">
                                             <option [value]="null">choississez le niveau</option>
                                             <ng-container *ngFor="let item of (service.allNiveauMissions$ | async)">
-                                                <option [ngValue]="item">{{item.name}}</option>
+                                                <option [ngValue]="item">{{item.name | translate}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -126,10 +126,10 @@
                         <thead class="tx-10 tx-uppercase">
                             <tr>
                                 <th>Mission</th>
-                                <th>Creer par</th>
                                 <th>Localite</th>
                                 <th>Departement</th>
                                 <th class="text-center">Equipe</th>
+                                <th>Date</th>
                                 <th>Note</th>
                                 <th>Budget</th>
                             </tr>
@@ -142,13 +142,6 @@
                                     <p class="tx-12 mb-0">
                                         {{mission?.type?.name}}
                                     </p>
-                                </td>
-                                <td class="d-flex align-items-center">
-                                    <div class="avatar">
-                                        <img src="https://via.placeholder.com/100x100"
-                                            title="{{mission?.personnel.nom}} {{mission?.personnel.prenom}}"
-                                            class="img-fluid wd-40 ht-40 rounded-circle" alt="">
-                                    </div>
                                 </td>
                                 <td>
                                     <p class="my-0 font-weight-bold">{{mission?.ville.name}}</p>
@@ -181,6 +174,7 @@
                                         </li>
                                     </ul>
                                 </td>
+                                <td>{{mission.start | date:'d MMM y'}} - {{mission.end | date:'d MMM y'}}</td>
                                 <td>{{mission.avg_note ? mission.avg_note : 'Aucune note'}}</td>
                                 <td>
                                     {{mission.total_budget}} ECO

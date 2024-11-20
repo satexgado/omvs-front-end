@@ -48,12 +48,11 @@ export class CalendarViewUiComponent  {
     locale: 'fr',
     locales: [ frLocale ],
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prevYear,prev,today,next,nextYear',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' 
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     selectable: true,
     selectMirror: true,
@@ -92,19 +91,19 @@ export class CalendarViewUiComponent  {
       `;
     }
 
-    if(calEvent.participants && calEvent.participants.length) {
-      eventBody += `<p><i class="fad fa-user tx-16" ></i> `;
+    // if(calEvent.participants && calEvent.participants.length) {
+    //   eventBody += `<p><i class="fad fa-user tx-16" ></i> `;
 
-      calEvent.participants.forEach((element,index)=> {
+    //   calEvent.participants.forEach((element,index)=> {
 
-        eventBody += element.libelle;
-        if (index != calEvent.participants.length - 1) {
-          eventBody += `, `;
-        }
-      })
+    //     eventBody += element.libelle;
+    //     if (index != calEvent.participants.length - 1) {
+    //       eventBody += `, `;
+    //     }
+    //   })
 
-      eventBody += `</p>`
-    }
+    //   eventBody += `</p>`
+    // }
 
     // if(calEvent.personnels && calEvent.personnels.length) {
     //   calEvent.personnels.forEach((element: IPersonnel,index)=> {
@@ -140,6 +139,7 @@ export class CalendarViewUiComponent  {
         html: true,
         container:'full-calendar',
         trigger: 'focus',
+        sanitize: false,
         template: `
             <div class="card-1 popover calendar-popover">
                 <div class="arrow"></div>

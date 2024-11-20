@@ -1,0 +1,69 @@
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title | capitalizeFirst}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Affecter à</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="user_id" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id') , 'is-valid': isValid('user_id')}" required>
+                      <ng-container *ngFor="let item of (allUsers$ | async)">
+                          <option [ngValue]="item.id">{{item.nom}} {{item.prenom}}</option>
+                      </ng-container>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Fournisseur</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption required name="fournisseur_id" [formControlName]="'fournisseur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'fournisseur_id') , 'is-valid': isValid('fournisseur_id')}" required>
+                        <ng-container *ngFor="let item of (allFounisseurs$ | async)">
+                            <option [ngValue]="item.id">{{item.libelle}} </option>
+                        </ng-container>
+                    </select>
+                    <div *ngIf="shouldShowRequiredError('fournisseur_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Date sortie</label>
+                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_sortie'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_sortie'), 'is-valid': isValid('date_sortie')}" required>
+                    <div *ngIf="shouldShowRequiredError('date_sortie')" class="invalid-feedback">veillez saisir la date.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Date retour</label>
+                    <input class="form-control form-control-sm" name="dp" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_retour'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_retour'), 'is-valid': isValid('date_retour')}" required>
+                    <div *ngIf="shouldShowRequiredError('date_retour')" class="invalid-feedback">veillez saisir la date de retour.</div>
+                    <small class="text-danger" *ngIf="editForm.hasError('dateSuperieur')">La date de retour doit être àpres la sortie</small>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <app-select-formgroup [small]="true" label="Etat" formControlName="etat_id" [selected]="editForm.get('etat_id').value" [dataSource]="allEtatAutomobiles$" [createModal]="etatEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('etat_id')" class="invalid-feedback">veillez choisir l'etat.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="remarque">Remarque</label>
+                    <textarea name="remarque" maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'remarque'" [ngClass]="{'is-invalid': shouldShowRequiredError('remarque'), 'is-valid': isValid('remarque')}"></textarea>
+                    <small>{{editForm.get('remarque').value?.length}}/500</small>
+                    <div *ngIf="shouldShowRequiredError('remarque')" class="invalid-feedback">veillez saisir une remarque.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+</div>

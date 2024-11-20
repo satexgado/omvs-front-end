@@ -274,5 +274,143 @@ ALTER TABLE `trans_auto_mission`
 --
 ALTER TABLE `trans_auto_mission`
   ADD CONSTRAINT `fk_trans_mission__auto_idx` FOREIGN KEY (`auto_id`) REFERENCES `trans_auto` (`id_bus`),
-  ADD CONSTRAINT `fk_trans_auto__mission_idx` FOREIGN KEY (`mission_id`) REFERENCES `mission` (`id`);
+  ADD CONSTRAINT `fk_trans_auto__mission_idx` FOREIGN KEY (`mission_id`) REFERENCES `cr_coordonnee` (`id`);
 COMMIT;
+
+
+CREATE TABLE `ass_masque_assurance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL,
+  `prime` int(11) NOT NULL,
+  `periodicite` varchar(191) NOT NULL COMMENT 'mensuel, annuel',
+  `duree_periodicite` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `inscription_id` int(11) NOT NULL,
+  `coordonnee_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `ass_masque_assurance`
+  ADD KEY `fk_ass_massurance_inscription_idx` (`inscription_id`),
+  ADD KEY `fk_ass_massurance_coordonnee_idx` (`coordonnee_id`);
+
+--
+-- Contraintes pour la table `ass_masque_assurance`
+--
+ALTER TABLE `ass_masque_assurance`
+  ADD CONSTRAINT `fk_ass_massurance_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_ass_massurance_coordonnee_idx` FOREIGN KEY (`coordonnee_id`) REFERENCES `cr_coordonnee` (`id`);
+
+CREATE TABLE `ass_assurance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL,
+  `prime` int(11) NOT NULL,
+  `periodicite` varchar(191) NOT NULL COMMENT 'mensuel, annuel',
+  `duree_periodicite` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `numero_contrat` varchar(191) NOT NULL,
+  `etat_contrat` varchar(191) NOT NULL COMMENT 'actif, expiré, suspendu',
+  `date_debut` date DEFAULT NULL,
+  `date_fin` date DEFAULT NULL,
+  `inscription_id` int(11) NOT NULL,
+  `coordonnee_id` int(11) NOT NULL,
+  `auto_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `ass_assurance`
+  ADD KEY `fk_ass_assurance_inscription_idx` (`inscription_id`),
+  ADD KEY `fk_ass_assurance_auto_idx` (`auto_id`),
+  ADD KEY `fk_ass_assurance_coordonnee_idx` (`coordonnee_id`);
+
+--
+-- Contraintes pour la table `ass_masque_assurance`
+--
+ALTER TABLE `ass_assurance`
+  ADD CONSTRAINT `fk_ass_assurance_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_ass_assurance_auto_idx` FOREIGN KEY (`auto_id`) REFERENCES `trans_auto` (`id_bus`),
+  ADD CONSTRAINT `fk_ass_assurance_coordonnee_idx` FOREIGN KEY (`coordonnee_id`) REFERENCES `cr_coordonnee` (`id`);
+
+CREATE TABLE `ass_paiement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `montant` int(11) NULL DEFAULT NULL,
+  `date_paiement` date DEFAULT NULL,
+  `type_paiement` varchar(191) NOT NULL COMMENT 'chèque, virement, carte, espece, mobile money etc.',
+  `inscription_id` int(11) NOT NULL,
+  `assurance_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `ass_paiement`
+  ADD KEY `fk_ass_paiement_inscription_idx` (`inscription_id`),
+  ADD KEY `fk_ass_paiement_assurance_idx` (`assurance_id`);
+
+--
+-- Contraintes pour la table `ass_masque_assurance`
+--
+ALTER TABLE `ass_paiement`
+  ADD CONSTRAINT `fk_ass_paiement_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_ass_paiement_assurance_idx` FOREIGN KEY (`assurance_id`) REFERENCES `ass_assurance` (`id`);
+
+
+CREATE TABLE `ass_sinistre` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL,
+  `montant_remboursement` int(11) NULL DEFAULT NULL,
+  `description` text NOT NULL,
+  `date_sinistre` date DEFAULT NULL,
+  `statut` varchar(191) NOT NULL COMMENT 'en attente, traité, refusé',
+  `inscription_id` int(11) NOT NULL,
+  `assurance_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `ass_sinistre`
+  ADD KEY `fk_ass_sinistre_inscription_idx` (`inscription_id`),
+  ADD KEY `fk_ass_sinistre_assurance_idx` (`assurance_id`);
+
+--
+-- Contraintes pour la table `ass_masque_assurance`
+--
+ALTER TABLE `ass_sinistre`
+  ADD CONSTRAINT `fk_ass_sinistre_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_ass_sinistre_assurance_idx` FOREIGN KEY (`assurance_id`) REFERENCES `ass_assurance` (`id`);
+
+
+CREATE TABLE `trans_visite_technique` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_visite` date DEFAULT NULL,
+  `observations` text NOT NULL,
+  `inscription_id` int(11) NOT NULL,
+  `coordonnee_id` int(11) NOT NULL,
+  `auto_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+ALTER TABLE `trans_visite_technique`
+  ADD KEY `fk_tr_vtechnique_inscription_idx` (`inscription_id`),
+  ADD KEY `fk_tr_vtechnique_auto_idx` (`auto_id`),
+  ADD KEY `fk_tr_vtechnique_coordonnee_idx` (`coordonnee_id`);
+
+--
+-- Contraintes pour la table `ass_masque_assurance`
+--
+ALTER TABLE `trans_visite_technique`
+  ADD CONSTRAINT `fk_tr_vtechnique_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_tr_vtechnique_auto_idx` FOREIGN KEY (`auto_id`) REFERENCES `trans_auto` (`id_bus`),
+  ADD CONSTRAINT `fk_tr_vtechnique_coordonnee_idx` FOREIGN KEY (`coordonnee_id`) REFERENCES `cr_coordonnee` (`id`);

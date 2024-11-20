@@ -9,15 +9,15 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!automobileId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="automobile_id">Automobile</label>
+                    <label class="control-label" for="automobile_id">Vehicule</label>
                     <select class="form-control form-control-sm" [class.loading]="allAutomobiles$ | async" required name="automobile_id" [formControlName]="'automobile_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'automobile_id'), 'is-valid': isValid('automobile_id')}"
                         required>
-                    <option value="">--choississez l'automobile --</option>
+                    <option value="">--choississez le vehicule --</option>
                     <ng-container *ngFor="let item of (allAutomobiles$ | async)">
                         <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
                     </ng-container>
                 </select>
-                    <div *ngIf="shouldShowRequiredError('automobile_id')" class="invalid-feedback">veillez choisir l'automobile.</div>
+                    <div *ngIf="shouldShowRequiredError('automobile_id')" class="invalid-feedback">veillez choisir le vehicule.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">

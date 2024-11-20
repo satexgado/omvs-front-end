@@ -60,7 +60,7 @@
             <div class="card shadow mb-4">
               <!-- Card Header - Dropdown -->
               <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">{{'listMission' | translate}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">{{'CALENDAR' | translate}}</h6>
                 <small class="float-right">
                   <a class="text-secondary">
                     <i class="fa fa-id-card"></i> {{'PLANIFIER' | translate}}
@@ -68,76 +68,122 @@
                 </small>
               </div>
               <!-- Card Body -->
+              <div class="card-header bg-white">
+                <div class="dropdown">
+                  <button class="btn float-right mx-1 btn-outline-primary dropdown-toggle"
+                      [class.btn-primary]="is_showing_filter" id="dropdownMenuButton" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-filter"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <form class="px-4 py-3" [formGroup]="configForm">
+                          <div class="form-group">
+                              <select class="custom-select" (change)="resetFormValue()" formControlName="type">
+                                  <option value="personnel_id">Createur</option>
+                                  <option value="departement_id">Departement</option>
+                                  <option value="imputation_id">Imputation</option>
+                                  <option value="localite_id">Localite</option>
+                                  <option value="membre_equipe_id">Membre de l'equipe</option>
+                                  <option value="niveau_id">Niveau</option>
+                                  <option value="pays_id">Pays</option>
+                                  <option value="moyen_transport">Transport</option>
+                                  <option value="type_id">Type de mission</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <ng-container [ngSwitch]="configForm.get('type').value">
+                                  <div [class.loading]="!(dashboardService.allDepartements$ | async)"
+                                      *ngSwitchCase="'departement_id'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le departement</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allDepartements$ | async)">
+                                              <option [ngValue]="item">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div *ngSwitchCase="'type_id'">
+                                      <select [class.loading]="!(dashboardService.allTypes$ | async)" class="custom-select"
+                                          formControlName="value">
+                                          <option [value]="null">choississez le type</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allTypes$ | async)">
+                                              <option [ngValue]="item">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allImputations$ | async)"
+                                      *ngSwitchCase="'imputation_id'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le imputation</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allImputations$ | async)">
+                                              <option [ngValue]="item">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allLocalites$ | async)"
+                                      *ngSwitchCase="'localite_id'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez la localité</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allLocalites$ | async)">
+                                              <option [ngValue]="item">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allPays$ | async)" *ngSwitchCase="'pays_id'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le pays</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allPays$ | async)">
+                                              <option [ngValue]="item">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allNiveauMissions$ | async)"
+                                      *ngSwitchCase="'niveau_id'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le niveau</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allNiveauMissions$ | async)">
+                                              <option [ngValue]="item">{{item.name | translate}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allTransports$ | async)"
+                                      *ngSwitchCase="'moyen_transport'">
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le transport</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allTransports$ | async)">
+                                              <option [ngValue]="item.id">{{item.name}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                                  <div [class.loading]="!(dashboardService.allPersonnels$ | async)" *ngSwitchDefault>
+                                      <select class="custom-select" formControlName="value">
+                                          <option [value]="null">choississez le membre</option>
+                                          <ng-container *ngFor="let item of (dashboardService.allPersonnels$ | async)">
+                                              <option [ngValue]="item">{{item.nom }} {{item.prenom}}</option>
+                                          </ng-container>
+                                      </select>
+                                  </div>
+                              </ng-container>
+                          </div>
+                          <button type="button" (click)="onAddFilter()" [disabled]="configForm.invalid"
+                              class="btn btn-primary">Ajouter un filtre</button>
+                      </form>
+                  </div>
+                </div>
+                <div class="input-group float-right col-md-4 col-12">
+                  <input aria-describedby="basic-addon2" (keyup.enter)="searchButton.click()" [(ngModel)]="search"
+                      aria-label="Search" class="form-control bg-light border-0 small" placeholder="Recherche..."
+                      type="text">
+                  <div class="input-group-append"><button #searchButton (click)="onReload()" class="btn btn-primary"
+                          type="button"><i class="fas fa-search fa-sm"></i></button></div>
+                </div>
+              </div>
               <div class="card-body">
-                <!-- <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="d-flex flex-row align-items-center justify-content-start subHeaderAction">
-
-                      <a class="d-none d-sm-inline-block  ">
-                        {{'WEEK' | translate}}
-                      </a>
-                      <a class="d-none d-sm-inline-block  ">
-                        {{'MONTH' | translate}}
-                      </a>
-                      <a class="d-none d-sm-inline-block  ">
-                        {{'TRIMESTRE' | translate}}
-                      </a>
-                      <a class="d-none d-sm-inline-block  ">
-                        {{'SEMESTRE' | translate}}
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="d-flex flex-row align-items-center justify-content-end">
-
-                      <div class="dropdown no-arrow mr-1 ml-1">
-                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                          {{'NIVEAU' | translate}}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                          aria-labelledby="dropdownMenuLink">
-                          <div class="dropdown-header">{{'clickToFilter' | translate}}:</div>
-                          <a class="dropdown-item">Mission Urgente</a>
-                          <a class="dropdown-item">Mission Rapide</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item">Mission non urgente</a>
-                        </div>
-                      </div>
-                      <div class="dropdown no-arrow mr-1 ml-1">
-                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                          {{'TYPE' | translate}}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                          aria-labelledby="dropdownMenuLink">
-                          <div class="dropdown-header">{{'clickToFilter' | translate}}:</div>
-                          <a class="dropdown-item">Mission Internationale</a>
-                          <a class="dropdown-item">Mission Technique</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item">Mission Locale</a>
-                        </div>
-                      </div>
-                      <div class="dropdown no-arrow mr-1 ml-1">
-                        <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                          {{'STATUT' | translate}}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                          aria-labelledby="dropdownMenuLink">
-                          <div class="dropdown-header">{{'clickToFilter' | translate}}:</div>
-                          <a class="dropdown-item">{{'missionEnCours' | translate}}</a>
-                          <a class="dropdown-item">{{'missionTermine' | translate}}</a>
-                          <a class="dropdown-item">{{'missionAnnule' | translate}}</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item">{{'missionAvenir' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div> -->
-
+                <div class="pb-3" *ngIf="filtres && filtres.length">
+                  <button class="btn btn-sm btn-outline-primary mx-1" *ngFor="let filtre of filtres; let i = index"
+                      (click)="onRemoveFilter(i)">
+                      {{filtre.name | titlecase}} <i class="fas fa-times"></i>
+                  </button>
+                </div>
                 <div class="row">
                   <div class="col-md-12">
                     <full-calendar *ngIf="options" #calendar [options]='options'>

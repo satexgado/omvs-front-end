@@ -1,0 +1,100 @@
+<div class="grid-container scrollable-y-75 scroll-11">
+    <div class="secondary-content" [class.sidebar_small]="selectedPaiement">
+        <div class="d-flex justify-content-between mg-0 pd-0 bg-light px-0 py-2">
+            <div>
+                <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+                  <i class="fal fa-plus-circle tx-14" ></i>
+                </button>
+            </div>
+            <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+        </div>
+        <div class="table-responsive">
+            <table class="table  table-hover table-sm mb-0 " [class.loading]="dataHelper.loading$ | async">
+                <tbody>
+                    <tr class="barder-0">
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b" *ngIf="!_assuranceId">Assurance</th>
+                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Cause</th>
+                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Statut </th>
+                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Montant </th>
+                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Date  </th>
+                        <th class="tx-orange tx-center p-3 tx-16"> </th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <ng-container *ngFor="let sinistre of items;trackBy: dataHelper.trackByFn">
+                                <tr class=" bd-b" [ngClass]="{'border-left-success': sinistre.statut === 'traité', 'border-left-info' : sinistre.statut === 'en attente', 'border-left-danger' : sinistre.statut === 'refusé' }">
+                                    <td class=" " *ngIf="!_assuranceId">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{sinistre.assurance.libelle | titlecase}}</p>
+                                        </div>
+                                    </td>
+                                    <td class="bg-light">
+                                        <span class=" tx-yeto3 tx-14 ">
+                                          {{sinistre.libelle}}
+                                        </span>
+                                    </td>
+                                    <td class="bg-light">
+                                        <span class=" tx-yeto3 tx-14 " [ngClass]="{'text-success': sinistre.statut === 'traité', 'text-info' : sinistre.statut === 'en attente', 'text-danger' : sinistre.statut === 'refusé' }">
+                                          {{sinistre.statut}}
+                                        </span>
+                                    </td>
+                                    <td class="bg-light">
+                                        <span class=" tx-yeto3 tx-14 ">
+                                          {{sinistre.montant_remboursement}}
+                                        </span>
+                                    </td>
+                                    <td class="tx-center bg-white bd-r bd-white">
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{sinistre.date_sinistre | date: 'dd/MM/yyyy'}}</p>
+                                        </div>
+                                    </td>
+                                    <td class=" tx-center ">
+                                        <button class="btn btn-sm btn-link" (click)="openModal(content, sinistre)"><i class="fad fa-search tx-14 bg-gray tx-warning " style="padding:6px; border-radius:50%"></i></button>
+                                        <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowUpdateForm(sinistre)"> <i class="fal fa-edit" ></i> </button>
+                                        <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowCreateForm(sinistre)"> <i class="fal fa-clone" ></i> </button>
+                                        <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(sinistre)"> <i class="fal fa-trash-alt" ></i></button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="main-content scroll-11" [class.main-content_large]="selectedPaiement">
+        <ng-container *ngIf="selectedPaiement">
+        </ng-container>
+    </div>
+</div>
+
+
+
+<ng-template #noItem>
+    <tr>
+        <td colspan="6">
+            <h5 class="text-center title m-2 p-5" *ngIf="!(dataHelper.loading$ | async)">
+                {{ 'Aucun Element' }}
+            </h5>
+        </td>
+    </tr>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+          <span aria-hidden="true ">&times;</span>
+          </button>
+    </div>
+    <div class="modal-body">
+        <h5>Description</h5>
+        <p style="font-size: 18px;">{{modalData.description}}</p>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+

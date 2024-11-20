@@ -28,6 +28,8 @@ export class CalendarUiComponent implements OnInit  {
 
     isCalendarLoading: boolean = true;
     @Input() eventParent: {name: string, id: number};
+    @Input() hideType = false;
+    @Input() defaultTypeId = null;
     @Input() reloadCalendar(eventParent:  {name: string, id: number}) {
       this.eventParent = eventParent;
       this.loadEvent();
@@ -198,7 +200,10 @@ export class CalendarUiComponent implements OnInit  {
       item.affectable_id = this.eventParent.id;
       item.affectable_type = this.eventParent.name;
     }
-    instance.title = 'Ajouter un évènement'
+    if(this.defaultTypeId) {
+      instance.typeId = this.defaultTypeId;
+    }
+    instance.title = 'Ajouter un évènement';
     instance.item = item;
     instance.newItem.subscribe(
       (data: ICalendrierEvent) => {
@@ -214,6 +219,9 @@ export class CalendarUiComponent implements OnInit  {
         modalRef.componentInstance.title = `Modifier: ${clickInfo.event.title}`;
         modalRef.componentInstance.item = clickInfo.event.extendedProps;
         modalRef.componentInstance.isUpdating = true;
+        if(this.defaultTypeId) {
+          modalRef.componentInstance.typeId = this.defaultTypeId;
+        }
         modalRef.componentInstance.newItem.subscribe(
           (data: ICalendrierEvent) => {
             clickInfo.event.remove()
@@ -245,6 +253,9 @@ export class CalendarUiComponent implements OnInit  {
     const modalRef = this.modalService.open(CalendrierEventEditModalComponent, { size: 'lg', centered: true,  backdrop: 'static' });
     modalRef.componentInstance.title = `Modifier Les futures occurences: ${clickInfo.event.title}`;
     modalRef.componentInstance.item = item;
+    if(this.defaultTypeId) {
+      modalRef.componentInstance.typeId = this.defaultTypeId;
+    }
     modalRef.componentInstance.newItem.pipe(
       switchMap(
         (data: ICalendrierEvent) => {

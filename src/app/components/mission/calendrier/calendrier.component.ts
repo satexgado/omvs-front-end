@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 
 // FULLCALENDAR
 import { FullCalendarComponent } from '@fullcalendar-vision/angular';
@@ -10,8 +10,17 @@ import { CalendarOptions } from '@fullcalendar-vision/angular';
 import frLocale from '@fullcalendar-vision/core/locales/fr';
 
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
+import { range, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Filter, QueryOptions, Sort } from '../../modules/query-options';
+import { DashboardService } from '../../modules/tableau/dashboard/dashboard.service';
+
+interface MissionFiltre {
+  type: string;
+  value: any;
+  name: string;
+}
 
 @Component({
   selector: 'app-calendrier',
@@ -19,6 +28,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./calendrier.component.scss']
 })
 export class CalendrierComponent extends BaseComponent implements OnInit {
+
+  search: string = '';
+  filtres: MissionFiltre[] = [];
+  configForm: FormGroup;
+  is_showing_filter;
 
   @ViewChild('calendar') calendar: FullCalendarComponent;
   options: CalendarOptions = {
@@ -43,7 +57,7 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
   private currentDate: string; // is used to get events from database by period
   changeMonth: Subject<void> = new Subject<void>();
 
-  constructor(private service: MissionService) {
+  constructor(private service: MissionService, private cdr: ChangeDetectorRef, protected dashboardService: DashboardService,private formbuilder: FormBuilder) {
     super(service, '/mission/calendrier', '');
 
     this.canInitData = false;
@@ -52,20 +66,131 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
     this.purgeCacheBefore = true;
   }
 
-  changed() {
-    this.changeMonth.next();
+  GetCalendarDateRange() {
+    let view = this.calendar.getApi().view;
+    let start = view.currentStart;
+    let end = view.currentEnd;
+    let dates = { start: start, end: end };
+    return dates;
+  }
+
+  onAddFilter() {
+    const type = this.configForm.controls.type.value;
+    const value = this.configForm.controls.value.value;
+    const filter: MissionFiltre = {
+      name: `${type.toString().replace('_id','').replace('_', ' ')}: ${value.name}`,
+      value: value.id,
+      type: type
+    };
+    this.filtres.push(filter);
+    this.onReload()
+  }
+
+  onRemoveFilter(i) {
+    this.filtres.splice(i,1);
+    this.onReload();
+  }
+
+  showFilter(state: boolean)
+  {
+    this.is_showing_filter = state;
+    if(state) {
+      this.createForm();
+    }
+  }
+
+  createForm() {
+    this.configForm = this.formbuilder.group({
+      type: ['type_id', Validators.required],
+      value: [null, Validators.required]
+      });
+  }
+
+  resetFormValue() {
+    this.configForm.controls.value.setValue(null);
+  }
+
+  groupBy(xs, f) {
+    return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
+  }
+
+  ngAfterViewInit() {
+    // attach methods after calendar has rendered navigations button 
+    document.querySelector('.fc-prev-button').addEventListener('click', () => {
+      this.onReload();
+    });
+
+    document.querySelector('.fc-next-button').addEventListener('click', () => {
+      this.onReload();
+    });
+
+    document.querySelector('.fc-today-button').addEventListener('click', () => {
+      this.onReload();
+    });
+
+    document.querySelector('.fc-prevYear-button').addEventListener('click', () => {
+      this.onReload();
+    });
+
+    document.querySelector('.fc-nextYear-button').addEventListener('click', () => {
+      this.onReload();
+    });
+
+    this.onReload();
+    this.cdr.detectChanges();
+  }
+
+  onReload() {
+    this.service.setLoading(true);
+    const param = new QueryOptions();
+    param.filter_groups = [
+        {or: false, filters:[new Filter('search_string', this.search, 'eq')]},
+    ];
+     const filtresGroup = this.groupBy(this.filtres, (c) => c.type)
+    
+    if(this.filtres && this.filtres.length) {
+      Object.values(filtresGroup).forEach(function (filtre: MissionFiltre[]) {
+        const customfilter = [];
+        filtre.forEach(filter => {
+          const fltr = new Filter(filter.type,filter.value, 'eq');
+          customfilter.push(fltr);
+        }); 
+        param.filter_groups.push({
+          or: false, filters: customfilter
+        })
+      });
+    }
+    param.filter_groups.push({
+      or: false, filters: [new Filter('archive',0, 'eq')]
+    })
+    let range = this.GetCalendarDateRange()
+    param.filter_groups.push({
+      or: false, filters: [new Filter('start',range.start, 'lte'),new Filter('end',range.end, 'gte')]
+    });
+    param.includes = ['ville.pay','departement','equipes.personnel', 'type', 'personnel','etat'];
+    param.sort = [new Sort('name','asc')];
+    this.dashboardService.allMissions(param).subscribe(
+      (res: any) => {
+        if (res.data) {
+          this.service.setData(res);
+          this.service.setLoading(false);
+        }
+        else {
+          this.service.notify('error', 'ERROR');
+          this.service.setLoading(false);
+        }
+      },
+      (error) => {
+        this.service.notify('error', "serverError");
+        this.service.setLoading(false);
+      }
+    )
   }
 
   ngOnInit() {
     this.service.hideBlockSlide();
     this.currentDate = this.service.today();
     this.requestings.stat = true;
-    this.getByMonth();
-
-    this.changeMonth.pipe(
-      debounceTime(1500)
-    ).subscribe(() => this.getByMonth());
-
     this.service.dataSubject.subscribe(
       (res: any) => {
         if (res) {
@@ -99,81 +224,7 @@ export class CalendrierComponent extends BaseComponent implements OnInit {
       }
     )
     this.service.emitData();
-  }
-
-  ngAfterViewInit() {
-    // attach methods after calendar has rendered navigations button 
-    // document.querySelector('.fc-prev-button').addEventListener('click', () => {
-    //   this.onDateChange('previous');
-    // });
-
-    // document.querySelector('.fc-next-button').addEventListener('click', () => {
-    //   this.onDateChange('next');
-    // });
-
-    // document.querySelector('.fc-today-button').addEventListener('click', () => {
-    //   this.onDateChange('today');
-    // });
-
-    // document.querySelector('.fc-prevYear-button').addEventListener('click', () => {
-    //   this.onDateChange('prevYear','year');
-    // });
-
-    // document.querySelector('.fc-nextYear-button').addEventListener('click', () => {
-    //   this.onDateChange('nextYear','year');
-    // });
-
-    // this.lastAvaibleDate = this.calendar.getApi().getDate();
-
-
-  }
-
-
-  private onDateChange(step: string, range:moment.unitOfTime.StartOf = 'month') {
-    let view = this.calendar.getApi().view.title;
-    const newDate = this.calendar.getApi().getDate();
-    const monthBefore = moment(newDate).isBefore(this.lastAvaibleDate, range);
-    const monthAfter = moment(newDate).isAfter(this.lastAvaibleDate, range);
-
-
-    if (monthBefore || monthAfter) {
-      this.lastAvaibleDate = newDate;
-      this.currentDate = this.service.mysql_date_format(newDate);
-      this.changed();
-      // this.getByMonth();
-    }
-
-  }
-
-  private sameMonthAndyear(newDate: Date, currentDate: Date): boolean {
-    let newDateInfo = this.service.dateInfo(newDate);
-    let currentDateInfo = this.service.dateInfo(currentDate);
-    if ((newDateInfo.month == currentDateInfo.month) && (newDateInfo.year == currentDateInfo.year)) {
-      return true;
-    }
-    return false;
-  }
-
-
-  private getByMonth(etats = []) {
-    let formValue = { anyDate: this.currentDate};
-    this.service.setLoading(true);
-    this.service.post('mission/calendrier').subscribe(
-      (res: any) => {
-        if (res.success) {
-          this.service.setData(res);
-          this.service.setLoading(false);
-        }
-        else {
-          this.service.notify('error', 'ERROR');
-          this.service.setLoading(false);
-        }
-      },
-      (error) => {
-        this.service.notify('error', "serverError");
-        this.service.setLoading(false);
-      }
-    );
+    this.createForm();
   }
 
   private eventClick(arg: EventInput) {

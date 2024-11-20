@@ -18,6 +18,11 @@ import { ModeleModule } from './modele/modele.module';
 import { SerieModule } from './serie/serie.module';
 import { LieuModule } from './lieu/lieu.module';
 import { MasqueItineraireModule } from './masque-itineraire/masque-itineraire.module';
+import { AssuranceModule } from './assurance/assurance.module';
+import { CalendrierTransportComponent } from './calendrier/calendrier.component';
+import { CalendrierModule } from '../calendrier/calendrier.module';
+import { CalendrierTransportModule } from './calendrier/calendrier.module';
+import { VisiteTechniqueModule } from './visite-technique/visite-technique.module';
 ;
 
 @NgModule({
@@ -42,8 +47,10 @@ import { MasqueItineraireModule } from './masque-itineraire/masque-itineraire.mo
     MarqueModule,
     ModeleModule,
     LieuModule,
-    SerieModule
-
+    SerieModule,
+    AssuranceModule,
+    CalendrierTransportModule,
+    VisiteTechniqueModule
   ],
   exports: [
   ],

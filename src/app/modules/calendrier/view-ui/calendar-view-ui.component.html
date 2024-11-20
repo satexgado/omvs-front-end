@@ -1,2 +1,5 @@
-<full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
-</full-calendar>
+<div [class.loading]="isCalendarLoading">
+    <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+    </full-calendar>
+</div>
+
