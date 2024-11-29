@@ -414,3 +414,83 @@ ALTER TABLE `trans_visite_technique`
   ADD CONSTRAINT `fk_tr_vtechnique_inscription_idx` FOREIGN KEY (`inscription_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `fk_tr_vtechnique_auto_idx` FOREIGN KEY (`auto_id`) REFERENCES `trans_auto` (`id_bus`),
   ADD CONSTRAINT `fk_tr_vtechnique_coordonnee_idx` FOREIGN KEY (`coordonnee_id`) REFERENCES `cr_coordonnee` (`id`);
+
+CREATE TABLE IF NOT EXISTS `trans_bon_Approvisionnement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(300) DEFAULT NULL COMMENT 'réservoir véhicule, réservoirs pleins,
+    bidons, fûts, citernes',
+  `quantite_specifique` TINYINT(1) DEFAULT NULL, 
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `trans_bon_Approvisionnement` (`id`, `libelle`, `quantite_specifique`,`created_at`, `updated_at`, `inscription`) VALUES
+	(1, 'réservoir véhicule',1, NULL, NULL, NULL),
+	(2, 'Réservoir(s) plein(s)',0, NULL, NULL, NULL),
+	(3, 'Bidon(s)',1, NULL, NULL, NULL),
+	(4, 'Fût(s)',1, NULL, NULL, NULL),
+	(5, 'Citerne(s)',1, NULL, NULL, NULL);
+
+CREATE TABLE IF NOT EXISTS `trans_bon_type_coupure` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(300) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `trans_bon_type_coupure` (`id`, `libelle`,`created_at`, `updated_at`, `inscription`) VALUES
+	(1, '30 Litres', NULL, NULL, NULL),
+  (2, '50 Litres', NULL, NULL, NULL);
+
+CREATE TABLE IF NOT EXISTS `trans_bon_type_engagement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(300) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `trans_bon_type_engagement` (`id`, `libelle`,`created_at`, `updated_at`, `inscription`) VALUES
+	(1, 'Mensualité', NULL, NULL, NULL),
+  (2, 'Mission', NULL, NULL, NULL);
+	
+
+DROP TABLE IF EXISTS `trans_bon_carburant_entree`;
+CREATE TABLE IF NOT EXISTS `trans_bon_carburant_entree` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `coordonnee_id` int(11) NOT NULL,
+  `libelle` varchar(3000) DEFAULT NULL,
+  `type_carburant` int(11) DEFAULT NULL,
+  `type_coupure` int(11) DEFAULT NULL,
+  `nombre_coupure` int(11) DEFAULT NULL,
+  `date_emission` date DEFAULT NULL,
+  `date_expiration` date DEFAULT NULL,
+  `approvisionnement` int(11) DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `trans_bon_carburant_sortie`;
+CREATE TABLE IF NOT EXISTS `trans_bon_carburant_sortie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(3000) DEFAULT NULL,
+  `type_carburant` int(11) DEFAULT NULL,
+  `type_coupure` int(11) DEFAULT NULL,
+  `nombre_coupure` int(11) DEFAULT NULL,
+  `date_reception` date DEFAULT NULL,
+  `auto_id` int(11) NOT NULL,
+  `type_engagement` int(11) DEFAULT NULL,
+  `quantite_litre` int(11) DEFAULT NULL,
+  `autorise_par` varchar(3000) DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
