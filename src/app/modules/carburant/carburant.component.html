@@ -33,14 +33,26 @@
           <div class="row mb-4 animated slideInUp">
             <div class="col-md-12">
               <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
-                <a routerLink="/annuaire/liste" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-address-card"></i> Annuaire
+                <a routerLink="/bon-carburant/entrant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-gift-card"></i> Entrant
                 </a>
-                <a routerLink="/annuaire/groupe" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-book-user"></i> Groupe Contact
+                <a routerLink="/bon-carburant/sortant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-hand-holding-box"></i> Sortant
                 </a>
-                <a routerLink="/annuaire/type" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-address-book"></i> Type Contact
+                <a routerLink="/bon-carburant/entrant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-warehouse"></i> Stock
+                </a>
+                <a routerLink="/bon-carburant/type-coupure" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-cabinet-filing"></i> Coupure
+                </a>
+                <a routerLink="/bon-carburant/approvisionnement" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-gas-pump"></i> Approvisionnement
+                </a>
+                <a routerLink="/bon-carburant/type-engagement" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-ramp-loading"></i> Engagement
+                </a>
+                <a routerLink="/bon-carburant/analyse" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <i class="fas fa-user-chart"></i> Analyse
                 </a>
               </div>
             </div>

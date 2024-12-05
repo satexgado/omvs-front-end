@@ -1,0 +1,64 @@
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-md-5 mb-3">
+                    <app-select-formgroup [small]="true" label="type de carburant" formControlName="type_carburant" [selected]="editForm.get('type_carburant').value" [dataSource]="allTypeCarburants$" [createModal]="carburantEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('type_carburant')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+                <div class="col-10 col-md-5 mb-3">
+                    <app-select-formgroup [small]="true" label="type de coupure de carburant" formControlName="type_coupure" [selected]="editForm.get('type_coupure').value" [dataSource]="allTypeCoupures$" [createModal]="coupureEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('type_coupure')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-md-5 mb-3">
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_reception'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_reception'), 'is-valid': isValid('date_reception')}" required>
+                    <span class="custom-span" i18n>date sortie</span>
+                </div>
+                <div class="col-10 col-md-5 mb-3">
+                    <select class="custom-select" mySelectFirstOption required name="autorise_par" [formControlName]="'autorise_par'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'autorise_par') , 'is-valid': isValid('autorise_par')}" required>
+                        <ng-container *ngFor="let item of (allUsers$ | async)">
+                            <option [ngValue]="item.id">{{item.nom}} {{item.prenom}}</option>
+                        </ng-container>
+                    </select>
+                    <span class="custom-span" style="left:20px">autorisé par</span>
+                    <div *ngIf="shouldShowRequiredError('autorise_par')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-md-5 mb-3">
+                    <input type="number" min="1" class="form-control" required [formControlName]="'nombre_coupure'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_coupure'), 'is-valid': isValid('nombre_coupure')}" name="nombre_coupure" required>
+                    <span class="custom-span">Nombre de coupure</span>
+                    <div *ngIf="shouldShowRequiredError('nombre_coupure')" class="invalid-feedback">veillez saisir.</div>
+                </div>
+                <div class="col-10 col-md-5 mb-3">
+                    <input type="number" class="form-control" required [formControlName]="'quantite_litre'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'quantite_litre'), 'is-valid': isValid('quantite_litre')}" name="quantite_litre" required>
+                    <span class="custom-span">Quantite de litre affectée</span>
+                    <div *ngIf="shouldShowRequiredError('quantite_litre')" class="invalid-feedback">veillez saisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-md-5 mb-3">
+                    <app-select-formgroup [small]="true" label="Bénéficiaire" formControlName="auto_id" [selected]="editForm.get('auto_id').value" [dataSource]="allAutomobiles$" [createModal]="automobileEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('auto_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+                <div class="col-10 col-md-5 mb-3">
+                    <app-select-formgroup [small]="true" label="Type engagement" formControlName="type_engagement" [selected]="editForm.get('type_engagement').value" [dataSource]="allEngagements$" [createModal]="engagementEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('type_engagement')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

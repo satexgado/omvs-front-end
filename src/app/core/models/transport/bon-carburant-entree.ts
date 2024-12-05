@@ -34,11 +34,11 @@ export class BonCarburantEntree implements IBonCarburantEntree {
     type_coupure: number = 0;
     @hasOneMap({field:'trans_bon_type_coupure', class: BonTypeCoupure})
     coupure:IBonTypeCoupure = null;
-    nombre_coupure:number = 0;
+    nombre_coupure:number = 1;
     @dateAdaptableMap('date_emission')
-    date_emission:Date = null;
+    date_emission:Date = new Date();
     @dateAdaptableMap('date_expiration')
-    date_expiration:Date = null;
+    date_expiration:Date = new Date();
     @adaptableMap('approvisionnement')
     approvisionnement_id: number = 0;
     @hasOneMap({field:'trans_bon_approvisionnement', class: BonApprovisionnement})

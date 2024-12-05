@@ -57,7 +57,7 @@
             <div class="card card-profile-1 mb-3">
               <a
                 class="card-body tx-center p-0"
-                [routerLink]="['./', coordonnee.id]"
+                (click)="openModal(content, coordonnee)"
               >
                 <div class="mx-auto my-2 avatar-md">
                   <div
@@ -237,7 +237,7 @@
               <td>
                 <a
                   class="btn btn-sm btn-link"
-                  [routerLink]="['./', coordonnee.id]"
+                  (click)="openModal(content, coordonnee)"
                 >
                   {{ coordonnee.libelle }}
                 </a>
@@ -245,7 +245,7 @@
               <td>
                 <a
                   class="btn btn-sm btn-link"
-                  [routerLink]="['./', coordonnee.id]"
+                  (click)="openModal(content, coordonnee)"
                 >
                   {{ coordonnee.tag | shorten : 30 }}
                 </a>
@@ -470,13 +470,13 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button
+    <!-- <button
       [routerLink]="['./', modalData.id]"
       (click)="modal.close('Close click')"
       class="btn btn-sm btn-primary mx-2"
     >
       Voir plus
-    </button>
+    </button> -->
     <button
       class="btn btn-sm btn-light mx-2"
       (click)="modal.close('Close click'); onShowUpdateForm(modalData)"

@@ -1,0 +1,18 @@
+<ngb-tabset [justify]="'fill'" #tabs="ngbTabset" [destroyOnHide]="false">
+    <ngb-tab id="tab-description">
+        <ng-template ngbTabTitle>
+            <i class="fal fa-gift-card"></i> Entrée Bon de carburant
+        </ng-template>
+        <ng-template ngbTabContent>
+            <app-dashboard-bon-carburant-entrant></app-dashboard-bon-carburant-entrant>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab id="tab-objectifs">
+        <ng-template ngbTabTitle>
+            <i class="fal fa-hand-holding-box"></i> Sortie en bon de carburant
+        </ng-template>
+        <ng-template ngbTabContent>
+            <app-dashboard-bon-carburant-sortant></app-dashboard-bon-carburant-sortant>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

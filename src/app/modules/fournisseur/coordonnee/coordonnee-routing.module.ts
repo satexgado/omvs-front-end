@@ -18,21 +18,21 @@ const routes: Routes = [
       }]
     },
   },
-  {
-    path:':id',
-    component: CoordonneeDetailsComponent,
-    data: {
-      guards: [{
-        scope: 'annuaire',
-        access: 'LECTURE'
-      }]
-    },
-    resolve: { coordonnee: CoordonneeDetailsResolver},
-    children: [
-      {path: '', pathMatch: 'full', redirectTo: 'home'},
-      {path: 'home', component: CoordonneeDetailsHomeComponent},
-    ]
-  },
+  // {
+  //   path:':id',
+  //   component: CoordonneeDetailsComponent,
+  //   data: {
+  //     guards: [{
+  //       scope: 'annuaire',
+  //       access: 'LECTURE'
+  //     }]
+  //   },
+  //   resolve: { coordonnee: CoordonneeDetailsResolver},
+  //   children: [
+  //     {path: '', pathMatch: 'full', redirectTo: 'home'},
+  //     {path: 'home', component: CoordonneeDetailsHomeComponent},
+  //   ]
+  // },
 ];
 
 @NgModule({

@@ -1,35 +1,62 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CarburantComponent } from './carburant.component';
+import { CarburantEntreeComponent } from './carburant-entree/carburant-entree.component';
+import { CarburantSortieComponent } from './carburant-sortie/carburant-sortie.component';
+import { ApprovisionnementComponent } from './approvisionnement/approvisionnement.component';
+import { TypeCoupureComponent } from './type-coupure/type-coupure.component';
+import { TypeEngagementComponent } from './type-engagement/type-engagement.component';
+import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
 
 const butsRoutes: Routes = [
   {
     path:'', component:CarburantComponent,
     children:[
-      // {
-      //   path:'', pathMatch:'full', redirectTo:'liste'
-      // },
-      // {
-      //   path: 'liste',
-      //   data: {
-      //     icon: 'fa-address-card', title:'Annuaire'
-      //   },
-      //   loadChildren: './coordonnee/coordonnee.module#CoordonneeModule'
-      // },
-      // {
-      //   path: 'groupe',
-      //   data: {
-      //     icon: 'fa-book-user', title:'Groupe Contact'
-      //   },
-      //   loadChildren: './coordonnee-groupe/coordonnee-groupe.module#CoordonneeGroupeModule'
-      // },
-      // {
-      //   path: 'type',
-      //   data: {
-      //     icon: 'fa-address-book', title:'Type Contact'
-      //   },
-      //   component:CoordonneeTypeComponent
-      // }
+      {
+        path:'', pathMatch:'full', redirectTo:'entrant'
+      },
+      {
+        path: 'entrant',
+        data: {
+          icon: 'fa-gift-card', title:'Entrée Bon de carburant'
+        },
+        component:CarburantEntreeComponent
+      },
+      {
+        path: 'sortant',
+        data: {
+          icon: 'fa-hand-holding-box', title:'Sortie en bon de carburant'
+        },
+        component:CarburantSortieComponent
+      },
+      {
+        path: 'approvisionnement',
+        data: {
+          icon: 'fa-gas-pump', title:'Approvisionnement en bon de carburant'
+        },
+        component:ApprovisionnementComponent
+      },
+      {
+        path: 'type-coupure',
+        data: {
+          icon: 'fa-cabinet-filing', title:'Type Coupure bon de carburant'
+        },
+        component:TypeCoupureComponent
+      },
+      {
+        path: 'type-engagement',
+        data: {
+          icon: 'fa-ramp-loading', title:'Type Engagement bon de carburant'
+        },
+        component:TypeEngagementComponent
+      },
+      {
+        path: 'analyse',
+        data: {
+          icon: 'fa-user-chart', title:'Analyse bon de carburant'
+        },
+        component:AnalyseBonCarburantComponent
+      }
     ]
   }
 ];

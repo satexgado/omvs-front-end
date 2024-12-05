@@ -64,6 +64,14 @@ const routes: Routes = [
     canActivate: [AccountGuard], 
     loadChildren: './modules/logistique/logistique.module#LogistiqueModule'
   },
+  {path: 'bon-carburant',
+    data: {
+      breadcrumb: 'bon-carburant',
+      action: 'logged' 
+    },
+    canActivate: [AccountGuard], 
+    loadChildren: './modules/carburant/carburant.module#CarburantModule'
+  },
   // {
   //   path: 'user',
   //   loadChildren: './components/user/user.module#UserModule'
