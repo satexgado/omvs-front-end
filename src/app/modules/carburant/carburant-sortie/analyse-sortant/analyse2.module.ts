@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { ChartConfigurationComponent } from './dashboard/chart/chart-configuration/chart-configuration.component';
-import { ChartSharedModule } from 'src/app/modules/chart-shared/chart-shared.module';
+import { ChooseItemModule } from 'src/app/modules/choose-item';
 @NgModule({
     declarations: [
       DashboardBonCarburantSortantComponent,
@@ -22,7 +22,7 @@ import { ChartSharedModule } from 'src/app/modules/chart-shared/chart-shared.mod
       CommonModule,
       SharedModule,
       AngularMultiSelectModule,
-      ChartSharedModule
+      ChooseItemModule
     ],
     exports: [
       DashboardBonCarburantSortantComponent,

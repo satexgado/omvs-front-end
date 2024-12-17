@@ -8,8 +8,8 @@ import { decycle } from 'src/app/shared/helperfonction';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SavedState } from 'src/app/core/models/saved-state.model';
 import { SavedStateFactory } from 'src/app/core/services/saved-state.factory';
-import { ChooseStateComponent } from 'src/app/modules/chart-shared/choose-state/choose-state.component';
 import { DashboardService as DashboardService2 } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
+import { ChooseStateComponent } from 'src/app/modules/choose-item/choose-state/choose-state.component';
 
 
 @Component({
@@ -212,15 +212,17 @@ export class ChoosingComponent implements OnInit {
         savedState.libelle = data.libelle;
         savedState.module = 'bon carburant sortant';
         savedState.state = JSON.stringify(decycle(this.configForm.value, undefined));
-
+        instance.isLoading = true;
         const savedStateService = new SavedStateFactory();
         savedStateService.create(savedState).subscribe(
           (newState)=> {
             this.service.addSavedState(newState);
+            instance.dataSource$ =  this.service.allSavedStates$;
+            instance.isLoading = false;
           }
         );
 
-        instance.onCloseModal('saved');
+        // instance.onCloseModal('saved');
     });
 
     instance.itemChoosen.subscribe(
@@ -232,10 +234,13 @@ export class ChoosingComponent implements OnInit {
 
     instance.itemRemove.subscribe(
       (data: SavedState)=> {
+        instance.isLoading = true;
         const savedStateService = new SavedStateFactory();
         savedStateService.delete(data.id).subscribe(
           ()=> {
             this.service.removeSavedState(data.id);
+            instance.dataSource$ =  this.service.allSavedStates$;
+            instance.isLoading = false;
           }
         );
       }

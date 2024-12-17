@@ -1,0 +1,44 @@
+<div class="d-flex p-2 align-items-center sticky-top border-bottom">
+    <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2">
+        <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>
+    </button>
+</div>
+<div class="card-body p-0">
+    <div class="d-flex justify-content-center flex-wrap  mg-l-0 mg-r-0" [class.loading]="dataHelper.loading$ | async">
+        <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                <thead class="tx-10 tx-uppercase">
+                    <tr>
+                        <th scope="col">Libelle</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let dossier of items;trackBy: dataHelper.trackByFn">
+                        <td (click)="openModal(content, dossier)">
+                            <a [href]="dossier.document" target="_blank">
+                                <i class="{{onGetIcon(dossier)}} " style="padding:10px; border-radius: 50%; "></i>
+                                {{dossier.libelle}}               
+                            </a>
+                        </td>
+                        <td>
+                            <a class="table-action cursor-pointer mr-2 link" container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(dossier) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 link"  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(dossier) "><i class="fal fa-times-square tx-second "></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+            </section>
+        </div>
+    </div>
+</div>
+<ng-template #noItem>
+    <h4 class="text-center title m-2 p-5">
+        {{ 'Aucun Element' }}
+    </h4>
+</ng-template>
+
+<!-- <a class=" btn p-0 mx-1"  style="font-size: 13px"> -->

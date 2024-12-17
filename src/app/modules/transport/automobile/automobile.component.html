@@ -1,11 +1,33 @@
 <div class="grid-container">
     <div class="sidebarlist" [class.sidebar_small]="selectedAuto">
         <div class="card card-2 card-accent-primary">
-            <div class="d-flex p-2  border-bottom">
+            <div class="d-flex align-items-center p-2  border-bottom">
                 <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+                <button class="btn btn-link" (click)="onChangeView('card')">
+                    <span class="tx-primary">
+                        <i
+                        class="fad fa-th card-1 tx-16"
+                        [ngClass]="
+                            view == 'card' ? 'bg-primary text-white' : 'text-primary bg-white'
+                        "
+                        style="padding: 6px; border-radius: 50%"
+                        ></i>
+                    </span>
+                    </button>
+                    <button class="btn btn-link" (click)="onChangeView('list')">
+                    <span class="tx-primary">
+                        <i
+                        class="fad fa-list card-1 tx-16"
+                        [ngClass]="
+                            view == 'list' ? 'bg-primary text-white' : 'text-primary bg-white'
+                        "
+                        style="padding: 6px; border-radius: 50%"
+                        ></i>
+                    </span>
+                </button>
             </div>
-            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
-                <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async" *ngIf="view == 'list'; else cardView">
+                <div class="table-responsive" *ngIf="dataHelper.data$ | async as items" >
                     <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
                         <thead class="tx-10 tx-uppercase">
                             <tr>
@@ -58,28 +80,34 @@
                                 <a class="nav-link3 mx-2 tx-echos"><i
                                         class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
                             </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'itineraire'"
-                                [class.bg-white]="fragment == 'itineraire'"
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
+                                [class.bg-white]="fragment == 'mission'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
-                                    Itineraire</a>
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
+                                    Missions</a>
                             </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'affectation'"
-                                [class.bg-white]="fragment == 'affectation'"
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'visite'"
+                                [class.bg-white]="fragment == 'visite'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
-                                    Affectation</a>
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-mechanic tx-16  mr-2"></i>
+                                    Visite Technique</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'assurance'"
+                                [class.bg-white]="fragment == 'assurance'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-crash tx-16  mr-2"></i>
+                                    Assurance</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'panne'"
                                 [class.bg-white]="fragment == 'panne'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-garage tx-16  mr-2"></i>
                                     Panne</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'calendrier'"
                                 [class.bg-white]="fragment == 'calendrier'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-copy tx-16  mr-2"></i>
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-calendar tx-16  mr-2"></i>
                                     Calendrier</a>
                             </a>
                         </nav>
@@ -87,15 +115,80 @@
     
                     <div class="col-lg-10">
                         <div [ngSwitch]="fragment">
-                            <div *ngSwitchCase="'itineraire'">
-                                <app-automobile-itineraire 
-                                    [initAutomobile]="selectedAuto"></app-automobile-itineraire>
+                            <div *ngSwitchCase="'mission'">
+                                <div class="table-responsive" [class.loading]="loading_missions">
+                                    <table class="table table-hover text-nowrap" *ngIf="missions">
+                                        <thead class="tx-10 tx-uppercase">
+                                            <tr>
+                                                <th>Mission</th>
+                                                <th>Localite</th>
+                                                <th>Departement</th>
+                                                <th class="text-center">Equipe</th>
+                                                <th>Date</th>
+                                                <th>Note</th>
+                                                <th>Budget</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="missions?.length; else noItem">
+                                            <tr *ngFor="let mission of missions" [routerLink]="'/mission/details/'+mission?.id+'/tab/default'" class="handMe">
+                                                <td>
+                                                    <a 
+                                                        class="my-0 mt-1 text-primary">{{(mission.name.length>30)? (mission.name | slice:0:30)+'..':(mission.name)}}</a>
+                                                    <p class="tx-12 mb-0">
+                                                        {{mission?.type?.name}}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p class="my-0 font-weight-bold">{{mission?.ville.name}}</p>
+                                                    <p>{{mission?.ville.pay.name}}</p>
+                                                </td>
+                                                <td>
+                                                    {{mission?.departement.name}}
+                                                </td>
+                                                <td>
+                                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                                        <li *ngFor="let equipe of mission.equipes | slice:0:4" class="mg-l--10"
+                                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                                            data-html="true" title="" data-original-title="Alison G">
+                                                            <div class="avatar"
+                                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                                    src="assets/images/users/male.png"
+                                                                    class="avatar-initial border border-secondary rounded-circle">
+                                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                                    src="assets/images/users/female.png"
+                                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                                    alt="">
+                                                            </div>
+                                                        </li>
+                                                        <li *ngIf="mission.equipes?.length > 4" class="mg-l--10" data-original-title=""
+                                                            title="">
+                                                            <div class="avatar"><span
+                                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{mission.equipes.length - 4}}+</span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td>{{mission.start | date:'d MMM y'}} - {{mission.end | date:'d MMM y'}}</td>
+                                                <td>{{mission.avg_note ? mission.avg_note : 'Aucune note'}}</td>
+                                                <td>
+                                                    {{mission.total_budget}} ECO
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div *ngSwitchCase="'panne'">
                                 <app-panne-automobile [automobileId]="selectedAuto.id"></app-panne-automobile>
                             </div>
-                            <div *ngSwitchCase="'affectation'">
-                           </div>
+                            <div *ngSwitchCase="'visite'">
+                                <app-visite-technique [automobileId]="selectedAuto.id"></app-visite-technique>
+                            </div>
+                            <div *ngSwitchCase="'assurance'">
+                                <app-assurance [automobileId]="selectedAuto.id"></app-assurance>
+                            </div>
+                            
                             <div *ngSwitchCase="'calendrier'">
                                 <app-calendar-ui [eventParent]="{name: 'trans_auto', id: selectedAuto.id}"></app-calendar-ui>
                             </div>
@@ -163,7 +256,7 @@
                                             </p>
                                         </li>
                                         <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Couleur: </span> {{selectedAuto.couleur?.libelle | titlecase}}
+                                            <p class="formSep m-0"><span class="text-muted">fournisseur: </span> {{selectedAuto.coordonnee?.libelle | titlecase}}
                                             </p>
                                         </li>
                                         <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
@@ -208,3 +301,47 @@
     </h5>
 </ng-template>
 
+<ng-template #cardView>
+    <div [class.loading]="dataHelper.loading$ | async" 
+        [scrollWindow]="false"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="checkData()"
+        class="scrollable-y-75 scroll-11">
+        <ng-container *ngIf="dataHelper.data$ | async as items">
+            <div class="card-group justify-content-around p-2" *ngIf="items.length; else noItem">
+                <div *ngFor="let automobile of items;trackBy:  dataHelper.trackByFn" class="menu flip-card mb-3 col-12 col-sm-8 col-md-6 col-lg-4">
+                    <div class="image-flip">
+                        <div class="mainflip">
+                            <div class="frontside">
+                                <div class="card card-1">
+                                    <img class="card-img cursor-pointer" style="width: 100%;
+                                    height: 15vw;
+                                    object-fit: cover;" (click)="onSelectAuto(automobile)" src="{{automobile.image}}" alt="Bologna">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{automobile.libelle | titlecase}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-success">Disponible</h6>
+                                        <a class="card-link">
+                                            Commander
+                                        </a>
+                                        <a (click)="onSelectAuto(automobile)" class="card-link">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="backside">
+                                <div class="card card-1" (click)="onSelectAuto(automobile)">
+                                    <h4 class="px-3 my-2">
+                                        {{automobile.libelle}}
+                                    </h4>
+                                    <hr class="m-0">
+                                    automobile
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

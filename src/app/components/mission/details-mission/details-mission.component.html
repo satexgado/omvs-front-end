@@ -63,66 +63,122 @@
               </div>
               <!-- Card Body -->
               <div *ngIf="service.single && !service.isLoading()" class="card-body p-1 pb-3">
-                <div class="row mt-1">
+                <ul class="nav nav-tabs bgTheme text-white" role="tablist">
+                  <li class="nav-item">
+                    <a (click)="switchTabs('information')"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='information'}"
+                      data-toggle="tab" href="#Tabs_information" role="tab" aria-selected="false">
+                      <i class="fas fa-marker mr-1"></i>
+                      {{'INFORMATIONS' | translate}}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a (click)="switchTabs('default')"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='default'}" data-toggle="tab"
+                      href="#Tabs_ressource" role="tab" aria-selected="true">
+                      <i class="fas fa-cog mr-1"></i>
+                      {{'RESSOURCES' | translate}}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a (click)="startProcess(2)"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='validation'}" data-toggle="tab"
+                      href="#Tabs_validation" role="tab" aria-selected="true">
+                      <i class="fas fa-check-circle mr-1"></i>
+                      Traitement
+                      <i *ngIf="service?.requestings?.etat" class="fas fa-spinner fa-spin"></i>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a (click)="switchTabs('rapport_quotidien')"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='rapport_quotidien'}"
+                      data-toggle="tab" href="#Tabs_rapport_quotidien" role="tab" aria-selected="false">
+                      <i class="fas fa-book-open mr-1"></i>
+                      Rapports Quotidiens
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a (click)="switchTabs('rapport_final')"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='rapport_final'}" data-toggle="tab"
+                      href="#Tabs_rapport_final" role="tab" aria-selected="false">
+                      <i class="fas fa-book mr-1"></i>
+                      {{'rapportFinal' | translate}}
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a (click)="switchTabs('evaluation')"
+                      [ngClass]="{'nav-link text-white': true, 'active': tabs=='evaluation'}" data-toggle="tab"
+                      href="#Tabs_evaluation" role="tab" aria-selected="false">
+                      <i class="fas fa-comment-alt mr-1"></i>
+                      {{'EVALUATION' | translate}}
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <!-- INFORMATIONS-->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='information'}"
+                    id="Tabs_information" role="tabpanel">
 
-                  <div class="col-md-3 details animated slideInLeft">
-                    <ul class="list-group shadow">
-                      <li
-                        class="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1 bgTheme text-white">
-                        {{'INFORMATIONS' | translate}}
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'BY' | translate}} : {{service.single?.personnel?.nom+' '+service.single?.personnel?.prenom}}
-                        <span class="float-right fas fa-fw fa-user"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'POSTE' | translate}} : {{service.single?.personnel?.poste?.name}}
-                        <span class="float-right fas fa-fw fa-user-circle"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'DEPART' | translate}} : {{service.single?.depart?.name}}
-                        <span class="float-right fas fa-fw fa-map-marker-alt"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'ARRIVEE' | translate}} : {{service.single?.localite?.name}}
-                        <span class="float-right fas fa-fw fa-map-marked-alt"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'moyenTransport' | translate}} : {{service.single?.moyen_transport}}
-                        <span class="float-right fas fa-fw fa-plane-arrival"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Dep: {{service.single?.departement?.name}}
-                        <span class="float-right fas fa-fw fa-sitemap"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'TYPE' | translate}} : {{service.single?.type?.name}}
-                        <span class="float-right fas fa-fw fa-info-circle"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'NIVEAU' | translate}} : {{service.single?.niveau?.name  | translate}}
-                        <span class="float-right fas fa-fw fa-info"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'START' | translate}} : {{service.single?.start | date:'d MMM y' }}
-                        <span class="float-right fas fa-fw fa-calendar"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'END' | translate}} : {{service.single?.end | date:'d MMM y'}}
-                        <span class="float-right fas fa-fw fa-calendar-check"></span>
-                      </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{'DUREE' | translate}} : {{service.single?.start | age:service.single?.end }}
-                        <span class="float-right fas fa-fw fa-clock"></span>
-                      </li>
-                      <li class="list-group-item text-center">
-                        <b>
-                          <span
-                            [class]="'text-center '+service.colorByStatut(service.single?.etat)">{{service.single?.etat?.name | translate}}</span>
-                        </b>
-                      </li>
-                    </ul>
-
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-group shadow">
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'BY' | translate}} : {{service.single?.personnel?.nom+' '+service.single?.personnel?.prenom}}
+                            <span class="float-right fas fa-fw fa-user"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'POSTE' | translate}} : {{service.single?.personnel?.poste?.name}}
+                            <span class="float-right fas fa-fw fa-user-circle"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'DEPART' | translate}} : {{service.single?.depart?.name}}
+                            <span class="float-right fas fa-fw fa-map-marker-alt"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'ARRIVEE' | translate}} : {{service.single?.localite?.name}}
+                            <span class="float-right fas fa-fw fa-map-marked-alt"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'moyenTransport' | translate}} : {{service.single?.moyen_transport}}
+                            <span class="float-right fas fa-fw fa-plane-arrival"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Dep: {{service.single?.departement?.name}}
+                            <span class="float-right fas fa-fw fa-sitemap"></span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-group shadow">
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'TYPE' | translate}} : {{service.single?.type?.name}}
+                            <span class="float-right fas fa-fw fa-info-circle"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'NIVEAU' | translate}} : {{service.single?.niveau?.name  | translate}}
+                            <span class="float-right fas fa-fw fa-info"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'START' | translate}} : {{service.single?.start | date:'d MMM y' }}
+                            <span class="float-right fas fa-fw fa-calendar"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'END' | translate}} : {{service.single?.end | date:'d MMM y'}}
+                            <span class="float-right fas fa-fw fa-calendar-check"></span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{'DUREE' | translate}} : {{service.single?.start | age:service.single?.end }}
+                            <span class="float-right fas fa-fw fa-clock"></span>
+                          </li>
+                          <li class="list-group-item text-center">
+                            <b>
+                              <span
+                                [class]="'text-center '+service.colorByStatut(service.single?.etat)">{{service.single?.etat?.name | translate}}</span>
+                            </b>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                     <div *ngIf="service.single?.etat.id==1" class="text-center mt-4">
                       <button (click)="startProcess(2)" class="btn btn-md btn-dark noRadius">
                         {{ 'startProcess' | translate }}
@@ -137,384 +193,336 @@
                       </button>
                     </div>
                   </div>
-
-                  <div class="col-md-9 pl-1">
-                    <ul class="nav nav-tabs bgTheme text-white" role="tablist">
-                      <li class="nav-item">
-                        <a (click)="switchTabs('default')"
-                          [ngClass]="{'nav-link text-white': true, 'active': tabs=='default'}" data-toggle="tab"
-                          href="#Tabs_ressource" role="tab" aria-selected="true">
-                          <i class="fas fa-cog mr-1"></i>
-                          {{'RESSOURCES' | translate}}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a (click)="startProcess(2)"
-                          [ngClass]="{'nav-link text-white': true, 'active': tabs=='validation'}" data-toggle="tab"
-                          href="#Tabs_validation" role="tab" aria-selected="true">
-                          <i class="fas fa-check-circle mr-1"></i>
-                          {{'traitementValidation' | translate}}
-                          <i *ngIf="service?.requestings?.etat" class="fas fa-spinner fa-spin"></i>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a (click)="switchTabs('rapport_quotidien')"
-                          [ngClass]="{'nav-link text-white': true, 'active': tabs=='rapport_quotidien'}"
-                          data-toggle="tab" href="#Tabs_rapport_quotidien" role="tab" aria-selected="false">
-                          <i class="fas fa-book-open mr-1"></i>
-                          {{'rapportsQuotidiensAndSuivi' | translate}}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a (click)="switchTabs('rapport_final')"
-                          [ngClass]="{'nav-link text-white': true, 'active': tabs=='rapport_final'}" data-toggle="tab"
-                          href="#Tabs_rapport_final" role="tab" aria-selected="false">
-                          <i class="fas fa-book mr-1"></i>
-                          {{'rapportFinal' | translate}}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a (click)="switchTabs('evaluation')"
-                          [ngClass]="{'nav-link text-white': true, 'active': tabs=='evaluation'}" data-toggle="tab"
-                          href="#Tabs_evaluation" role="tab" aria-selected="false">
-                          <i class="fas fa-comment-alt mr-1"></i>
-                          {{'EVALUATION' | translate}}
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="tab-content">
-                      <!-- RESSOURCES -->
-                      <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='default'}" id="Tabs_ressource"
-                        role="tabpanel">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <h6 class="text-center card-body bg-white border">
-                              {{service.single?.name | truncate:[100]}}
-                            </h6>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <!-- DOCUMENTS -->
-                          <div class="col-md-6 animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'DOCUMENTS' | translate}}</h6>
-                              </div>
-                              <div class="card-body p-1">
-                                <div *ngIf="service.single?.documents?.length" class="row">
-                                  <div *ngFor="let item of service.single.documents"
-                                    class="col-md-4 text-center mb-3 mt-1">
-                                    <a target="_blank" [href]="service.getApiFileLocation()+item?.url">
-                                      <img width="50" height="50" class="img-fluid" src="assets/file.png" alt="">
-                                    </a>
-                                    <div>
-                                      <a target="_blank" [href]="service.getApiFileLocation()+item?.url"
-                                        class="text-secondary">
-                                        {{item?.name}}
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div *ngIf="!service.single?.documents?.length">
-                                  <app-nodata></app-nodata>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- CHARGES -->
-                          <div class="col-md-6 animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'besoinMateriel' | translate}}</h6>
-                              </div>
-                              <div class="card-body p-1 pt-0">
-                                <div *ngIf="service.single?.materiels?.length" class="row">
-                                  <div class="col-md-12">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th> {{'MATERIEL' | translate}} </th>
-                                          <th>{{'QUANTITE' | translate}}</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr *ngFor="let item of service.single.materiels" class="animated slideInDown">
-                                          <td>{{item?.designation?.name}}</td>
-                                          <td>{{ service.moneyFormat(item?.quantite) }}</td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div *ngIf="!service.single?.materiels?.length">
-                                  <app-nodata></app-nodata>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <!-- MATERIEL -->
-                          <div class="col-md-6 animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'listCharge' | translate}}</h6>
-                              </div>
-                              <div class="card-body p-1">
-                                <div *ngIf="service.single?.charges?.length" class="row">
-                                  <div class="col-md-12">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th> {{'DESIGNATION' | translate}} </th>
-                                          <th>{{'QUANTITE' | translate}}</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr *ngFor="let item of service.single.charges" class="animated slideInDown">
-                                          <td>{{item?.name}}</td>
-                                          <td>{{ service.moneyFormat(item?.montant) }}</td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div *ngIf="!service.single?.charges?.length">
-                                  <app-nodata></app-nodata>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- EQUIPE -->
-                          <div class="col-md-6 animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'EQUIPE' | translate}}</h6>
-                              </div>
-                              <div class="card-body p-1">
-                                <div *ngIf="equipes?.length" class="row">
-                                  <div class="col-md-12">
-                                    <table class="table table-hover">
-                                      <thead>
-                                        <tr>
-                                          <th> {{'IMAGE' | translate}} </th>
-                                          <th> {{'nomAndPrenom' | translate}} </th>
-                                          <th>{{'ROLE' | translate}}</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr *ngFor="let item of equipes" (click)="personnelDetails(item)"
-                                          class="handMe animated slideInDown">
-                                          <td>
-                                            <img width="40" height="40"
-                                              *ngIf="item?.sexe == 'Masculin' || item?.personnel?.sexe == 'Masculin'"
-                                              src="assets/images/users/male.png"
-                                              class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
-                                            <img width="40" height="40"
-                                              *ngIf="item?.sexe == 'Feminin' || item?.personnel?.sexe == 'Feminin'"
-                                              src="assets/images/users/female.png"
-                                              class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
-                                          </td>
-                                          <td> {{item?.personnel?.nom+' '+item?.personnel?.prenom}}</td>
-                                          <td>{{ item?.role?.name }}</td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div *ngIf="!equipes?.length">
-                                  <app-nodata></app-nodata>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- ITINERAIRE -->
-                        <div class="row ">
-                          <div class="col animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'ITINERAIRE' | translate}}</h6>
-                              </div>
-                              <div class="card-body p-1">
-                                <div class="row bs-wizard"
-                                  style="border-bottom:0;">
-
-                                  <div [class]="'bs-wizard-step complete '+itineraireColSize()">
-                                    <div class="text-center bs-wizard-stepnum">
-                                      {{service?.single?.depart?.name || 'Depart'}}</div>
-                                    <div class="progress">
-                                      <div class="progress-bar"></div>
-                                    </div>
-                                    <a popoverPlacement="top" [popoverOnHover]="true" [popover]="detailsPopover_1"
-                                      class="bs-wizard-dot text-center handMe">
-                                    </a>
-                                    <popover-content #detailsPopover_1 [title]="'DEPART' | translate" [animation]="true"
-                                      [closeOnClickOutside]="true" placement="top">
-                                      {{'missionDepart' | translate}}
-                                    </popover-content>
-                                  </div>
-
-                                  <div *ngFor="let item of service.single.itineraires; let i=index"
-                                    [class]="'bs-wizard-step complete '+itineraireColSize()">
-                                    <div class="text-center bs-wizard-stepnum"> {{item?.localite?.name}} </div>
-                                    <div class="progress">
-                                      <div class="progress-bar"></div>
-                                    </div>
-                                    <a popoverPlacement="top" [popoverOnHover]="true" [popover]="detailsPopover_2"
-                                      class="bs-wizard-dot text-center handMe">
-                                    </a>
-                                    <popover-content #detailsPopover_2 [title]="item?.localite?.name" [animation]="true"
-                                      [closeOnClickOutside]="true" placement="top">
-                                      {{item?.objectif}}
-                                    </popover-content>
-                                  </div>
-
-
-                                  <div [class]="'bs-wizard-step complete '+itineraireColSize()">
-                                    <!-- active -->
-                                    <div class="text-center bs-wizard-stepnum">
-                                      {{service?.single?.localite?.name || 'Arrivée'}} </div>
-                                    <div class="progress">
-                                      <div class="progress-bar"></div>
-                                    </div>
-                                    <a popoverPlacement="top" [popoverOnHover]="true" [popover]="addPopover"
-                                      class="bs-wizard-dot">
-                                    </a>
-                                    <popover-content #addPopover [title]="'ARRIVEE' | translate" [animation]="true"
-                                      [closeOnClickOutside]="true" placement="top">
-                                      {{'missionArrivee' | translate}}
-                                    </popover-content>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- MATERIEL -->
-                          <div class="col animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">Vehicule</h6>
-                              </div>
-                              <div class="card-body p-1">
-                                <div *ngIf="service.single?.auto_missions?.length" class="row">
-                                  <div class="col-md-12">
-                                    <table class="table">
-                                      <thead>
-                                        <tr>
-                                          <th> Vehicule </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr *ngFor="let item of service.single.auto_missions" class="animated slideInDown">
-                                          <td><a [routerLink]="'/transport/mes-autos/'+item?.auto_id">{{item?.auto.designation}}</a></td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                                <div *ngIf="!service.single?.auto_missions?.length">
-                                  <app-nodata></app-nodata>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
+                  <!-- RESSOURCES -->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='default'}" id="Tabs_ressource"
+                    role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h6 class="text-center card-body bg-white border">
+                          {{service.single?.name | truncate:[100]}}
+                        </h6>
                       </div>
-                      <!-- RAPPORT QUOTIDIEN-->
-                      <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='rapport_quotidien'}"
-                        id="Tabs_rapport_quotidien" role="tabpanel">
-                        <div class="row">
-                          <div class="col-md-4 animated zoomIn">
-                            <div class="card shadow mb-2">
-                              <div class="card-header">
-                                <h6 class="m-0 font-weight-bold">{{'membresEquipe' | translate}}</h6>
+                    </div>
+                    <div class="row">
+                      <!-- DOCUMENTS -->
+                      <div class="col-md-6 animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'DOCUMENTS' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div *ngIf="service.single?.documents?.length" class="row">
+                              <div *ngFor="let item of service.single.documents"
+                                class="col-md-4 text-center mb-3 mt-1">
+                                <a target="_blank" [href]="service.getApiFileLocation()+item?.url">
+                                  <img width="50" height="50" class="img-fluid" src="assets/file.png" alt="">
+                                </a>
+                                <div>
+                                  <a target="_blank" [href]="service.getApiFileLocation()+item?.url"
+                                    class="text-secondary">
+                                    {{item?.name}}
+                                  </a>
+                                </div>
                               </div>
-                              <div class="card-body p-1">
-                                <div *ngIf="equipes?.length" class="row">
-                                  <div class="col-md-12">
-                                    <div *ngFor="let item of equipes; let i=index"
-                                      (click)="rapportQuotidienByPersonnel(item, i)"
-                                      [ngClass]="{'card text-center p-1 handMe': true, ' bgMe': i!=0, 'bg-primary text-light': currentIndex == i}">
-                                      <a>
-                                        <img width="60" height="60"
+                            </div>
+                            <div *ngIf="!service.single?.documents?.length">
+                              <app-nodata></app-nodata>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- CHARGES -->
+                      <div class="col-md-6 animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'besoinMateriel' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1 pt-0">
+                            <div *ngIf="service.single?.materiels?.length" class="row">
+                              <div class="col-md-12">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th> {{'MATERIEL' | translate}} </th>
+                                      <th>{{'QUANTITE' | translate}}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of service.single.materiels" class="animated slideInDown">
+                                      <td>{{item?.designation?.name}}</td>
+                                      <td>{{ service.moneyFormat(item?.quantite) }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div *ngIf="!service.single?.materiels?.length">
+                              <app-nodata></app-nodata>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <!-- MATERIEL -->
+                      <div class="col-md-6 animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'listCharge' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div *ngIf="service.single?.charges?.length" class="row">
+                              <div class="col-md-12">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th> {{'DESIGNATION' | translate}} </th>
+                                      <th>{{'QUANTITE' | translate}}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of service.single.charges" class="animated slideInDown">
+                                      <td>{{item?.name}}</td>
+                                      <td>{{ service.moneyFormat(item?.montant) }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div *ngIf="!service.single?.charges?.length">
+                              <app-nodata></app-nodata>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- EQUIPE -->
+                      <div class="col-md-6 animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'EQUIPE' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div *ngIf="equipes?.length" class="row">
+                              <div class="col-md-12">
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th> {{'IMAGE' | translate}} </th>
+                                      <th> {{'nomAndPrenom' | translate}} </th>
+                                      <th>{{'ROLE' | translate}}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of equipes" (click)="personnelDetails(item)"
+                                      class="handMe animated slideInDown">
+                                      <td>
+                                        <img width="40" height="40"
                                           *ngIf="item?.sexe == 'Masculin' || item?.personnel?.sexe == 'Masculin'"
                                           src="assets/images/users/male.png"
                                           class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
-                                        <img width="60" height="60"
+                                        <img width="40" height="40"
                                           *ngIf="item?.sexe == 'Feminin' || item?.personnel?.sexe == 'Feminin'"
                                           src="assets/images/users/female.png"
                                           class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
-                                      </a>
-                                      {{item?.personnel?.nom+' '+item?.personnel?.prenom}}
-                                      ({{ item?.role }})
-                                    </div>
-                                  </div>
-                                </div>
+                                      </td>
+                                      <td> {{item?.personnel?.nom+' '+item?.personnel?.prenom}}</td>
+                                      <td>{{ item?.role?.name }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
-                          </div>
-                          <div class="col-md-8 pl-0">
-                            <app-rapport-quotidien *ngIf="currentPersonnelIdForRapportQuotidien" [mission_id]="id"
-                              [personnel_id]="currentPersonnelIdForRapportQuotidien"></app-rapport-quotidien>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- RAPPORT FINAL-->
-                      <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='rapport_final'}"
-                        id="Tabs_rapport_final" role="tabpanel">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <app-rapport-final *ngIf="currentPersonnelIdForRapportFinal" [mission_id]="id"
-                              [personnel_id]="currentPersonnelIdForRapportFinal">
-                            </app-rapport-final>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- EVALUATION-->
-                      <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='evaluation'}"
-                        id="Tabs_evaluation" role="tabpanel">
-                        <app-evaluation-single *ngIf="currentPersonnelIdForRapportFinal" [mission_id]="id"
-                          [personnel_id]="currentPersonnelIdForRapportFinal"></app-evaluation-single>
-                      </div>
-                      <!-- VALIDATION-->
-                      <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='validation'}"
-                        id="Tabs_validation" role="tabpanel">
-
-                        <div *ngIf="departements?.length" class="row">
-                          <div class="col-md-12 form-box">
-                            <div class="f1-steps">
-                              <div class="f1-progress">
-                                <div [class]="'f1-progress-line '+stepLength"></div>
-                              </div>
-                              <div *ngFor="let item of departements" (click)="getObjection(item, 'step-'+item.process)"
-                                [ngClass]="{'f1-step': true, 'active': item.process == stepView}">
-                                <div class="f1-step-icon">
-                                  <ng-container *ngIf="service.single?.current_departement_traitement > item.process">
-                                    <i class="fa fa-check-circle"></i>
-                                  </ng-container>
-
-                                  <ng-container *ngIf="service.single?.current_departement_traitement <= item.process">
-                                    <i class="fas fa-times-circle"></i>
-                                  </ng-container>
-
-                                </div>
-                                <p> {{item?.name}} </p>
-                              </div>
+                            <div *ngIf="!equipes?.length">
+                              <app-nodata></app-nodata>
                             </div>
                           </div>
                         </div>
-
-                        <app-traitement *ngIf="departement_id" [mission_id]="id" [departement_id]="departement_id"
-                          [departement_actuel]="departement_actuel" [departement_name]="departement_name"
-                          [departement_affecte]="service.single?.current_departement_traitement"
-                          [mission_etat_id]="mission_etat_id" [mission_all_details]="mission_all_details">
-                        </app-traitement>
                       </div>
                     </div>
+                    <!-- ITINERAIRE -->
+                    <div class="row ">
+                      <div class="col animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'ITINERAIRE' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div class="row bs-wizard"
+                              style="border-bottom:0;">
+
+                              <div [class]="'bs-wizard-step complete '+itineraireColSize()">
+                                <div class="text-center bs-wizard-stepnum">
+                                  {{service?.single?.depart?.name || 'Depart'}}</div>
+                                <div class="progress">
+                                  <div class="progress-bar"></div>
+                                </div>
+                                <a popoverPlacement="top" [popoverOnHover]="true" [popover]="detailsPopover_1"
+                                  class="bs-wizard-dot text-center handMe">
+                                </a>
+                                <popover-content #detailsPopover_1 [title]="'DEPART' | translate" [animation]="true"
+                                  [closeOnClickOutside]="true" placement="top">
+                                  {{'missionDepart' | translate}}
+                                </popover-content>
+                              </div>
+
+                              <div *ngFor="let item of service.single.itineraires; let i=index"
+                                [class]="'bs-wizard-step complete '+itineraireColSize()">
+                                <div class="text-center bs-wizard-stepnum"> {{item?.localite?.name}} </div>
+                                <div class="progress">
+                                  <div class="progress-bar"></div>
+                                </div>
+                                <a popoverPlacement="top" [popoverOnHover]="true" [popover]="detailsPopover_2"
+                                  class="bs-wizard-dot text-center handMe">
+                                </a>
+                                <popover-content #detailsPopover_2 [title]="item?.localite?.name" [animation]="true"
+                                  [closeOnClickOutside]="true" placement="top">
+                                  {{item?.objectif}}
+                                </popover-content>
+                              </div>
+
+
+                              <div [class]="'bs-wizard-step complete '+itineraireColSize()">
+                                <!-- active -->
+                                <div class="text-center bs-wizard-stepnum">
+                                  {{service?.single?.localite?.name || 'Arrivée'}} </div>
+                                <div class="progress">
+                                  <div class="progress-bar"></div>
+                                </div>
+                                <a popoverPlacement="top" [popoverOnHover]="true" [popover]="addPopover"
+                                  class="bs-wizard-dot">
+                                </a>
+                                <popover-content #addPopover [title]="'ARRIVEE' | translate" [animation]="true"
+                                  [closeOnClickOutside]="true" placement="top">
+                                  {{'missionArrivee' | translate}}
+                                </popover-content>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- MATERIEL -->
+                      <div class="col animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">Vehicule</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div *ngIf="service.single?.auto_missions?.length" class="row">
+                              <div class="col-md-12">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th> Vehicule </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of service.single.auto_missions" class="animated slideInDown">
+                                      <td><a [routerLink]="'/transport/mes-autos/'+item?.auto_id">{{item?.auto.designation}}</a></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div *ngIf="!service.single?.auto_missions?.length">
+                              <app-nodata></app-nodata>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- RAPPORT QUOTIDIEN-->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='rapport_quotidien'}"
+                    id="Tabs_rapport_quotidien" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-4 animated zoomIn">
+                        <div class="card shadow mb-2">
+                          <div class="card-header">
+                            <h6 class="m-0 font-weight-bold">{{'membresEquipe' | translate}}</h6>
+                          </div>
+                          <div class="card-body p-1">
+                            <div *ngIf="equipes?.length" class="row">
+                              <div class="col-md-12">
+                                <div *ngFor="let item of equipes; let i=index"
+                                  (click)="rapportQuotidienByPersonnel(item, i)"
+                                  [ngClass]="{'card text-center p-1 handMe': true, ' bgMe': i!=0, 'bg-primary text-light': currentIndex == i}">
+                                  <a>
+                                    <img width="60" height="60"
+                                      *ngIf="item?.sexe == 'Masculin' || item?.personnel?.sexe == 'Masculin'"
+                                      src="assets/images/users/male.png"
+                                      class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+                                    <img width="60" height="60"
+                                      *ngIf="item?.sexe == 'Feminin' || item?.personnel?.sexe == 'Feminin'"
+                                      src="assets/images/users/female.png"
+                                      class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+                                  </a>
+                                  {{item?.personnel?.nom+' '+item?.personnel?.prenom}}
+                                  ({{ item?.role?.name }})
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-8 pl-0">
+                        <app-rapport-quotidien *ngIf="currentPersonnelIdForRapportQuotidien" [mission_id]="id"
+                          [personnel_id]="currentPersonnelIdForRapportQuotidien"></app-rapport-quotidien>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- RAPPORT FINAL-->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='rapport_final'}"
+                    id="Tabs_rapport_final" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <app-rapport-final *ngIf="currentPersonnelIdForRapportFinal" [mission_id]="id"
+                          [personnel_id]="currentPersonnelIdForRapportFinal">
+                        </app-rapport-final>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- EVALUATION-->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='evaluation'}"
+                    id="Tabs_evaluation" role="tabpanel">
+                    <app-evaluation-single *ngIf="currentPersonnelIdForRapportFinal" [mission_id]="id"
+                      [personnel_id]="currentPersonnelIdForRapportFinal"></app-evaluation-single>
+                  </div>
+                  <!-- VALIDATION-->
+                  <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='validation'}"
+                    id="Tabs_validation" role="tabpanel">
+
+                    <div *ngIf="departements?.length" class="row">
+                      <div class="col-md-12 form-box">
+                        <div class="f1-steps">
+                          <div class="f1-progress">
+                            <div [class]="'f1-progress-line '+stepLength"></div>
+                          </div>
+                          <div *ngFor="let item of departements" (click)="getObjection(item, 'step-'+item.process)"
+                            [ngClass]="{'f1-step': true, 'active': item.process == stepView}">
+                            <div class="f1-step-icon">
+                              <ng-container *ngIf="service.single?.current_departement_traitement > item.process">
+                                <i class="fa fa-check-circle"></i>
+                              </ng-container>
+
+                              <ng-container *ngIf="service.single?.current_departement_traitement <= item.process">
+                                <i class="fas fa-times-circle"></i>
+                              </ng-container>
+
+                            </div>
+                            <p> {{item?.name}} </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <app-traitement *ngIf="departement_id" [mission_id]="id" [departement_id]="departement_id"
+                      [departement_actuel]="departement_actuel" [departement_name]="departement_name"
+                      [departement_affecte]="service.single?.current_departement_traitement"
+                      [mission_etat_id]="mission_etat_id" [mission_all_details]="mission_all_details">
+                    </app-traitement>
                   </div>
                 </div>
               </div>

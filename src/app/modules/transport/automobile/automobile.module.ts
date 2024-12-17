@@ -22,6 +22,8 @@ import { PanneModule } from './panne/panne.module';
 import { CalendrierModule } from '../../calendrier/calendrier.module';
 import { UploadModule } from 'src/app/upload';
 import { EtatModule } from '../etat/etat.module';
+import { VisiteTechniqueModule } from '../visite-technique/visite-technique.module';
+import { AssuranceModule } from '../assurance/assurance.module';
 
 @NgModule({
     declarations: [
@@ -49,7 +51,9 @@ import { EtatModule } from '../etat/etat.module';
         PanneModule,
         CalendrierModule,
         UploadModule,
-        EtatModule
+        EtatModule,
+        VisiteTechniqueModule,
+        AssuranceModule
     ],
     exports: [
         AutomobileComponent,

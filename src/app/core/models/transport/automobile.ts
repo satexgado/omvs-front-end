@@ -1,5 +1,4 @@
 import { hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
-import { ICouleur, Couleur } from './couleur';
 import { IAutomobileType, AutomobileType } from './automobile-type';
 import { ICarburantType, CarburantType } from './carburant-type';
 import { IGenre, Genre } from './genre';
@@ -8,6 +7,7 @@ import { IMarque, Marque } from './marque';
 import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter/adaptable-map';
 import { IBase } from '../base.interface';
 import { ITransSerie, TransSerie } from './serie';
+import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
 
 export interface IAutomobile extends IBase {
   type_acquisition: string;
@@ -30,8 +30,8 @@ export interface IAutomobile extends IBase {
   type_automobile_id: number;
   nombre_place: number;
   nombre_porte: number;
-  couleur: ICouleur;
-  couleur_id: number;
+  coordonnee: ICrCoordonnee;
+  coordonnee_id: number;
   kilometrage_durant_achat: number;
   type_transmission: string;
   emission_co2: string;
@@ -85,11 +85,10 @@ export class Automobile implements IAutomobile {
     @hasOneMap({field:'trans_genre', class: Genre})
     genre: IGenre = null;
 
-    @adaptableMap('couleur')
-    couleur_id = 0;
+    coordonnee_id = 0;
 
-    @hasOneMap({field:'trans_couleur', class: Couleur})
-    couleur: ICouleur = null;
+    @hasOneMap({field:'cr_coordonnee', class: CrCoordonnee})
+    coordonnee: ICrCoordonnee = null;
 
     @adaptableMap('type_carburant')
     type_carburant_id = 0;

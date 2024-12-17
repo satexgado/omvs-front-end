@@ -35,7 +35,10 @@ export class DossierConducteur implements IDossierConducteur {
     id: number = 0;
 
     get libelle() {
-      return  this.conducteur.libelle;
+      if(!this.conducteur){
+        return '';
+      }
+      return  this.conducteur.nom + '' + this.conducteur.prenom;
     }
 
     @dateAdaptableMap('date_obtention')

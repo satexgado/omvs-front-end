@@ -41,7 +41,7 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
       (data)=>{
         this.items = data;
         this.loading = false;
-        console.log(this.selected);
+        // console.log(this.selected);
       }
     )
   };

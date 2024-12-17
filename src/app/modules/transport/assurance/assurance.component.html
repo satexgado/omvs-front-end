@@ -1,101 +1,85 @@
 <div class="grid-container">
     <div class="secondary-content" [class.sidebar_small]="selectedAssurance">
-        <div class="row row-xs mg-0 pd-0 bg-light p-0">
-            <div class="col-lg-4 d-flex">
-                <div>
-                    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
-                      <i class="fal fa-plus-circle tx-14" ></i>
-                    </button>
-                </div>
-                <div class="form-group mg-t-5 mg-b-5 ">
-                    <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
-                </div>
+        <div class="card card-2 card-accent-primary">
+            <div class="d-flex p-2  border-bottom">
+                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+                <button *ngIf="_automobileId" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+                    <i class="fal fa-plus-circle tx-14" ></i>
+                </button>
             </div>
-            <div class="col-lg-4">
-                <ul class="nav float-right list-inline justify-content-end">
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-globe bg-white tx-danger tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-flag-alt bg-white tx-success-100 tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-chair-office bg-white tx-warning tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-people-carry bg-white tx-primary tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                </ul>
-            </div>
-            <div class="col-lg-4">
-                <ul class="nav float-right list-inline justify-content-end">
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Ajustement</span></a></li>
-                    <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Affectés</span></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table  table-hover table-sm mb-0 " [class.loading]="dataHelper.loading$ | async">
-                <tbody>
-                    <tr class="barder-0">
-                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b" *ngIf="!_automobileId">Vehicule</th>
-                        <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Assurances</th>
-                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Fournisseur</th>
-                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Numero Contrat</th>
-                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Etat</th>
-                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Date debut</th>
-                        <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Date fin</th>
-                        <th class="tx-orange tx-center p-3 tx-16"> </th>
-                    </tr>
-                    <ng-container *ngIf="dataHelper.data$ | async as items">
-                        <ng-container *ngIf="items.length; else noItem">
-                            <ng-container *ngFor="let assurance of items;trackBy: dataHelper.trackByFn">
-                                <tr class=" bd-b" [ngClass]="{'border-left-success': assurance.etat_contrat === 'actif', 'border-left-warning' : assurance.etat_contrat === 'suspendu', 'border-left-danger' : assurance.etat_contrat === 'expiré' }">
-                                    <td class=" " *ngIf="!_automobileId">
-                                        <div>
-                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.automobile.libelle | titlecase}}</p>
-                                        </div>
-                                    </td>
-                                    <td class="bg-light">
-                                        <span class=" tx-yeto3 tx-14 ">
-                                          {{assurance.libelle}}
-                                        </span>
-                                    </td>
-                                    <td class="bg-light">
-                                        <span class=" tx-yeto3 tx-14 ">
-                                          {{assurance.coordonnee.libelle}}
-                                        </span>
-                                    </td>
-                                    <td class="bg-light">
-                                        <span class=" tx-yeto3 tx-14 ">
-                                          {{assurance.numero_contrat}}
-                                        </span>
-                                    </td>
-                                    <td class="bg-light">
-                                        <span class=" tx-yeto3 tx-14 " [ngClass]="{'text-success': assurance.etat_contrat === 'actif', 'text-warning' : assurance.etat_contrat === 'suspendu', 'text-danger' : assurance.etat_contrat === 'expiré' }">
-                                          {{assurance.etat_contrat}}
-                                        </span>
-                                    </td>
-                                    <td class="tx-center bg-white bd-r bd-white">
-                                        <div>
-                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.date_debut | date: 'dd/MM/yyyy'}}</p>
-                                        </div>
-                                    </td>
-                                    <td class="tx-center bg-white bd-r bd-white">
-                                        <div>
-                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.date_fin | date: 'dd/MM/yyyy'}}</p>
-                                        </div>
-                                    </td>
-                                    <td class="tx-center bg-white bd-r bd-white">
-                                        <div>
-                                            <p class="mg-0 text-{{assurance.niveau?.couleur}} tx-bolder"> {{assurance.niveau?.libelle}}</p>
-                                        </div>
-                                    </td>
-                                    <td class=" tx-center ">
-                                        <button class="btn btn-sm btn-link" (click)="onSetSelected(assurance)"><i class="fad fa-search tx-14 bg-gray tx-warning " style="padding:6px; border-radius:50%"></i></button>
-                                        <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowUpdateForm(assurance)"> <i class="fal fa-edit" ></i> </button>
-                                        <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowCreateForm(assurance)"> <i class="fal fa-clone" ></i> </button>
-
-                                        <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(assurance)"> <i class="fal fa-trash-alt" ></i></button>
-                                    </td>
-                                </tr>
+            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+                <div class="table-responsive">
+                    <table class="table  table-hover table-sm mb-0 " [class.loading]="dataHelper.loading$ | async">
+                        <tbody>
+                            <tr class="barder-0">
+                                <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b" *ngIf="!_automobileId">Vehicule</th>
+                                <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Assurances</th>
+                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Fournisseur</th>
+                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Numero Contrat</th>
+                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Etat</th>
+                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Date debut</th>
+                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Date fin</th>
+                                <th class="tx-orange tx-center p-3 tx-16"> </th>
+                            </tr>
+                            <ng-container *ngIf="dataHelper.data$ | async as items">
+                                <ng-container *ngIf="items.length; else noItem">
+                                    <ng-container *ngFor="let assurance of items;trackBy: dataHelper.trackByFn">
+                                        <tr class=" bd-b" [ngClass]="{'border-left-success': assurance.etat_contrat === 'actif', 'border-left-warning' : assurance.etat_contrat === 'suspendu', 'border-left-danger' : assurance.etat_contrat === 'expiré' }">
+                                            <td class=" " *ngIf="!_automobileId">
+                                                <div>
+                                                    <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.automobile.libelle | titlecase}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="bg-light">
+                                                <span class=" tx-yeto3 tx-14 ">
+                                                  {{assurance.libelle}}
+                                                </span>
+                                            </td>
+                                            <td class="bg-light">
+                                                <span class=" tx-yeto3 tx-14 ">
+                                                  {{assurance.coordonnee.libelle}}
+                                                </span>
+                                            </td>
+                                            <td class="bg-light">
+                                                <span class=" tx-yeto3 tx-14 ">
+                                                  {{assurance.numero_contrat}}
+                                                </span>
+                                            </td>
+                                            <td class="bg-light">
+                                                <span class=" tx-yeto3 tx-14 " [ngClass]="{'text-success': assurance.etat_contrat === 'actif', 'text-warning' : assurance.etat_contrat === 'suspendu', 'text-danger' : assurance.etat_contrat === 'expiré' }">
+                                                  {{assurance.etat_contrat}}
+                                                </span>
+                                            </td>
+                                            <td class="tx-center bg-white bd-r bd-white">
+                                                <div>
+                                                    <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.date_debut | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="tx-center bg-white bd-r bd-white">
+                                                <div>
+                                                    <p class="mg-0 tx-gray-600 tx-bolder"> {{assurance.date_fin | date: 'dd/MM/yyyy'}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="tx-center bg-white bd-r bd-white">
+                                                <div>
+                                                    <p class="mg-0 text-{{assurance.niveau?.couleur}} tx-bolder"> {{assurance.niveau?.libelle}}</p>
+                                                </div>
+                                            </td>
+                                            <td class=" tx-center ">
+                                                <button class="btn btn-sm btn-link" (click)="onSetSelected(assurance)"><i class="fad fa-search tx-14 bg-gray tx-warning " style="padding:6px; border-radius:50%"></i></button>
+                                                <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowUpdateForm(assurance)"> <i class="fal fa-edit" ></i> </button>
+                                                <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowCreateForm(assurance)"> <i class="fal fa-clone" ></i> </button>
+        
+                                                <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(assurance)"> <i class="fal fa-trash-alt" ></i></button>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
                             </ng-container>
-                        </ng-container>
-                    </ng-container>
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="main-content scroll-11" [class.main-content_large]="selectedAssurance">
@@ -118,7 +102,7 @@
             <div class="card-body">
               <div class="row mt-1">
 
-                <div class="col-md-3 details animated slideInLeft">
+                <div class="col-md-3 details animated slideInLeft" *ngIf="!_automobileId">
                   <ul class="list-group shadow">
                     <li
                       class="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1 bgTheme text-white">
@@ -165,13 +149,62 @@
                   </ul>
                 </div>
 
-                <div class="col-md-9 pl-1">
+                <div class="pl-1"    [ngClass]="_automobileId ? 'col' : 'col-md-9'">
                     <ngb-tabset [justify]="'fill'" #tabs="ngbTabset" [destroyOnHide]="true">
                         <ngb-tab id="tab-description">
                             <ng-template ngbTabTitle>
                                 <i class="fal fa-list-alt"></i> Description
                             </ng-template>
                             <ng-template ngbTabContent>
+                                <div class="row" *ngIf="_automobileId">
+                                    <div class="col-md-6">
+                                        <ul class="list-group shadow">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Assurances : {{selectedAssurance.libelle}}
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <a [routerLink]="['/transport/mes-autos', selectedAssurance.auto_id]">
+                                                    Vehicule : {{selectedAssurance.automobile.libelle | titlecase}}
+                                                </a>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Fournisseur : {{selectedAssurance.coordonnee.libelle}}
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Prime : {{selectedAssurance.prime}}
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Periodicite : Chaque {{selectedAssurance.duree_periodicite}} {{selectedAssurance.periodicite}}
+                                            </li>
+                                          </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-group shadow">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Numero Contrat: {{selectedAssurance.numero_contrat}}
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{'START' | translate}} : {{selectedAssurance.date_debut | date:'d MMM y' }}
+                                            <span class="float-right fas fa-fw fa-calendar"></span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{'END' | translate}} : {{selectedAssurance.date_fin | date:'d MMM y'}}
+                                            <span class="float-right fas fa-fw fa-calendar-check"></span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{'DUREE' | translate}} : {{selectedAssurance.start | age:selectedAssurance.end }}
+                                            <span class="float-right fas fa-fw fa-clock"></span>
+                                            </li>
+                                            <li class="list-group-item text-center">
+                                            <b>
+                                                <span
+                                                [class]="'text-center'" [ngClass]="{'text-success': selectedAssurance.etat_contrat === 'actif', 'text-warning' : selectedAssurance.etat_contrat === 'suspendu', 'text-danger' : selectedAssurance.etat_contrat === 'expiré' }">{{selectedAssurance.etat_contrat | titlecase}}</span>
+                                            </b>
+                                            </li>
+                                          </ul>
+                                    </div>
+
+                                </div>
                                 {{selectedAssurance.description}}
                             </ng-template>
                         </ngb-tab>
@@ -251,3 +284,15 @@
     </div>
 </ng-template>
 
+<!-- ADD -->
+<div class="button-fixed-bottom-right" *ngIf="!_automobileId">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>

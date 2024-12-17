@@ -6,7 +6,6 @@ import { IAutomobile, Automobile } from 'src/app/core/models/transport/automobil
 import { Component, Input, ChangeDetectorRef} from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter  } from '@ng-bootstrap/ng-bootstrap';
 import { Validators } from '@angular/forms';
-import { SelectIconItem } from 'src/app/shared/components/custom-input/custom-select-icon/custom-select-icon.component';
 import { shareReplay, map, take, retryWhen, delay } from 'rxjs/operators';
 import { CacheService } from 'src/app/shared/services';
 import { AutomobileFactory } from 'src/app/core/services/transport/automobile';
@@ -15,19 +14,32 @@ import { EditComponent as SerieEditComponent} from '../../serie/edit/edit.compon
 import { EditComponent as MarqueEditComponent} from '../../marque/edit/edit.component';
 import { EditComponent as ModeleEditComponent} from '../../modele/edit/edit.component';
 import { EditComponent as GenreEditComponent} from '../../genre/edit/edit.component';
-import { EditComponent as CouleurEditComponent} from '../../couleur/edit/edit.component';
 import { EditComponent as CarburantEditComponent} from '../../carburant/edit/edit.component';
 import { EditComponent as AutomobileTypeEditComponent} from '../../automobile-type/edit/edit.component';
+import { EditComponent as CoordonneeEditComponent} from 'src/app/modules/fournisseur/coordonnee/edit/edit.component';
+
 import { MarqueFactory } from 'src/app/core/services/transport/marque';
 import { ModeleFactory } from 'src/app/core/services/transport/modele';
 import { GenreFactory } from 'src/app/core/services/transport/genre';
 import { CouleurFactory } from 'src/app/core/services/transport/couleur';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { requiredFileType } from 'src/app/shared/upload-file.validator';
+import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
+  styles: [`
+    header {
+        padding: 8px 0 2px;
+        background: #e9e9e9;
+        border-bottom: 1px solid #cfcfcf;
+        -webkit-box-shadow: 0 1px 0 #fff;
+        -moz-box-shadow: 0 1px 0 #fff;
+        -ms-box-shadow: 0 1px 0 #fff;
+        box-shadow: 0 1px 0 #fff;
+    }  
+  `],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class EditComponent extends BaseEditComponent  {
@@ -65,23 +77,24 @@ export class EditComponent extends BaseEditComponent  {
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly genreEditComponent  = GenreEditComponent;
 
-  allCouleur$ = new CouleurFactory().list(
+  allCoordonnee$ = new CrCoordonneeFactory().list(
     QueryAllOptionWithIns
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
-  readonly couleurEditComponent  = CouleurEditComponent;
+  readonly coordonneeEditComponent  = CoordonneeEditComponent;
 
-  transmission_select: SelectIconItem[] = [
-    {libelle:'Automatique',iconClass:null},
-    {libelle:'Manuelle',iconClass:null},
-  ];
-  acquisition_select: SelectIconItem[] = [
-    {libelle:'Achat',iconClass:null},
-    {libelle:'Location',iconClass:null},
-  ];
-  etat_select: SelectIconItem[] = [
-    {libelle:'Neuf',iconClass:null},
-    {libelle:'Occasion',iconClass:null},
-  ];
+  transmission_select = of([
+    {libelle:'Automatique', id:'Automatique'},
+    {libelle:'Manuelle', id:'Manuelle'},
+  ]);
+  acquisition_select= of([
+    {libelle:'Achat',id:'Achat'},
+    {libelle:'Donation',id:'Donation'},
+    {libelle:'Location',id:'Location'},
+  ]);
+  etat_select= of([
+    {libelle:'Neuf',id:'Neuf'},
+    {libelle:'Occasion',id:'Occasion'},
+  ]);
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
@@ -125,7 +138,7 @@ export class EditComponent extends BaseEditComponent  {
       'genre_id': [item.genre_id, Validators.required],
       'type_carburant_id': [item.type_carburant_id, Validators.required],
       'type_automobile_id': [item.type_automobile_id, Validators.required],
-      'couleur_id': [item.couleur_id, Validators.required],
+      'coordonnee_id': [item.coordonnee_id, Validators.required],
       'libelle': [item.libelle, Validators.required],
       'image':[item.image, [Validators.required, requiredFileType(['png','gif','jpeg', 'jpg'])]],
       'id': [item.id]

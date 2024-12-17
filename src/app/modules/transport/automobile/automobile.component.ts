@@ -10,6 +10,8 @@ import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError
 import { IAutomobile } from "src/app/core/models/transport/automobile";
 import { Subscription } from "rxjs";
 import { IAutomobileItineraire } from "src/app/core/models/transport/automobile-itineraire";
+import { DashboardService } from "src/app/components/modules/tableau/dashboard/dashboard.service";
+import { Filter, QueryOptions, Sort } from "src/app/shared/models/query-options";
 
 @Component({
   selector: "app-automobile",
@@ -25,14 +27,21 @@ export class AutomobileComponent extends EditableListComponent {
   fragment: string;
   automobileItineraire: IAutomobileItineraire;
   checked_point_arret: [] = [];
-
+  missions: [] = [];
+  loading_missions = true;
+  view: 'card' | 'list' =  localStorage.getItem("automobileViewType") ? <'card' | 'list'>localStorage.getItem("automobileViewType"):  'card';
+  onChangeView(view : 'card' | 'list') {
+    this.view = view;
+    localStorage.setItem('automobileViewType',view);
+  }
   constructor(
     public route: ActivatedRoute,
     private router: Router,
     protected uiService: TransportUiService,
     protected cacheService: CacheService,
     protected titleservice: AppTitleService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private dashService: DashboardService, 
   ) {
     super(new ResourceScrollableHelper(new AutomobileFactory()));
     titleservice.setTitle("automobile");
@@ -42,7 +51,7 @@ export class AutomobileComponent extends EditableListComponent {
       "trans_marque",
       "trans_modele",
       "trans_genre",
-      "trans_couleur",
+      "cr_coordonnee",
       "trans_type_carburant",
       "trans_type_automobile",
     ];
@@ -56,6 +65,7 @@ export class AutomobileComponent extends EditableListComponent {
 
           if(automobile) {
             this.titleservice.setTitle(automobile.libelle? automobile.libelle: 'Parc Automobile');
+            this.loadMission(automobile);
           } else {
             this.titleservice.setTitle('Parc Automobile');
           }
@@ -63,7 +73,7 @@ export class AutomobileComponent extends EditableListComponent {
       )
     )
 
-    const detailsView = 'details,panne,affectation,calendrier,itineraire';
+    const detailsView = 'details,panne,visite,calendrier,mission, assurance';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;
@@ -111,6 +121,23 @@ export class AutomobileComponent extends EditableListComponent {
   openModal(content, automobile_itineraire: IAutomobileItineraire) {
     this.automobileItineraire = automobile_itineraire;
     this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
+  }
+
+  loadMission(auto: IAutomobile) {
+    this.loading_missions = true;
+    this.missions = [];
+    const param = new QueryOptions();
+    param.filter_groups = [
+        {or: false, filters:[new Filter('auto_id', auto.id, 'eq')]},
+    ];
+    param.includes = ['ville.pay','departement','equipes.personnel', 'type', 'personnel'];
+    param.sort = [new Sort('name','asc')];
+    this.dashService.allMissions(param).subscribe(
+      (data)=> {
+        this.missions = data.data;
+        this.loading_missions = false;
+      }
+    )
   }
 
   ngOnDestroy()

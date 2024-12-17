@@ -12,6 +12,8 @@ import { CouleurModule } from '../couleur/couleur.module';
 import { CustomInputModule } from 'src/app/shared/components/custom-input';
 import { DossierConducteurDetailsEditComponent } from './details/edit/dossier-conducteur-details-edit.component';
 import { PermiTypeModule } from '../permi-type/permi-type.module';
+import { VisiteMedicaleModule } from '../visite-medicale/visite-medicale.module';
+import { FichierConducteurModule } from './fichier-conducteur/fichier-conducteur.module';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,9 @@ import { PermiTypeModule } from '../permi-type/permi-type.module';
         GenreModule,
         CouleurModule,
         CustomInputModule,
-        PermiTypeModule
+        PermiTypeModule,
+        VisiteMedicaleModule,
+        FichierConducteurModule
     ],
     exports: [
         DossierConducteurComponent,

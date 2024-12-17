@@ -27,6 +27,7 @@ export class DetailsMissionComponent extends BaseComponent implements OnInit {
   private departement_actuel: number = null;
   private mission_etat_id: number = null
   private mission_all_details: any;
+  protected tabs = 'information';
 
   constructor(public service: MissionService,
     private equipeService: EquipeService,

@@ -10,7 +10,10 @@
                         <div class="row card-group p-2">
                             <div class="mb-2 col-12 col-sm-8 col-md-6 col-lg-4" *ngFor="let dossier of items;trackBy:  dataHelper.trackByFn">
                                 <div class="card card-1 mg-15">
-                                    <img class="card-img" style="max-height: 200px;" src="./assets/img/10.jpg" alt="Bologna">
+                                    <img *ngIf="dossier.conducteur?.sexe == 'Masculin' || dossier.conducteur?.sexe == 'Masculin'" src="assets/images/users/male.png"
+                                    class="card-img" style="max-height: 200px;" alt="avatar">
+                                    <img *ngIf="dossier.conducteur?.sexe == 'Feminin' || dossier.conducteur?.sexe == 'Feminin'" src="assets/images/users/female.png"
+                                    class="card-img" style="max-height: 200px;" alt="avatar">
                                     <div class="card-body">
 
                                         <h3 class="card-title mb-0">{{dossier.conducteur.libelle | titlecase}}
@@ -57,6 +60,11 @@
               <div class="row mt-1">
 
                 <div class="col-md-3 details animated slideInLeft">
+                    <img *ngIf="selectedDossier.conducteur?.sexe == 'Masculin' || selectedDossier.conducteur?.sexe == 'Masculin'" src="assets/images/users/male.png"
+                    class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+                    <img *ngIf="selectedDossier.conducteur?.sexe == 'Feminin' || selectedDossier.conducteur?.sexe == 'Feminin'" src="assets/images/users/female.png"
+                    class="rounded img-thumbnail mx-auto d-block shadow" alt="avatar">
+   
                   <ul class="list-group shadow">
                     <li
                       class="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1 bgTheme text-white">
@@ -168,31 +176,20 @@
                                 </section>
                             </ng-template>
                         </ngb-tab>
-                        <ngb-tab id="tab-objectifs">
+                        <ngb-tab id="tab-documents">
                             <ng-template ngbTabTitle>
-                                <i class="fal fa-file-certificate"></i> Permis
+                                <i class="fal fa-file-certificate"></i> Document
                             </ng-template>
                             <ng-template ngbTabContent>
-                                <div class="p-3">
-                                </div>
+                                <app-fichier-conducteur [conducteurId]="selectedDossier.id"></app-fichier-conducteur>
                             </ng-template>
                         </ngb-tab>
-                        <ngb-tab id="tab-objectifs">
+                        <ngb-tab id="tab-visite-medicals">
                             <ng-template ngbTabTitle>
-                                <i class="fal fa-file-medical"></i> Dossier Medical
+                                <i class="fal fa-file-medical"></i> Visite Medical
                             </ng-template>
                             <ng-template ngbTabContent>
-                                <div class="p-3">
-                                </div>
-                            </ng-template>
-                        </ngb-tab>
-                        <ngb-tab id="tab-objectifs">
-                            <ng-template ngbTabTitle>
-                                <i class="fal fa-calendar"></i> Calendrier Auto
-                            </ng-template>
-                            <ng-template ngbTabContent>
-                                <div class="p-3">
-                                </div>
+                                <app-visite-medicale [conducteurId]="selectedDossier.id"></app-visite-medicale>
                             </ng-template>
                         </ngb-tab>
                     </ngb-tabset>
@@ -211,7 +208,7 @@
 </ng-template>
 
 <!-- ADD -->
-<div class="button-fixed-bottom-right">
+<div class="button-fixed-bottom-right" *ngIf="!selectedDossier">
     <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
       class="btn btn-primary btn-circle btn-lg">
       <i class="fas fa-plus-circle"></i>

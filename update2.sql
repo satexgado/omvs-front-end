@@ -494,3 +494,39 @@ CREATE TABLE IF NOT EXISTS `trans_bon_carburant_sortie` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `trans_bon_stock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_carburant` int(11) DEFAULT NULL,
+  `type_coupure` int(11) DEFAULT NULL,
+  `quantiteEnStock ` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `visite_medicale` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(250) DEFAULT NULL COMMENT 'motif',
+  `date_visite` date DEFAULT NULL,
+  `diagnostic` text DEFAULT NULL,
+  `traitements_prescrits` text DEFAULT NULL,
+  `commentaires` text DEFAULT NULL,
+  `conducteur_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `fichier_conducteur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(250) DEFAULT NULL COMMENT 'titre_document',
+  `document_scanne` text DEFAULT NULL,
+  `conducteur_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
