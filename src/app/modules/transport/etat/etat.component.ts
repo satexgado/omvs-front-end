@@ -7,6 +7,7 @@ import { AppTitleService } from 'src/app/shared/services';
 import { ResourceScrollableHelper } from '../../../shared/state';
 import { IAutomobileEtat } from 'src/app/core/models/transport/automobile-etat';
 import { AutomobileEtatFactory } from 'src/app/core/services/transport/automobile-etat';
+import { getTextColor } from 'src/app/shared/helperfonction';
 
 @Component({
   selector: 'app-etat',
@@ -17,7 +18,7 @@ export class EtatComponent extends EditableListComponent {
 
   editModal = EditComponent;
   linkFromRoot;
-
+  getTextColor = getTextColor;
   constructor(
     protected titleservice: AppTitleService,
     protected modalService: NgbModal) {

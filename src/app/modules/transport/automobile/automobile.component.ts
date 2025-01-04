@@ -8,10 +8,14 @@ import { ResourceScrollableHelper } from "../../../shared/state";
 import { TransportUiService } from "../transport.service";
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
 import { IAutomobile } from "src/app/core/models/transport/automobile";
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { IAutomobileItineraire } from "src/app/core/models/transport/automobile-itineraire";
 import { DashboardService } from "src/app/components/modules/tableau/dashboard/dashboard.service";
 import { Filter, QueryOptions, Sort } from "src/app/shared/models/query-options";
+import { AutomobileEtatFactory } from "src/app/core/services/transport/automobile-etat";
+import { map, shareReplay } from "rxjs/operators";
+import { getTextColor } from "src/app/shared/helperfonction";
+import { IAutomobileEtat } from "src/app/core/models/transport/automobile-etat";
 
 @Component({
   selector: "app-automobile",
@@ -30,6 +34,13 @@ export class AutomobileComponent extends EditableListComponent {
   missions: [] = [];
   loading_missions = true;
   view: 'card' | 'list' =  localStorage.getItem("automobileViewType") ? <'card' | 'list'>localStorage.getItem("automobileViewType"):  'card';
+  allEtatAutomobiles$ = new AutomobileEtatFactory().list(new QueryOptions().setSort([
+    new Sort('libelle_etat','asc')
+  ])).pipe(
+     shareReplay(1),
+     map(data => data.data)
+  );
+  getTextColor = getTextColor;
   onChangeView(view : 'card' | 'list') {
     this.view = view;
     localStorage.setItem('automobileViewType',view);
@@ -54,6 +65,7 @@ export class AutomobileComponent extends EditableListComponent {
       "cr_coordonnee",
       "trans_type_carburant",
       "trans_type_automobile",
+      "trans_etat_automobile"
     ];
   }
 
@@ -139,6 +151,49 @@ export class AutomobileComponent extends EditableListComponent {
       }
     )
   }
+
+  onShowUpdateForm(item: any, modal = this.editModal) {
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
+    super.onShowUpdateForm(item, modal).subscribe(
+      (data) => {
+        if(this.selectedAuto && this.selectedAuto.id == data.id) {
+          Object.assign(this.selectedAuto,data);
+        }
+        _result$.next(data);
+      }
+    );
+    return result$;
+  }
+
+  onUpdateItem(index: number, value, colname: string) {
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
+    super.onUpdateItem(index, value, colname).subscribe(
+      (data) => {
+        if(this.selectedAuto && this.selectedAuto.id == data.id) {
+          Object.assign(this.selectedAuto,data);
+        }
+        _result$.next(data);
+      }
+    );
+    return result$;
+  }
+
+  onUpdateEtat(auto: IAutomobile, etat:IAutomobileEtat) {
+    auto.etat_id = etat.id;
+    auto.etat = etat;
+    this.dataHelper.updateItem(auto);
+    if(this.selectedAuto && this.selectedAuto.id == auto.id) {
+      Object.assign(this.selectedAuto,auto);
+    }
+
+    let data = {};
+    data['id'] = auto.id;
+    data['etat_id'] = etat.id;
+    this.dataHelper.service.update(data).subscribe();
+  }
+
 
   ngOnDestroy()
   {

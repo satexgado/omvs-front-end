@@ -530,3 +530,14 @@ CREATE TABLE IF NOT EXISTS `fichier_conducteur` (
   `inscription` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `carte_rapido` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(250) DEFAULT NULL COMMENT 'numero de carte',
+  `solde` int(11) NULL DEFAULT NULL,
+  `personnel_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

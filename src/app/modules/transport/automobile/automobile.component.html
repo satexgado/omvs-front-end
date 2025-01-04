@@ -32,13 +32,26 @@
                         <thead class="tx-10 tx-uppercase">
                             <tr>
                                 <th scope="col">Vehicule</th>
+                                <th scope="col">Etat</th>
+                                <th scope="col">Disponibilite</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
                                 <td>
-                                    {{automobile.libelle}}
+                                    <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
+                                </td>
+                                <td>
+                                    <div ngbDropdown container="body" class="d-inline-block">
+                                        <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
+                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                            <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(automobile,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-success">
+                                    Disponible
                                 </td>
                                 <td>
                                     <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
@@ -60,14 +73,23 @@
     <div class="main-content2 scroll-11 " [class.main-content_large]="selectedAuto">
         <div class="card shadow mb-2 p-0" *ngIf="selectedAuto">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-2 d-flex align-items-center text-center">
-                <button class="btn btn-link  mr-3" [routerLink]="['./']">
-                    <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
-                        style="padding:6px; border-radius:50%"></i>
-                </button>
-              <h6 class="m-0 font-weight-bold text-secondary text-center">
-                {{selectedAuto.libelle}} 
-              </h6>
+            <div class="card-header py-2 d-flex justify-content-between align-items-center text-center">
+                <span class="d-flex align-items-center">
+                    <button class="btn btn-link  mr-3" [routerLink]="['./']">
+                        <i class="fad fa-arrow-alt-left bg-light tx-success card-1"
+                            style="padding:6px; border-radius:50%"></i>
+                    </button>
+                  
+                    <h6 class="m-0 font-weight-bold text-secondary text-center">
+                        {{selectedAuto.libelle}} 
+                    </h6>    
+                </span>
+                <div ngbDropdown container="body" class="d-inline-block">
+                    <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(selectedAuto.etat ? selectedAuto.etat.couleur : '')" [style.background-color]="selectedAuto.etat ? selectedAuto.etat.couleur : ''" ngbDropdownToggle> {{selectedAuto.etat ? selectedAuto.etat.libelle : selectedAuto.etat_achat}} </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(selectedAuto,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                    </div>
+                </div>
             </div>
             <!-- Card Body -->
             <div class="card-body p-1 pb-3">
@@ -123,7 +145,6 @@
                                                 <th>Mission</th>
                                                 <th>Localite</th>
                                                 <th>Departement</th>
-                                                <th class="text-center">Equipe</th>
                                                 <th>Date</th>
                                                 <th>Note</th>
                                                 <th>Budget</th>
@@ -145,34 +166,10 @@
                                                 <td>
                                                     {{mission?.departement.name}}
                                                 </td>
-                                                <td>
-                                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
-                                                        <li *ngFor="let equipe of mission.equipes | slice:0:4" class="mg-l--10"
-                                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
-                                                            data-html="true" title="" data-original-title="Alison G">
-                                                            <div class="avatar"
-                                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
-                                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
-                                                                    src="assets/images/users/male.png"
-                                                                    class="avatar-initial border border-secondary rounded-circle">
-                                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
-                                                                    src="assets/images/users/female.png"
-                                                                    class="avatar-initial border border-secondary rounded-circle"
-                                                                    alt="">
-                                                            </div>
-                                                        </li>
-                                                        <li *ngIf="mission.equipes?.length > 4" class="mg-l--10" data-original-title=""
-                                                            title="">
-                                                            <div class="avatar"><span
-                                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{mission.equipes.length - 4}}+</span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </td>
                                                 <td>{{mission.start | date:'d MMM y'}} - {{mission.end | date:'d MMM y'}}</td>
                                                 <td>{{mission.avg_note ? mission.avg_note : 'Aucune note'}}</td>
                                                 <td>
-                                                    {{mission.total_budget}} ECO
+                                                    {{mission.total_budget}} 
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -194,6 +191,9 @@
                             </div>
                             <div *ngSwitchDefault>
                                 <section class="py-2 col-md-11  d-block mx-auto">
+                                    <img class="card-img mb-2" style="width: 100%;
+                                    max-height: 20vw;
+                                    object-fit: cover;" src="{{selectedAuto.image}}" [alt]="selectedAuto.libelle">
                                     <ul class="row pl-0 mb-0">
                                         <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
                                             <p class="formSep m-0"><span class="text-muted">Acquisition: </span> {{selectedAuto.type_acquisition | titlecase}}
@@ -312,20 +312,29 @@
         <ng-container *ngIf="dataHelper.data$ | async as items">
             <div class="card-group justify-content-around p-2" *ngIf="items.length; else noItem">
                 <div *ngFor="let automobile of items;trackBy:  dataHelper.trackByFn" class="menu flip-card mb-3 col-12 col-sm-8 col-md-6 col-lg-4">
-                    <div class="image-flip">
+                    <div class="image-flip-2" [class.hover]="false">
                         <div class="mainflip">
                             <div class="frontside">
                                 <div class="card card-1">
                                     <img class="card-img cursor-pointer" style="width: 100%;
                                     height: 15vw;
-                                    object-fit: cover;" (click)="onSelectAuto(automobile)" src="{{automobile.image}}" alt="Bologna">
+                                    object-fit: cover;" (click)="onSelectAuto(automobile)" src="{{automobile.image}}" [alt]="automobile.libelle">
                                     <div class="card-body">
                                         <h5 class="card-title">{{automobile.libelle | titlecase}}</h5>
                                         <h6 class="card-subtitle mb-2 text-success">Disponible</h6>
-                                        <a class="card-link">
+                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Visite technique</h6>
+                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Mission</h6>
+                                        <h6 class="card-subtitle mb-2 text-danger" *ngIf="false">Panne</h6>
+                                        <div ngbDropdown container="body" class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(automobile,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                                            </div>
+                                        </div>
+                                        <!-- <a class="card-link">
                                             Commander
                                         </a>
-                                        <a (click)="onSelectAuto(automobile)" class="card-link">Details</a>
+                                        <a (click)="onSelectAuto(automobile)" class="card-link">Details</a> -->
                                     </div>
                                 </div>
                             </div>

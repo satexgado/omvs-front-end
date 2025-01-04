@@ -357,8 +357,94 @@ function retrocycle($) {
   return $;
 };
 
+function isLightColor(color: string) { //<--color in the way '#RRGGBB
+  if(!color) {
+    return false;
+  }
+  if (color.length == 7) {
+      const rgb = [
+          parseInt(color.substring(1, 3), 16),
+          parseInt(color.substring(3, 5), 16),
+          parseInt(color.substring(5), 16),
+      ];
+      const luminance =
+          (0.2126 * rgb[0]) / 255 +
+          (0.7152 * rgb[1]) / 255 +
+          (0.0722 * rgb[2]) / 255;
+      return luminance > 0.5;
+  }
+  if(color.startsWith('rgb')) {
+     // Get RGB value between parenthesis, and remove any whitespace
+     const rgb = color.split(/\(([^)]+)\)/)[1].replace(/ /g, '');
+
+     // map RGB values to variables
+     let r = parseInt(rgb.split(',')[0], 10),
+         g = parseInt(rgb.split(',')[1], 10),
+         b = parseInt(rgb.split(',')[2], 10),
+         a;
+
+     // if RGBA, map alpha to variable (not currently in use)
+     if (rgb.split(',')[3] !== null) {
+         a = parseInt(rgb.split(',')[3], 10);
+     }
+
+     // calculate contrast of color (standard grayscale algorithmic formula)
+     const contrast = (Math.round(r * 299) + Math.round(g * 587) + Math.round(b * 114)) / 1000;
+
+     return (contrast >= 128);
+  }
+  return false;
+}
+
+function getTextColor(color) {
+  if (isLightColor(color)) {
+      return "#000000";
+  }
+  return "#ffffff";
+}
+
+function getforeGColor(rValue,gValue,bValue) { 
+  let b=1;
+  const rV = Math.floor((255 - rValue) * b); 
+  const gV = Math.floor((255 - gValue) * b); 
+  const bV = Math.floor((255 - bValue) * b); 
+  return 'rgb(' + rV + ', ' + gV + ', ' + bV + ')'; 
+} 
+
+function textColorFromBackground(color: string) { //<--color in the way '#RRGGBB
+  if(!color) {
+    return "#ffffff";
+  }
+  if (color.length == 7) {
+      const rgb = [
+          parseInt(color.substring(1, 3), 16),
+          parseInt(color.substring(3, 5), 16),
+          parseInt(color.substring(5), 16),
+      ];
+      return getforeGColor(rgb[0],rgb[1],rgb[2]);
+  }
+  if(color.startsWith('rgb')) {
+     // Get RGB value between parenthesis, and remove any whitespace
+     const rgb = color.split(/\(([^)]+)\)/)[1].replace(/ /g, '');
+
+     // map RGB values to variables
+     let r = parseInt(rgb.split(',')[0], 10),
+         g = parseInt(rgb.split(',')[1], 10),
+         b = parseInt(rgb.split(',')[2], 10),
+         a;
+
+     // if RGBA, map alpha to variable (not currently in use)
+     if (rgb.split(',')[3] !== null) {
+         a = parseInt(rgb.split(',')[3], 10);
+     }
+
+     return getforeGColor(r,g,b);
+  }
+  return "#ffffff";
+}
+
 export {print, enumSelector, shouldShowRequiredError,
     isEqual, compare, isValid, getDirtyState, getDirtyStateArray,
     getValue, renameKeys, shouldDisableSubmit, trackByIndex, checkOverflow,
-    resourceToSelect2, decycle, retrocycle
+    resourceToSelect2, decycle, retrocycle, isLightColor, getTextColor, textColorFromBackground
 }

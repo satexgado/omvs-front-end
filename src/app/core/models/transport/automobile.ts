@@ -8,6 +8,7 @@ import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter
 import { IBase } from '../base.interface';
 import { ITransSerie, TransSerie } from './serie';
 import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
+import { AutomobileEtat, IAutomobileEtat } from './automobile-etat';
 
 export interface IAutomobile extends IBase {
   type_acquisition: string;
@@ -19,6 +20,8 @@ export interface IAutomobile extends IBase {
   marque_id: number;
   modele: IModele;
   modele_id: number;
+  etat: IAutomobileEtat;
+  etat_id: number;
   genre: IGenre;
   genre_id: number;
   etat_achat: string;
@@ -89,6 +92,11 @@ export class Automobile implements IAutomobile {
 
     @hasOneMap({field:'cr_coordonnee', class: CrCoordonnee})
     coordonnee: ICrCoordonnee = null;
+    
+    etat_id = 0;
+
+    @hasOneMap({field:'trans_etat_automobile', class: AutomobileEtat})
+    etat: IAutomobileEtat = null;
 
     @adaptableMap('type_carburant')
     type_carburant_id = 0;

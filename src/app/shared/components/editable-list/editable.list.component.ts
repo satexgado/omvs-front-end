@@ -117,17 +117,19 @@ export class EditableListComponent extends ItemSelectHelper implements OnInit {
   }
 
   onUpdateItem(index: number, value, colname: string) {
+    let _result$ = new Subject<any>();
+    const result$ = _result$.asObservable();
     this._isEditorLoading=true;
-    let data = {};
-    data['id'] = index;
-    data[colname] = value;
+    const data = { id: index, [colname]: value };
     this.dataHelper.service.update(data)
       .subscribe(
         (data) => {
           this.dataHelper.updateItem(data);
           this._isEditorLoading= false;
+          _result$.next(data);
         }
       )
+    return result$;
   }
 
   onDelete(item: Resource) {
