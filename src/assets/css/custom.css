@@ -7,7 +7,7 @@
 }
 
 .nav .nav-item a.active {
-  color: #4e73df !important;
+  color: rgb(1, 42, 86, 0.8) !important;
 }
 
 body {
@@ -49,14 +49,14 @@ body {
 /* .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
   color: #fff !important;
-  background-color: #4e73df !important;
-  border-color: #4e73df !important;
+  background-color: rgb(1, 42, 86, 0.8) !important;
+  border-color: rgb(1, 42, 86, 0.8) !important;
 }
 
 .fc-button-primary {
   background-color: #fff !important;
-  border-color: #4e73df !important;
-  color: #4e73df !important;
+  border-color: rgb(1, 42, 86, 0.8) !important;
+  color: rgb(1, 42, 86, 0.8) !important;
 }
 
 .fc-button {
@@ -137,14 +137,14 @@ tr:hover > td > .tableAction {
 }
 
 .text-gradient {
-  background: linear-gradient(180deg, #4e73df 10%, #ffa500 100%);
+  background: linear-gradient(180deg, rgb(1, 42, 86, 0.8) 10%, #ffa500 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .bgTheme {
-  background: -webkit-linear-gradient(to right, #4e73df #ffa500);
-  background: linear-gradient(to right, #4e73df, #ffa500);
+  background: -webkit-linear-gradient(to right, rgb(1, 42, 86, 0.8) #ffa500);
+  background: linear-gradient(to right, rgb(1, 42, 86, 0.8), #ffa500);
 }
 
 .border-left-orange {
@@ -166,8 +166,8 @@ tr:hover > td > .tableAction {
 }
 
 .ngx-dropdown-container .ngx-dropdown-list-container ul.selected-items li {
-  background: -webkit-linear-gradient(to right, #4e73df #ffa500) !important;
-  background: linear-gradient(to right, #4e73df, #ffa500) !important;
+  background: -webkit-linear-gradient(to right, rgb(1, 42, 86, 0.8) #ffa500) !important;
+  background: linear-gradient(to right, rgb(1, 42, 86, 0.8), #ffa500) !important;
 }
 
 /*Form Wizard*/

@@ -9,7 +9,6 @@
                     <tr>
                         <th scope="col">Etat</th>
                         <th scope="col">Couleur</th>
-                        <th scope="col">Preview</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -21,11 +20,6 @@
                         <td>
                             <span class="badge badge-secondary" [style.color]="getTextColor(etat.couleur)" [style.background-color]="etat.couleur">
                               {{etat.couleur}}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge badge-secondary" [style.color]="getTextColor(etat.couleur)" [style.background-color]="etat.couleur">
-                                {{etat.libelle}}
                             </span>
                         </td>
                         <td>
