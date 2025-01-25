@@ -23,6 +23,7 @@ import { CalendrierTransportComponent } from './calendrier/calendrier.component'
 import { CalendrierModule } from '../calendrier/calendrier.module';
 import { CalendrierTransportModule } from './calendrier/calendrier.module';
 import { VisiteTechniqueModule } from './visite-technique/visite-technique.module';
+import { CarteRapidoModule } from './carte-rapido/carte-rapido.module';
 ;
 
 @NgModule({
@@ -50,7 +51,8 @@ import { VisiteTechniqueModule } from './visite-technique/visite-technique.modul
     SerieModule,
     AssuranceModule,
     CalendrierTransportModule,
-    VisiteTechniqueModule
+    VisiteTechniqueModule,
+    CarteRapidoModule
   ],
   exports: [
   ],

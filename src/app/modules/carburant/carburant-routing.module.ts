@@ -7,6 +7,7 @@ import { ApprovisionnementComponent } from './approvisionnement/approvisionnemen
 import { TypeCoupureComponent } from './type-coupure/type-coupure.component';
 import { TypeEngagementComponent } from './type-engagement/type-engagement.component';
 import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
+import { CarteAbonnementCarburantComponent } from './carte-abonnement/carte-abonnement.component';
 
 const butsRoutes: Routes = [
   {
@@ -28,6 +29,13 @@ const butsRoutes: Routes = [
           icon: 'fa-hand-holding-box', title:'Sortie en bon de carburant'
         },
         component:CarburantSortieComponent
+      },
+      {
+        path: 'carte-abonnement',
+        data: {
+          icon: 'fa-credit-card-front', title:'Carte abonnement'
+        },
+        component:CarteAbonnementCarburantComponent
       },
       {
         path: 'approvisionnement',

@@ -22,12 +22,22 @@ export interface IBonCarburantEntree extends IBase {
 
 export class BonCarburantEntree implements IBonCarburantEntree {
     id: number = 0;
-    libelle: string = '';
     coordonnee_id:number = 0;
+
+    get libelle(): string {
+        let libelle = '';
+        if (this.coupure) {
+            libelle += this.coupure.libelle;
+        }
+        if (this.coordonnee) {
+            libelle += ' ' + this.coordonnee.libelle;
+        }
+        return libelle;
+    }
 
     @hasOneMap({field:'cr_coordonnee',class:CrCoordonnee})
     coordonnee:ICrCoordonnee = null;
-    
+
     type_carburant: number = 0;
     @hasOneMap({field:'trans_type_carburant', class: CarburantType})
     carburant: ICarburantType = null;

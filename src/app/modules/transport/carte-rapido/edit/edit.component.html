@@ -1,0 +1,70 @@
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <span class="custom-span">Numero de carte</span>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le numero.</div>
+                    <div *ngIf="hasError('libelle','alreadyUsedNumero')" class="invalid-feedback">Ce numéro est deja attribuer.</div>
+                    <span style="zoom: 50%;" [class.loading]="editForm.get('libelle').status === 'PENDING'"></span>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <input type="number" class="form-control" required [formControlName]="'solde'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'solde'), 'is-valid': isValid('solde')}" name="solde" required>
+                    <span class="custom-span">Solde</span>
+                    <div *ngIf="shouldShowRequiredError('solde')" class="invalid-feedback">veillez saisir le solde.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-10">
+                    <label for="" class="control-label">Type</label>
+                    <app-custom-select-icon formControlName="type" [selected]="editForm.get('type').value" [items]="type_select"></app-custom-select-icon>
+                    <div *ngIf="shouldShowRequiredError('type')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-10">
+                    <label for="" class="control-label">Statut</label>
+                    <app-custom-select-icon formControlName="statut" [selected]="editForm.get('statut').value" [items]="statut_select"></app-custom-select-icon>
+                    <div *ngIf="shouldShowRequiredError('statut')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" *ngIf="!proprietaire">
+                <div class="col-12 col-sm-10">
+                    <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'personnel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'personnel_id'), 'is-valid': isValid('personnel_id')}">
+                        <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                            <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
+                        </ng-container>
+                    </select>
+                    <span class="custom-span">Beneficiaire</span>
+                    <div *ngIf="shouldShowRequiredError('personnel_id')" class="invalid-feedback">veillez choisir le conducteur.</div>
+                </div>
+            </div>
+            <div class="formSep form-group   d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-10">
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_emission'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_emission'), 'is-valid': isValid('date_emission')}">
+                    <span class="custom-span" i18n>date d'emission</span>
+                </div>
+            </div>
+            <div class="formSep form-group   d-flex justify-content-center pb-0 pt-3">
+                <div class="col-12 col-sm-10">
+                    <input class="form-control" name="dp2" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_expiration'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_expiration'), 'is-valid': isValid('date_expiration')}">
+                    <span class="custom-span" i18n>date expiration</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

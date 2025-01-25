@@ -22,6 +22,7 @@ import { PanneComponent } from './automobile/panne/panne.component';
 import { AssuranceComponent } from './assurance/assurance.component';
 import { CalendrierTransportComponent } from './calendrier/calendrier.component';
 import { VisiteTechniqueComponent } from './visite-technique/visite-technique.component';
+import { CarteRapidoComponent } from './carte-rapido/carte-rapido.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -57,6 +58,20 @@ const butsRoutes: Routes = [
       // {path: ':idauto', component: AutomobileDetailsEditComponent,
       //   resolve: { automobile: AutomobileDetailsEditResolver}
       // }
+    ]},
+    { path: 'carte-rapido',
+      data: {
+        breadcrumb: 'Mes Cartes Rapido'
+      },
+      children: [
+        {path: '', component: TemplateComponent,children: [
+          {path: '', component: CarteRapidoComponent, data: {
+            icon: 'fa-credit-card-blank', title:'Carte Rapido'
+          }}
+        ]},
+        // {path: ':idauto', component: AutomobileDetailsEditComponent,
+        //   resolve: { automobile: AutomobileDetailsEditResolver}
+        // }
     ]},
     { path: 'calendrier',
       data: {

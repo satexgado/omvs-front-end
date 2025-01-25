@@ -13,6 +13,7 @@ import { ApprovisionnementModule } from './approvisionnement/approvisionnement.m
 import { CarburantEntreeModule } from './carburant-entree/carburant-entree.module';
 import { CarburantSortieModule } from './carburant-sortie/carburant-sortie.module';
 import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
+import { CarteAbonnementCarburantModule } from './carte-abonnement/carte-abonnement.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
     TypeCoupureModule,
     ApprovisionnementModule,
     CarburantEntreeModule,
-    CarburantSortieModule
+    CarburantSortieModule,
+    CarteAbonnementCarburantModule
   ],
   exports: [
   ],
