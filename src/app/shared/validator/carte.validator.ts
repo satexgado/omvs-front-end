@@ -3,7 +3,6 @@ import { QueryOptions } from 'src/app/shared/models/query-options/query-options.
 import { Observable, of, timer } from 'rxjs';
 import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
 import { Filter } from 'src/app/shared/models/query-options/filter.model';
-import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { CarteAbonnementCarburantFactory } from 'src/app/core/services/carte-abonnement-carburant';
 import { CarteRapidoFactory } from 'src/app/core/services/carte-rapido';
 export class CarteValidator {

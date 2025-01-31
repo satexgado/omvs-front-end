@@ -63,6 +63,13 @@
               </div>
               <!-- Card Body -->
               <div *ngIf="service.single && !service.isLoading()" class="card-body p-1 pb-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h6 class="text-center card-body bg-white border">
+                      {{service.single?.code | truncate:[100]}} {{service.single?.name | truncate:[100]}}
+                    </h6>
+                  </div>
+                </div>
                 <ul class="nav nav-tabs bgTheme text-white" role="tablist">
                   <li class="nav-item">
                     <a (click)="switchTabs('information')"
@@ -196,13 +203,6 @@
                   <!-- RESSOURCES -->
                   <div [ngClass]="{'tab-pane fade': true, 'show active p-1': tabs=='default'}" id="Tabs_ressource"
                     role="tabpanel">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h6 class="text-center card-body bg-white border">
-                          {{service.single?.name | truncate:[100]}}
-                        </h6>
-                      </div>
-                    </div>
                     <div class="row">
                       <!-- DOCUMENTS -->
                       <div class="col-md-6 animated zoomIn">

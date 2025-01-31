@@ -1,7 +1,7 @@
 // import { DefaultQueryOption } from './../models/query-options/query-options.model';
 import { Factory } from './../../core/services/factory';
 import { Subject, BehaviorSubject, Observable, throwError } from 'rxjs';
-import { QueryOptions, Filter } from '../models/query-options';
+import { QueryOptions, Filter, Sort } from '../models/query-options';
 import { SortDirection } from '../directives';
 import { debounceTime, tap, switchMap, retryWhen, delay, take, catchError } from 'rxjs/operators';
 import { AppInjector } from '../services';
@@ -23,7 +23,7 @@ export class ResourceScrollableHelper {
 
     service: Factory<any>;
     notificationService: NotificationService;
-    searchCustomFilterGroup: filterGrp;
+    searchCustomFilterGroup: filterGrp | filterGrp[];
     _searchTerm: string;
     hasMoreData: boolean;
     withoutPaginate: boolean;
@@ -119,12 +119,18 @@ export class ResourceScrollableHelper {
     }
 
     set sortColumn(sortColumn: string) {
+        if(this._queryOptions.sort.length === 0) {
+            this._queryOptions.sort = [new Sort(sortColumn, 'DESC')];
+        }
         this._queryOptions.sort[0].key = sortColumn;
         this.page = 1;
         this.clearData();
     }
 
     set sortDirection(sortDirection: SortDirection) {
+        if(this._queryOptions.sort.length === 0) {
+           return;
+        }
         this._queryOptions.sort[0].direction = sortDirection;
         if (sortDirection === '') {
             this._queryOptions.sort[0].direction = 'DESC';
@@ -155,7 +161,11 @@ export class ResourceScrollableHelper {
         const query: QueryOptions = JSON.parse(JSON.stringify(queryOptions));
 
         if (this.searchCustomFilterGroup) {
-            query.filter_groups.push(this.searchCustomFilterGroup);
+            if(Array.isArray(this.searchCustomFilterGroup)) {
+                query.filter_groups.push(...this.searchCustomFilterGroup);
+            } else {                
+                query.filter_groups.push(this.searchCustomFilterGroup);
+            }
         }
 
         if (this._searchTerm && ((!this._searchTerm.length) || /\S/.test(this._searchTerm))) {

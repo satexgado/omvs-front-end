@@ -7,7 +7,6 @@ import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { ICrCoordonneeGroupe } from 'src/app/core/models/cr-coordonnee-groupe';
 import { CrCoordonneeGroupeFactory } from 'src/app/core/services/cr-coordonnee-groupe';
 import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
-import { CoordonneeValidator } from 'src/app/shared/validator/coordonnee.validator';
 import { EditComponent as TypeEditComponent} from 'src/app/modules/fournisseur/coordonnee-type/edit/edit.component';
 import { CrCoordonneeTypeFactory } from 'src/app/core/services/cr-coordonnee-type';
 

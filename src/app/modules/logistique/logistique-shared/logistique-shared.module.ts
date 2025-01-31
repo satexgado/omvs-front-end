@@ -2,10 +2,12 @@ import { MaterielSidebarComponent } from './materiel-sidebar/materiel-sidebar.co
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MaterielFormComponent } from './materiel-form/materiel-form.component';
 
 @NgModule({
   declarations: [
-    MaterielSidebarComponent
+    MaterielSidebarComponent,
+    MaterielFormComponent
   ],
   imports: [
     CommonModule,
@@ -14,9 +16,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
   exports: [
     CommonModule,
     SharedModule,
-    MaterielSidebarComponent
+    MaterielSidebarComponent,
+    MaterielFormComponent
   ],
-  entryComponents: []
+  entryComponents: [MaterielFormComponent]
 })
 export class LogistiqueSharedModule {
 

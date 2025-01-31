@@ -271,6 +271,10 @@ export class BaseComponent implements OnInit {
         return this.forms[form].controls[control].value;
     }
 
+    checkIfControlHasError(form: string, field: string, error: string ) {
+        return this.forms[form].controls[field].dirty && this.forms[form].controls[field].hasError(error);
+    }
+
     setCurrentItem(item: Object) {
         this.currentItem = item;
     }

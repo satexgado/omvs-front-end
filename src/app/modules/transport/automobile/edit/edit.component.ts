@@ -58,27 +58,27 @@ export class EditComponent extends BaseEditComponent  {
   readonly automobileTypeEditComponent  = AutomobileTypeEditComponent;
 
   allSerie$ = new TransSerieFactory().list(
-    QueryAllOptionWithIns
+    
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly serieEditComponent  = SerieEditComponent;
 
   allMarque$ = new MarqueFactory().list(
-    QueryAllOptionWithIns
+    
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly marqueEditComponent  = MarqueEditComponent;
 
   allModele$ = new ModeleFactory().list(
-    QueryAllOptionWithIns
+    
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly modeleEditComponent  = ModeleEditComponent;
 
   allGenre$ = new GenreFactory().list(
-    QueryAllOptionWithIns
+    
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly genreEditComponent  = GenreEditComponent;
 
   allCoordonnee$ = new CrCoordonneeFactory().list(
-    QueryAllOptionWithIns
+    
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly coordonneeEditComponent  = CoordonneeEditComponent;
 
@@ -140,7 +140,7 @@ export class EditComponent extends BaseEditComponent  {
       'type_automobile_id': [item.type_automobile_id, Validators.required],
       'coordonnee_id': [item.coordonnee_id, Validators.required],
       'libelle': [item.libelle, Validators.required],
-      'image':[item.image, [Validators.required, requiredFileType(['png','gif','jpeg', 'jpg'])]],
+      'image':[item.image, [requiredFileType(['png','gif','jpeg', 'jpg'])]],
       'id': [item.id]
     });
   }

@@ -29,14 +29,6 @@
   </div>
 </li>
 
-
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/materiel" routerLinkActive="active">
-    <i class="fas fa-fw fa-car"></i>
-    <span>{{'MATERIEL' | translate}}</span>
-  </a>
-</li>
-
 <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
   <a class="nav-link" routerLink="/transport" routerLinkActive="active">
     <i class="fas fa-fw fa-car"></i>

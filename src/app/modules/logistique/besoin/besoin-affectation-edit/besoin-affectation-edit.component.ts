@@ -12,6 +12,8 @@ import { CacheService } from 'src/app/shared/services';
 import { shareReplay, map } from 'rxjs/operators';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { UserFactory } from 'src/app/core/services/user.factory';
+import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
+import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 
 @Component({
   selector: 'app-besoin-affectation-edit',
@@ -30,7 +32,9 @@ export class BesoinAffectationEditComponent extends BaseEditComponent implements
     shareReplay(1),
     map(data => data.data)
   );
-
+  allInscriptions$ = this.dashService.allPersonnels(
+    new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
+  );
   protected readonly allEtatMateriels$ = this.cacheService.get(
     'allEtatMateriels',
     new MaterielEtatFactory().list().pipe(
@@ -43,6 +47,7 @@ export class BesoinAffectationEditComponent extends BaseEditComponent implements
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
+    protected dashService: DashboardService,  
     activeModal: NgbActiveModal)
   {
     super(new MaterielBesoinPersonneFactory(), cdRef, activeModal);

@@ -1,5 +1,10 @@
 <div class="grid-container scrollable-y-75 scroll-11">
     <div class="sidebarlist" [class.sidebar_small]="selectedCommande">
+        <div class="col-12 py-2  text-center">
+              <h6 class="m-0 font-weight-bold text-secondary text-center">
+                Commade de Matériels
+              </h6>
+        </div>
         <div class="col-12 d-flex align-items-center">
             <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
             <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 my-1">

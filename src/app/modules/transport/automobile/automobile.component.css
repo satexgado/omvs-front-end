@@ -53,3 +53,70 @@
 tr {
     color: #095f79;
 }
+
+.avatar {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    white-space: nowrap;
+    vertical-align: bottom;
+}
+
+.avatar-md {
+    width: 50px;
+    height: 50px;
+}
+
+.avatar-lg {
+    width: 100px;
+    height: 100px;
+}
+
+.avatar-initial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 0 none;
+    border-radius: 1000px;
+}
+
+.avatar i {
+    width: 8px;
+    height: 8px;
+    display: block;
+    border-radius: 50%;
+    right: 0px;
+    top: 25px;
+    position: absolute;
+    border: 2px solid #ffffff;
+}
+
+.avatar-online i {
+    background-color: #11c26d;
+}
+
+.avatar-busy i {
+    background-color: #eb6709;
+}
+
+.avatar-offline i {
+    background-color: #526069;
+}

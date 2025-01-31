@@ -24,7 +24,7 @@ export class BaseEditComponent implements OnInit {
 
   constructor(crudService: ApiResource,
               protected cdRef: ChangeDetectorRef,
-              public activeModal: NgbActiveModal) {
+              public activeModal?: NgbActiveModal) {
     this.crudService = crudService;
 
     const injector = AppInjector.getInjector();
@@ -130,7 +130,9 @@ export class BaseEditComponent implements OnInit {
   onCloseModal(result?: string) {
     if (this.editForm.dirty) {
       const confirmFunction = () => {
-        this.activeModal.close(result);
+        if(this.activeModal) {
+          this.activeModal.close(result);
+        }
       };
       this.notificationService.title = 'Modifications non enregistrées';
       this.notificationService.body = 'Voulez vous fermer cette fenêtre?';
@@ -142,7 +144,9 @@ export class BaseEditComponent implements OnInit {
       this.notificationService.titleMaxLength = 15;
       this.notificationService.backdrop = -1;
     } else {
-      this.activeModal.close(result);
+      if(this.activeModal) {
+        this.activeModal.close(result);
+      }
     }
   }
 

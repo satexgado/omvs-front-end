@@ -140,7 +140,7 @@
                                     <a 
                                         class="my-0 mt-1 text-primary">{{(mission.name.length>30)? (mission.name | slice:0:30)+'..':(mission.name)}}</a>
                                     <p class="tx-12 mb-0">
-                                        {{mission?.type?.name}}
+                                        {{mission?.type?.name}} <span class="text-primary">{{mission?.code}}</span>
                                     </p>
                                 </td>
                                 <td>

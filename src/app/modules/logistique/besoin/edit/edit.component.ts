@@ -10,6 +10,7 @@ import { CacheService } from 'src/app/shared/services/cache.service';
 import { QueryOptions, Filter, Sort } from 'src/app/shared/models/query-options';
 import { MaterielFactory } from 'src/app/core/services/materiel';
 import { MaterielService } from 'src/app/services/materiel.service';
+import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-edit',
@@ -19,6 +20,10 @@ export class EditComponent extends BaseEditComponent implements OnInit {
   heading = 'besoin';
   @Input() item: IBesoin = new Besoin();
   allMateriels$ = this.materielService.allData;
+  allInscriptions$ = this.dashService.allPersonnels(
+    new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
+  );
+  allDepartements$ = this.dashService.allDepartements$;
   protected readonly allNiveaus$ = new NiveauUrgenceFactory().list().pipe(
     shareReplay(1),
     map(data => data.data)
@@ -28,6 +33,7 @@ export class EditComponent extends BaseEditComponent implements OnInit {
 
   constructor(
     protected cacheService: CacheService,
+    protected dashService: DashboardService,
     protected materielService: MaterielService,
     cdRef:ChangeDetectorRef,
     activeModal: NgbActiveModal)
@@ -48,6 +54,8 @@ export class EditComponent extends BaseEditComponent implements OnInit {
     const materielId = this.materielId ? this.materielId : item.materiel_id;
     return this.formBuilder.group({
       'niveau_id': [item.niveau_id, Validators.required],
+      'personnel_id': [item.personnel_id],
+      'departement_id': [item.departement_id, Validators.required],
       'quantite': [item.quantite, Validators.required],
       'materiel_id': [materielId],
       'description': [item.description, Validators.required],

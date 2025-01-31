@@ -115,14 +115,14 @@ const butsRoutes: Routes = [
           //   resolve: { automobile: AutomobileDetailsEditResolver}
           // }
         ]},
-  { path: 'mes-conducteurs',
+  { path: 'mes-chauffeurs',
   data: {
-    breadcrumb: 'Mes conducteurs'
+    breadcrumb: 'Mes chauffeurs'
   },
   children: [
     {path: '', component: TemplateComponent,children: [
       {path: '', component: DossierConducteurComponent, data: {
-        icon: 'fa-user-tie', title:'Conducteurs'
+        icon: 'fa-user-tie', title:'Chauffeurs'
       },children: [
         {path: ':iddossier', component: DossierConducteurDetailsEditComponent,
           resolve: { dossierconducteur: DossierConducteurDetailsEditResolver}

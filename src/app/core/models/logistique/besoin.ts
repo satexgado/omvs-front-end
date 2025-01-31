@@ -12,6 +12,10 @@ export interface IBesoin extends IBase {
     niveau_id: number;
     quantite: number;
     quantite_recu: number;
+    personnel: any;
+    personnel_id: number;
+    departement: any;
+    departement_id: number;
 }
 
 export class Besoin implements IBesoin {
@@ -23,6 +27,10 @@ export class Besoin implements IBesoin {
     description: string = '';
     quantite = 0;
     quantite_recu = 0;
+    personnel: any = null;
+    personnel_id: number = 0;
+    departement: any = null;
+    departement_id: number = 0;
 
     @adaptableMap('materiel')
     materiel_id: number = null;

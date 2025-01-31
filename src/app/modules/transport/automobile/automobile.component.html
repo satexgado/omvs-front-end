@@ -25,24 +25,148 @@
                         ></i>
                     </span>
                 </button>
+                <div [container]="'body'" ngbDropdown>
+                    <button class="btn float-right mx-1 btn-outline-primary"
+                        [class.btn-primary]="is_showing_filter" id="dropdownMenuButton" ngbDropdownToggle>
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                        <form class="px-4 py-3" [formGroup]="configForm">
+                            <div class="form-group">
+                                <select class="custom-select" (change)="resetFormValue()" formControlName="type">
+                                    <option value="affectataire_id">Affectataire</option>
+                                    <option value="type_carburant">Carburant</option>
+                                    <option value="chauffeur_id">Chauffeur</option>
+                                    <option value="disponibilite">Disponibilite</option>
+                                    <option value="etat_id">Etat</option>
+                                    <option value="coordonnee_id">Fournisseur</option>
+                                    <option value="localisation">Localisation</option>
+                                    <option value="genre">Genre</option>
+                                    <option value="marque">Marque</option>
+                                    <option value="modele">Modele</option>
+                                    <option value="serie">Serie</option>
+                                    <option value="type_automobile">Type</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <ng-container [ngSwitch]="configForm.get('type').value">
+                                    <div [class.loading]="!(allTypeAutomobiles$ | async)"
+                                        *ngSwitchCase="'type_automobile'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allTypeAutomobiles$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allGenre$ | async)"
+                                        *ngSwitchCase="'genre'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allGenre$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allModele$ | async)"
+                                        *ngSwitchCase="'modele'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allModele$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allMarque$ | async)"
+                                        *ngSwitchCase="'marque'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allMarque$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allSerie$ | async)"
+                                        *ngSwitchCase="'serie'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allSerie$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allCoordonnee$ | async)"
+                                        *ngSwitchCase="'coordonnee_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allCoordonnee$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allEtatAutomobiles$ | async)"
+                                        *ngSwitchCase="'etat_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allEtatAutomobiles$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allTypeCarburants$ | async)"
+                                        *ngSwitchCase="'type_carburant'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allTypeCarburants$ | async)">
+                                                <option [ngValue]="item">{{item.libelle}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                    <div [class.loading]="!(allInscriptions$ | async)" *ngSwitchDefault>
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                                                <option [ngValue]="item">{{item.nom }} {{item.prenom}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <button type="button" (click)="onAddFilter()" [disabled]="configForm.invalid"
+                                class="btn btn-primary">Ajouter un filtre</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async" *ngIf="view == 'list'; else cardView">
+                <div class="p-3" *ngIf="filtres && filtres.length">
+                    <button class="btn btn-sm btn-outline-primary mx-1" *ngFor="let filtre of filtres; let i = index"
+                        (click)="onRemoveFilter(i)">
+                        {{filtre.name | titlecase}} <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <div class="table-responsive" *ngIf="dataHelper.data$ | async as items" >
                     <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
                         <thead class="tx-10 tx-uppercase">
                             <tr>
                                 <th scope="col">Vehicule</th>
+                                <th scope="col">Immatriculation</th>
                                 <th scope="col">Etat</th>
                                 <th scope="col">Disponibilite</th>
+                                <th scope="col">Affectataire</th>
+                                <th scope="col">Chauffeur</th>    
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
-                                <td>
+                                <td class="align-middle">
                                     <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
                                 </td>
-                                <td>
+                                <td class="align-middle">
+                                    {{automobile.immatriculation}}
+                                </td>
+                                <td class="align-middle">
                                     <div ngbDropdown container="body" class="d-inline-block">
                                         <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
                                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -50,10 +174,34 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="text-success">
+                                <td class="text-success align-middle">
                                     Disponible
                                 </td>
-                                <td>
+                                <td class="align-middle">
+                                    <a>
+                                        <div class="avatar">
+                                            <img
+                                                container="body"
+                                                [ngbTooltip]="'name'"
+                                                class="avatar-initial border border-secondary rounded-circle"
+                                                [src]="'assets/images/users/male.png'"
+                                                alt="avatar">
+                                        </div>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a>
+                                        <div class="avatar">
+                                            <img
+                                                container="body"
+                                                [ngbTooltip]="'name'"
+                                                class="avatar-initial border border-secondary rounded-circle"
+                                                [src]="'assets/images/users/male.png'"
+                                                alt="avatar">
+                                        </div>
+                                    </a>
+                                </td>   
+                                <td class="align-middle">
                                     <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
                                     <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
                                     <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
@@ -156,7 +304,7 @@
                                                     <a 
                                                         class="my-0 mt-1 text-primary">{{(mission.name.length>30)? (mission.name | slice:0:30)+'..':(mission.name)}}</a>
                                                     <p class="tx-12 mb-0">
-                                                        {{mission?.type?.name}}
+                                                        {{mission?.type?.name}} <span class="text-primary">{{mission?.code}}</span>
                                                     </p>
                                                 </td>
                                                 <td>
@@ -316,25 +464,64 @@
                         <div class="mainflip">
                             <div class="frontside">
                                 <div class="card card-1">
-                                    <img class="card-img cursor-pointer" style="width: 100%;
-                                    height: 15vw;
-                                    object-fit: cover;" (click)="onSelectAuto(automobile)" src="{{automobile.image}}" [alt]="automobile.libelle">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{automobile.libelle | titlecase}}</h5>
-                                        <h6 class="card-subtitle mb-2 text-success">Disponible</h6>
-                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Visite technique</h6>
-                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Mission</h6>
-                                        <h6 class="card-subtitle mb-2 text-danger" *ngIf="false">Panne</h6>
+                                    <div class="card-header d-flex align-items-center p-0 justify-content-between">
+                                        <a class="nav-link">
+                                            <div class="avatar">
+                                                <img
+                                                    container="body"
+                                                    [ngbTooltip]="'name'"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    [src]="'assets/images/users/male.png'"
+                                                    alt="avatar">
+                                                <!-- <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar"
+                                                    container="body"
+                                                    [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle"
+                                                    class="fad fa-user-circle fa-2x"></i> -->
+                                            </div>
+                                        </a>
                                         <div ngbDropdown container="body" class="d-inline-block">
                                             <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
                                             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                                 <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(automobile,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
                                             </div>
                                         </div>
+                                        <a class="nav-link">
+                                            <div class="avatar">
+                                                <img
+                                                    container="body"
+                                                    [ngbTooltip]="'name'"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    [src]="'assets/images/users/male.png'"
+                                                    alt="avatar">
+                                                <!-- <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar"
+                                                    container="body"
+                                                    [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle"
+                                                    class="fad fa-user-circle fa-2x"></i> -->
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <img *ngIf="automobile.image" class="card-img cursor-pointer" style="width: 100%;
+                                    height: 15vw;
+                                    object-fit: cover;" (click)="onSelectAuto(automobile)" src="{{automobile.image}}" [alt]="automobile.libelle">
+                                    <div *ngIf="!automobile.image" class="d-flex justify-content-center align-items-center" style="width: 100%; height: 15vw; object-fit: cover;">
+                                        <i container="body" style="font-size: 10rem;" class="fad fa-car-bus"></i>
+                                    </div>
+                                    <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+                                        <h5 class="card-title">{{automobile.libelle | titlecase}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-success">Disponible</h6>
+                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Visite technique</h6>
+                                        <h6 class="card-subtitle mb-2 text-info" *ngIf="false">Mission</h6>
+                                        <h6 class="card-subtitle mb-2 text-danger" *ngIf="false">Panne</h6>
                                         <!-- <a class="card-link">
                                             Commander
                                         </a>
                                         <a (click)="onSelectAuto(automobile)" class="card-link">Details</a> -->
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>    
                                     </div>
                                 </div>
                             </div>
@@ -352,5 +539,39 @@
                 </div>
             </div>
         </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-sm-6 mg-b-20" *ngFor="let e of [].constructor(5);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadingLine>
+    <div class="row">
+        <div *ngFor="let e of [].constructor(5);" class="col-12 rounded-0">
+            <div class="loading-card card h-100 w-100  rounded-0">
+                <div class="bars h-100  p-2">
+                    <div class="bar bar2 w-100 loading-placeholder  m-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center"
+        *ngIf="this.dataHelper.hasMoreData && !(this.dataHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()">
+            Voir plus
+        </button>
     </div>
 </ng-template>

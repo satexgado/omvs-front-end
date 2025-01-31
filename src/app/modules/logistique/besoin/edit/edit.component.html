@@ -7,6 +7,33 @@
 <ng-container *ngIf="editForm">
     <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" [class.loading]="!(allDepartements$ | async)">
+                <div class="col-12 col-sm-10">
+                    <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'departement_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'departement_id'), 'is-valid': isValid('departement_id')}">
+                        <ng-container *ngFor="let item of (allDepartements$ | async)">
+                            <option [ngValue]="item.id">{{item.name}}</option>
+                        </ng-container>
+                    </select>
+                    <span class="custom-span">Departement</span>
+                    <div *ngIf="shouldShowRequiredError('departement_id')" class="invalid-feedback">veillez choisir le departement.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" [class.loading]="!(allInscriptions$ | async)">
+                <div class="col-12 col-sm-10">
+                    <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'personnel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'personnel_id'), 'is-valid': isValid('personnel_id')}">
+                        <ng-container *ngIf="allInscriptions$ | async as items">
+                            <option value="">--choississez le beneficiaire --</option>
+                            <option *ngFor="let item of (items|baseColumnFilter:[
+                                    { column: 'departement_id', filterBase: [editForm.get('departement_id').value] }
+                                ])" [ngValue]="item.id">
+                                {{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})
+                            </option>
+                        </ng-container>
+                    </select>
+                    <span class="custom-span">Beneficiaire</span>
+                    <div *ngIf="shouldShowRequiredError('personnel_id')" class="invalid-feedback">veillez choisir le beneficiaire.</div>
+                </div>
+            </div>
             <div *ngIf="!materielId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="materiel_id">Materiel</label>

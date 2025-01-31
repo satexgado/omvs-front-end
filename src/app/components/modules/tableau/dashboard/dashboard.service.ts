@@ -66,7 +66,7 @@ export class DashboardService {
         );
     }
     return this._cachePersonnels$;
-}
+  }
 
   allTypes(queryOptions: QueryOptions): Observable<ListResult> {
     return this.httpClient

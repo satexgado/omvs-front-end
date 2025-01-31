@@ -48,13 +48,6 @@ const butsRoutes: Routes = [
         breadcrumb: 'Inventaire'
       },
       component: InventaireComponent
-    },
-    {
-      path: 'amortissement',
-      data: {
-        breadcrumb: 'Amortissement'
-      },
-      component: AmortissementComponent
     }
   ]},
 ];

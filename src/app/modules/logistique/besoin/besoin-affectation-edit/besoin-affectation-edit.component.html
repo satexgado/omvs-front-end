@@ -7,15 +7,19 @@
 <ng-container *ngIf="editForm">
     <div class="modal-body tx-dark" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
-            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
-                <div class="col-10">
-                    <label class="control-label" for="libelle">Affecter à</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption required name="user_id" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id') , 'is-valid': isValid('user_id')}" required>
-                      <ng-container *ngFor="let item of (allUsers$ | async)">
-                          <option [ngValue]="item.id">{{item.libelle}} ({{item.idcam}})</option>
-                      </ng-container>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" [class.loading]="!(allInscriptions$ | async)">
+                <div class="col-12 col-sm-10">
+                    <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'user_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'user_id'), 'is-valid': isValid('user_id')}">
+                        <ng-container *ngIf="allInscriptions$ | async as items">
+                            <option *ngFor="let item of (items|baseColumnFilter:[
+                                    { column: 'departement_id', filterBase: [editForm.get('departement_id').value] }
+                                ])" [ngValue]="item.id">
+                                {{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})
+                            </option>
+                        </ng-container>
                     </select>
-                    <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir.</div>
+                    <span class="custom-span">Affecter à</span>
+                    <div *ngIf="shouldShowRequiredError('user_id')" class="invalid-feedback">veillez choisir le beneficiaire.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">

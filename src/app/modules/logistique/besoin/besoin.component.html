@@ -6,31 +6,16 @@
         <div class="col-lg-8 p-0 border-0">
             <div class="grid-container scrollable-y-75 scroll-11">
                 <div class="sidebarlist" [class.sidebar_small]="selectedBesoin">
-                    <div class="row row-xs mg-0 pd-0 bg-light p-0">
-                        <div class="col-lg-4 d-flex">
-                            <div>
-                                <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+                    <div class="col-12 py-2  text-center">
+                        <h6 class="m-0 font-weight-bold text-secondary text-center">
+                          Besoin en Matériels
+                        </h6>
+                    </div>
+                    <div class="col-12 d-flex align-items-center">
+                        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+                        <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 my-1">
                             <i class="fal fa-plus-circle tx-14" ></i>
-                          </button>
-                            </div>
-                            <div class="form-group mg-t-5 mg-b-5 ">
-                                <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="nav float-right list-inline justify-content-end">
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-globe bg-white tx-danger tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-flag-alt bg-white tx-success-100 tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-chair-office bg-white tx-warning tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fal fa-people-carry bg-white tx-primary tx-14" style="padding:6px; border-radius: 50%; "></i> </a></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="nav float-right list-inline justify-content-end">
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Ajustement</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-1" href="#"><i class="fad fa-circle bg-light tx-gray-600 tx-12" style="padding:6px; border-radius: 50%; "></i> <span class="tx-gray-600 tx-14">Affectés</span></a></li>
-                            </ul>
-                        </div>
+                        </button>
                     </div>
                     <div class="table-responsive">
                         <table class="table  table-hover table-sm mb-0 " [class.loading]="dataHelper.loading$ | async">
@@ -38,9 +23,9 @@
                                 <tr class="barder-0">
                                     <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Matériel</th>
                                     <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Niveau d'urgence</th>
-                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Quantité demandé</th>
-                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Quantité reçus</th>
-                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Quantité restant</th>
+                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Qte demandé</th>
+                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Qte reçus</th>
+                                    <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Qte restant</th>
                                     <th class="tx-orange tx-center p-3 tx-16"> </th>
                                 </tr>
                                 <ng-container *ngIf="dataHelper.data$ | async as items">

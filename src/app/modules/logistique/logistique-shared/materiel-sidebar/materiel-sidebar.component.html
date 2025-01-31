@@ -4,13 +4,16 @@
             <i class="fal fa-list"></i> Materiels
         </h5>
     </div>
-    <div class="card-body p-0">
-        <ul class="scrollable-y-50 scroll-11 list-group list-group-flush choose-title hoverable-list d-none d-lg-flex" [class.loading]="!(materielHelper | async)">
-            <ng-container *ngIf="materielHelper | async as items">
+    <div class="d-flex p-2  border-bottom">
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <ul class="scrollable-y-50 scroll-11 list-group list-group-flush choose-title hoverable-list d-none d-lg-flex">
+            <ng-container *ngIf="dataHelper.data$ | async as items">
                 <ng-container *ngIf="items.length; else noItemHeaderOnly">
                     <li class="list-group-item cursor-pointer tx-yeto align-middle" (click)="onSetSelected(materiel)" [class.border-left-primary]="selectedMaterielId && materiel.id == selectedMaterielId" *ngFor="let materiel of (items| sortBy:'asc':'name');trackBy: trackByFn">
                         <a class="cursor-pointer w-100">
-                            <strong class="tx-yeto2">{{materiel.name | titlecase}} </strong>
+                            <strong class="tx-yeto2">{{materiel.libelle | titlecase}} </strong>
                         </a>
                     </li>
                 </ng-container>
@@ -26,3 +29,16 @@
 <ng-template #noItemHeaderOnly>
     <h5 class="text-center my-5 ">{{ 'Aucun Element' }}</h5>
 </ng-template>
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+    <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>

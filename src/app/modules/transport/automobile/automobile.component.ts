@@ -13,9 +13,24 @@ import { IAutomobileItineraire } from "src/app/core/models/transport/automobile-
 import { DashboardService } from "src/app/components/modules/tableau/dashboard/dashboard.service";
 import { Filter, QueryOptions, Sort } from "src/app/shared/models/query-options";
 import { AutomobileEtatFactory } from "src/app/core/services/transport/automobile-etat";
-import { map, shareReplay } from "rxjs/operators";
+import { delay, map, retryWhen, shareReplay, take } from "rxjs/operators";
 import { getTextColor } from "src/app/shared/helperfonction";
 import { IAutomobileEtat } from "src/app/core/models/transport/automobile-etat";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { filterGrp } from "src/app/shared/models/query-options/query-options.model";
+import { CarburantTypeFactory } from "src/app/core/services/transport/carburant-type";
+import { AutomobileTypeFactory } from "src/app/core/services/transport/automobile-type";
+import { TransSerieFactory } from "src/app/core/services/transport/serie";
+import { MarqueFactory } from "src/app/core/services/transport/marque";
+import { ModeleFactory } from "src/app/core/services/transport/modele";
+import { GenreFactory } from "src/app/core/services/transport/genre";
+import { CrCoordonneeFactory } from "src/app/core/services/cr-coordonnee";
+
+interface AutomobileFiltre {
+  type: string;
+  value: any;
+  name: string;
+}
 
 @Component({
   selector: "app-automobile",
@@ -40,11 +55,55 @@ export class AutomobileComponent extends EditableListComponent {
      shareReplay(1),
      map(data => data.data)
   );
+  allInscriptions$ = this.dashService.allPersonnels(
+    new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
+  ).pipe(
+    (map(data => {
+        if(data.data && data.data.length) {
+          data.data = data.data.map((personnel) => {
+            personnel['libelle'] = personnel.nom + ' ' + personnel.prenom;
+            return personnel;
+          });
+        }
+        return data;
+      }
+    ))
+  );
+  allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
+      shareReplay(1),
+      map(data => data.data)
+    );
+    allTypeAutomobiles$ = new AutomobileTypeFactory().list().pipe(
+      shareReplay(1),
+      map(data => data.data)
+    );
+  
+    allSerie$ = new TransSerieFactory().list(      
+    ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
+  
+    allMarque$ = new MarqueFactory().list(
+    ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
+    
+    allModele$ = new ModeleFactory().list(  
+    ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
+    
+    allGenre$ = new GenreFactory().list(
+      
+    ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
+    
+    allCoordonnee$ = new CrCoordonneeFactory().list(
+      
+    ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
+    
+  configForm: FormGroup;
+  filtres: AutomobileFiltre[] = [];
+
   getTextColor = getTextColor;
   onChangeView(view : 'card' | 'list') {
     this.view = view;
     localStorage.setItem('automobileViewType',view);
   }
+
   constructor(
     public route: ActivatedRoute,
     private router: Router,
@@ -52,6 +111,7 @@ export class AutomobileComponent extends EditableListComponent {
     protected cacheService: CacheService,
     protected titleservice: AppTitleService,
     protected modalService: NgbModal,
+    private formbuilder: FormBuilder,
     private dashService: DashboardService, 
   ) {
     super(new ResourceScrollableHelper(new AutomobileFactory()));
@@ -114,7 +174,8 @@ export class AutomobileComponent extends EditableListComponent {
 
 
     this.onLoadChild();
-    super.ngOnInit()
+    this.createForm();
+    super.ngOnInit();
   }
 
   onLoadChild() {
@@ -194,6 +255,57 @@ export class AutomobileComponent extends EditableListComponent {
     this.dataHelper.service.update(data).subscribe();
   }
 
+
+  onAddFilter() {
+    const type = this.configForm.controls.type.value;
+    const value = this.configForm.controls.value.value;
+    const filter: AutomobileFiltre = {
+      name: `${type.toString().replace('_id','').replace('_', ' ')}: ${value.libelle}`,
+      value: value.id,
+      type: type
+    };
+    this.filtres.push(filter);
+    this.onReload()
+  }
+
+  createForm() {
+    this.configForm = this.formbuilder.group({
+      type: ['affectataire_id', Validators.required],
+      value: [null, Validators.required]
+      });
+  }
+
+  onRemoveFilter(i) {
+    this.filtres.splice(i,1);
+    this.onReload();
+  }
+
+  groupBy(xs, f) {
+    return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
+  }
+
+  resetFormValue() {
+    this.configForm.controls.value.setValue(null);
+  }
+
+  onReload() {   
+    const filter_groups: filterGrp[] = [];
+    const filtresGroup = this.groupBy(this.filtres, (c) => c.type)
+    if(this.filtres && this.filtres.length) {
+      Object.values(filtresGroup).forEach(function (filtre: AutomobileFiltre[]) {
+        const customfilter = [];
+        filtre.forEach(filter => {
+          const fltr = new Filter(filter.type,filter.value, 'eq');
+          customfilter.push(fltr);
+        }); 
+        filter_groups.push({
+          or: true, filters: customfilter
+        })
+      });
+    }
+    this.dataHelper.searchCustomFilterGroup = filter_groups;
+    this.dataHelper.page = 1;
+  }
 
   ngOnDestroy()
   {

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MissionService } from 'src/app/services/mission.service.'
 import { ArchiveService } from 'src/app/services/archive.service'
 import { FileConfig } from 'src/app/shared-module/file-manager/file.config';
+import { MissionValidator } from 'src/app/shared/validator/mission.validator';
 
 @Component({
   selector: 'app-add-mission',
@@ -26,7 +27,8 @@ export class AddMissionComponent extends BaseComponent implements OnInit {
   constructor(private service: MissionService,
     private archiveService: ArchiveService,
     private routeObserver: ActivatedRoute,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private missionValidator:MissionValidator) {
     super(service, '/mission/list', '', routeObserver);
 
     // AVOID TO FETCH DATA AGAIN IF EXIST
@@ -97,6 +99,7 @@ export class AddMissionComponent extends BaseComponent implements OnInit {
         localite_id: [this.currentItem.localite.id, Validators.required],
         depart: [this.currentItem.depart.id, Validators.required],
         name: [this.currentItem.name, Validators.required],
+        code: [this.currentItem.code, Validators.required, this.missionValidator.alreadyUsedCodeValidator(this.currentItem.code)],
         start: [this.currentItem.start, Validators.required],
         end: [this.currentItem.end, Validators.required],
         archive: [this.currentItem.archive, Validators.required],
@@ -132,6 +135,7 @@ export class AddMissionComponent extends BaseComponent implements OnInit {
         localite_id: [null, Validators.required],
         depart: [null, Validators.required],
         name: [null, Validators.required],
+        code: [null, Validators.required, this.missionValidator.alreadyUsedCodeValidator()],
         start: [null, Validators.required],
         end: [null, Validators.required],
         archive: [true, Validators.required]

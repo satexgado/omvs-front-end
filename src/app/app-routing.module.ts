@@ -12,11 +12,6 @@ const routes: Routes = [
     loadChildren: './components/maps/maps.module#MapsModule'
   },
   {
-    path: 'materiel',
-    canActivate: [AccountGuard], data: { action: 'logged' },
-    loadChildren: './components/materiel/materiel.module#MaterielModule'
-  },
-  {
     path: 'rh',
     canActivate: [AccountGuard], data: { action: 'logged' },
     loadChildren: './components/rh/rh.module#RhModule'
