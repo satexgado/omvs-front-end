@@ -153,8 +153,8 @@
                                 <th scope="col">Immatriculation</th>
                                 <th scope="col">Etat</th>
                                 <th scope="col">Disponibilite</th>
-                                <th scope="col">Affectataire</th>
-                                <th scope="col">Chauffeur</th>    
+                                <th scope="col" class="text-center">Affectataire(s)</th>
+                                <th scope="col" class="text-center">Chauffeur</th>    
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -178,16 +178,28 @@
                                     Disponible
                                 </td>
                                 <td class="align-middle">
-                                    <a>
-                                        <div class="avatar">
-                                            <img
-                                                container="body"
-                                                [ngbTooltip]="'name'"
-                                                class="avatar-initial border border-secondary rounded-circle"
-                                                [src]="'assets/images/users/male.png'"
-                                                alt="avatar">
-                                        </div>
-                                    </a>
+                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                        <li *ngFor="let equipe of automobile.affectataires | slice:0:4" class="mg-l--10"
+                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                            data-html="true" title="" data-original-title="Alison G">
+                                            <div class="avatar"
+                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                    src="assets/images/users/male.png"
+                                                    class="avatar-initial border border-secondary rounded-circle">
+                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                    src="assets/images/users/female.png"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    alt="">
+                                            </div>
+                                        </li>
+                                        <li *ngIf="automobile.affectataires?.length > 4" class="mg-l--10" data-original-title=""
+                                            title="">
+                                            <div class="avatar"><span
+                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{automobile.affectataires.length - 4}}+</span>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td class="align-middle">
                                     <a>
@@ -249,6 +261,12 @@
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
                                 <a class="nav-link3 mx-2 tx-echos"><i
                                         class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'affectataire'"
+                                [class.bg-white]="fragment == 'affectataire'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-users tx-16  mr-2"></i>
+                                    Affectataires</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
                                 [class.bg-white]="fragment == 'mission'"
@@ -324,6 +342,35 @@
                                     </table>
                                 </div>
                             </div>
+                            <div *ngSwitchCase="'affectataire'">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-xl-3 col-sm-6" *ngFor="let affectataire of selectedAuto.affectataires">
+                                        <div class="mycard4 card-profile-1 mb-3">
+                                            <a class="card-body tx-center p-0">
+                                                <div class="mx-auto my-2 avatar-md" *ngIf="!affectataire.personnel.avatar">
+                                                    <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                                                </div>
+                                                <div class="d-flex justify-content-center mt-2" *ngIf="affectataire.personnel.avatar">
+                                                    <div class="image_outer_container {{affectataire.personnel.online_statut}}" >
+                                                        <div class="icon_statut" ></div>
+                                                        <div class="image_inner_container">
+                                                            <img [src]="affectataire.personnel.avatar">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h6 class="m-0 tx-primary">{{affectataire.personnel.nom }} {{affectataire.personnel.prenom}}
+                                                </h6>
+                                                <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{affectataire.personnel.telephone}} </p>
+                                                <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{affectataire.personnel.email}} </p>
+                                                <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                                    <span class="badge badge-primary mx-1 card-2"> ({{affectataire.personnel?.departement?.name}}-{{affectataire.personnel?.poste?.name}})</span>
+
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div *ngSwitchCase="'panne'">
                                 <app-panne-automobile [automobileId]="selectedAuto.id"></app-panne-automobile>
                             </div>
@@ -333,7 +380,6 @@
                             <div *ngSwitchCase="'assurance'">
                                 <app-assurance [automobileId]="selectedAuto.id"></app-assurance>
                             </div>
-                            
                             <div *ngSwitchCase="'calendrier'">
                                 <app-calendar-ui [eventParent]="{name: 'trans_auto', id: selectedAuto.id}"></app-calendar-ui>
                             </div>
@@ -466,18 +512,28 @@
                                 <div class="card card-1">
                                     <div class="card-header d-flex align-items-center p-0 justify-content-between">
                                         <a class="nav-link">
-                                            <div class="avatar">
-                                                <img
-                                                    container="body"
-                                                    [ngbTooltip]="'name'"
-                                                    class="avatar-initial border border-secondary rounded-circle"
-                                                    [src]="'assets/images/users/male.png'"
-                                                    alt="avatar">
-                                                <!-- <i *ngIf="!courrier.courrier?.suivi_par_user?.avatar"
-                                                    container="body"
-                                                    [ngbTooltip]="courrier.courrier?.suivi_par_user?.libelle"
-                                                    class="fad fa-user-circle fa-2x"></i> -->
-                                            </div>
+                                            <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                                <li *ngFor="let equipe of automobile.affectataires | slice:0:1" class="mg-l--10"
+                                                    data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                                    data-html="true" title="" data-original-title="Alison G">
+                                                    <div class="avatar"
+                                                        [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                        <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                            src="assets/images/users/male.png"
+                                                            class="avatar-initial border border-secondary rounded-circle">
+                                                        <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                            src="assets/images/users/female.png"
+                                                            class="avatar-initial border border-secondary rounded-circle"
+                                                            alt="">
+                                                    </div>
+                                                </li>
+                                                <li *ngIf="automobile.affectataires?.length > 1" class="mg-l--10" data-original-title=""
+                                                    title="">
+                                                    <div class="avatar"><span
+                                                            class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{automobile.affectataires.length - 1}}+</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </a>
                                         <div ngbDropdown container="body" class="d-inline-block">
                                             <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>

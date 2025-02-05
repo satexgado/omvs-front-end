@@ -114,6 +114,7 @@ get allImputations$()  {
         this._loading$.next(false);
         const maped = data.data.map((element)=> {
           element.name = `${element.nom } ${element.prenom}`;
+          element.libelle = `${element.nom } ${element.prenom}`;
           return element ;
         }
         )

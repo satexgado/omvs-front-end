@@ -6,9 +6,12 @@ import { VilleComponent } from './ville/ville.component';
 import { PaysComponent } from './pays/pays.component';
 import { PluginModule } from 'src/app/plugin/plugin.module';
 import { MapsPluginModule } from './maps-plugin.module';
+import { EmplacementComponent } from './emplacement/emplacement.component';
 
 const appRoute: Routes = [
   { path: '', redirectTo: 'pays'},
+  { path: 'emplacement', component: EmplacementComponent },
+  { path: 'emplacement/page/:page', component: EmplacementComponent },
   { path: 'pays', component: PaysComponent },
   { path: 'pays/page/:page', component: PaysComponent },
   { path: 'ville', component: VilleComponent },
@@ -16,7 +19,7 @@ const appRoute: Routes = [
 ];
 
 @NgModule({
-  declarations: [VilleComponent, PaysComponent],
+  declarations: [EmplacementComponent, VilleComponent, PaysComponent],
   imports: [
     SharedModule,
     PluginModule,

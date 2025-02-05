@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-12 pt-0 pb-0">
+    <form [formGroup]="forms.add" (ngSubmit)="add()" class="form pb-4 pr-2 pl-2" role="form" autocomplete="off">
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Ville<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <select formControlName="ville_id" class="form-control">
+            <option *ngFor="let item of service.villeService.allData | async " [value]="item.id">{{item?.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
+            class="text-danger requiredField">*</span>
+        </label>
+        <div class="col-sm-12 pl-0">
+          <input formControlName="libelle" class="form-control" type="text">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button [disabled]="forms.add.invalid || requesting" type="submit"
+            class="btn btn-sm btn-primary shadow-primary">
+            <i *ngIf="!requesting" class="fas fa-check-circle"></i> Ajouter
+            <i *ngIf="requesting" class="fas fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

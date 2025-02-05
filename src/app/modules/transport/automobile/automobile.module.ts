@@ -24,6 +24,8 @@ import { UploadModule } from 'src/app/upload';
 import { EtatModule } from '../etat/etat.module';
 import { VisiteTechniqueModule } from '../visite-technique/visite-technique.module';
 import { AssuranceModule } from '../assurance/assurance.module';
+import { MapsPluginModule } from 'src/app/components/maps/maps-plugin.module';
+import { DossierConducteurModule } from '../dossier-conducteur/dossier-conducteur.module';
 
 @NgModule({
     declarations: [
@@ -53,7 +55,9 @@ import { AssuranceModule } from '../assurance/assurance.module';
         UploadModule,
         EtatModule,
         VisiteTechniqueModule,
-        AssuranceModule
+        AssuranceModule,
+        DossierConducteurModule,
+        MapsPluginModule
     ],
     exports: [
         AutomobileComponent,

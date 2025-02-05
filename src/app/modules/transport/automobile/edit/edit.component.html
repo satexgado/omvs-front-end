@@ -7,140 +7,196 @@
 <ng-container *ngIf="editForm">
     <div class="modal-body p-0 tx-dark" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
-            <header class="px-3 mx-auto">
-                <h5>
-                    Identification du véhicule
-                </h5>
-            </header>
-            <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
-                    <span class="custom-span">designation</span>
-                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir la désignation.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="text" class="form-control" required [formControlName]="'immatriculation'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'immatriculation'), 'is-valid': isValid('immatriculation')}" name="immatriculation" required>
-                    <span class="custom-span">immatriculation</span>
-                    <div *ngIf="shouldShowRequiredError('immatriculation')" class="invalid-feedback">veillez saisir l'immatriculation.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'numero_chassis'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'numero_chassis'), 'is-valid': isValid('numero_chassis')}" name="numero_chassis" required>
-                    <span class="custom-span">numero chassis</span>
-                    <div *ngIf="shouldShowRequiredError('numero_chassis')" class="invalid-feedback">veillez saisir le numéro du chassis.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="Type d'automobile" formControlName="type_automobile_id" [selected]="editForm.get('type_automobile_id').value" [dataSource]="allTypeAutomobiles$" [createModal]="automobileTypeEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('type_automobile_id')" class="invalid-feedback">veillez choisir la type d'automobile.</div>
-                </div>
-            </div>
-            <header class="px-3 mx-auto">
-                <h5>
-                    Caractéristiques techniques
-                </h5>
-            </header>
-            <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'nombre_place'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_place'), 'is-valid': isValid('nombre_place')}" name="nombre_place" required>
-                    <span class="custom-span">Nombre de places</span>
-                    <div *ngIf="shouldShowRequiredError('nombre_place')" class="invalid-feedback">veillez saisir le nombre de places.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'nombre_porte'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_porte'), 'is-valid': isValid('nombre_porte')}" name="nombre_porte" required>
-                    <span class="custom-span">Nombre de portes</span>
-                    <div *ngIf="shouldShowRequiredError('nombre_porte')" class="invalid-feedback">veillez saisir le nombre de portes.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="Transmission" formControlName="type_transmission" [selected]="editForm.get('type_transmission').value" [dataSource]="transmission_select" ></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('type_transmission')" class="invalid-feedback">veillez choisir la transmission.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="carburant" formControlName="type_carburant_id" [selected]="editForm.get('type_carburant_id').value" [dataSource]="allTypeCarburants$" [createModal]="carburantEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('type_carburant_id')" class="invalid-feedback">veillez choisir la type carburant.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="text" class="form-control" required [formControlName]="'emission_co2'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'emission_co2'), 'is-valid': isValid('emission_co2')}" name="emission_co2" required>
-                    <span class="custom-span">Emission CO2</span>
-                    <div *ngIf="shouldShowRequiredError('emission_co2')" class="invalid-feedback">veillez saisir l'emission.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'nombre_chevaux'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_chevaux'), 'is-valid': isValid('nombre_chevaux')}" name="nombre_chevaux" required>
-                    <span class="custom-span">Nombre de chevaux</span>
-                    <div *ngIf="shouldShowRequiredError('nombre_chevaux')" class="invalid-feedback">veillez saisir le nombre de chevaux.</div>
-                </div>
-                
-            </div>
-            <header class="px-3 mx-auto">
-                <h5>
-                    Marque et modèle
-                </h5>
-            </header>
-            <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="genre" formControlName="genre_id" [selected]="editForm.get('genre_id').value" [dataSource]="allGenre$" [createModal]="genreEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('genre_id')" class="invalid-feedback">veillez choisir le genre.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="marque" formControlName="marque_id" [selected]="editForm.get('marque_id').value" [dataSource]="allMarque$" [createModal]="marqueEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('marque_id')" class="invalid-feedback">veillez choisir la marque.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="modele" formControlName="modele_id" [selected]="editForm.get('modele_id').value" [dataSource]="allModele$" [createModal]="modeleEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('modele_id')" class="invalid-feedback">veillez choisir la modele.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="serie" formControlName="serie_id" [selected]="editForm.get('serie_id').value" [dataSource]="allSerie$" [createModal]="serieEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('serie')" class="invalid-feedback">veillez choisir la série.</div>
-                </div>
-            </div>
-            <header class="px-3 mx-auto">
-                <h5>
-                    Acquisition
-                </h5>
-            </header>
-            <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-3 pt-0">
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="Acquisition" formControlName="type_acquisition" [selected]="editForm.get('type_acquisition').value" [dataSource]="acquisition_select" ></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('type_acquisition')" class="invalid-feedback">veillez choisir la transmission.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="fournisseur" formControlName="coordonnee_id" [selected]="editForm.get('coordonnee_id').value" [dataSource]="allCoordonnee$" [createModal]="coordonneeEditComponent"></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('coordonnee_id')" class="invalid-feedback">veillez choisir.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <app-select-formgroup [small]="true" label="Etat" formControlName="etat_achat" [selected]="editForm.get('etat_achat').value" [dataSource]="etat_select" ></app-select-formgroup>
-                    <div *ngIf="shouldShowRequiredError('etat_achat')" class="invalid-feedback">veillez choisir la transmission.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_achat'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_achat'), 'is-valid': isValid('date_achat')}" required>
-                    <span class="custom-span" i18n>date d'acquisition</span>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'montant'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'montant'), 'is-valid': isValid('montant')}" name="montant" required>
-                    <span class="custom-span">Montant</span>
-                    <div *ngIf="shouldShowRequiredError('montant')" class="invalid-feedback">veillez saisir le montant.</div>
-                </div>
-                <div class="col-10 mb-3 col-md-5">
-                    <input type="number" class="form-control" required [formControlName]="'kilometrage_durant_achat'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'kilometrage_durant_achat'), 'is-valid': isValid('kilometrage_durant_achat')}" name="kilometrage_durant_achat"
-                        required>
-                    <span class="custom-span">Kilometrage à l'acquistion</span>
-                    <div *ngIf="shouldShowRequiredError('kilometrage_durant_achat')" class="invalid-feedback">veillez saisir le kilometrage.</div>
-                </div>
-            </div>
-            <header class="px-3 mx-auto">
-                <h5>
-                    Apparence extérieure
-                </h5>
-            </header>
-            <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0 ">
-                <div class="col-10 mb-3">
-                    <label for="" class="control-label">Image</label>
-                    <app-image-upload formControlName="image" [image]="editForm.get('image').value"></app-image-upload>
-                    <small id="tempsHelp" class="form-text text-muted">Format autorisé PNG, GIF</small>
-                    <div class="invalid-feedback" style="display: block">
-                        <ng-container *ngIf="hasError('image', 'required')">veillez choisir une image</ng-container>
-                        <ng-container *ngIf="hasError( 'image', 'requiredFileType')">Seulement PNG, GIF </ng-container>
+            <ng-container *ngIf="!affectataireOnly">
+
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Identification du véhicule
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                        <span class="custom-span">designation</span>
+                        <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir la désignation.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="text" class="form-control" required [formControlName]="'immatriculation'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'immatriculation'), 'is-valid': isValid('immatriculation')}" name="immatriculation" required>
+                        <span class="custom-span">immatriculation</span>
+                        <div *ngIf="shouldShowRequiredError('immatriculation')" class="invalid-feedback">veillez saisir l'immatriculation.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'numero_chassis'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'numero_chassis'), 'is-valid': isValid('numero_chassis')}" name="numero_chassis" required>
+                        <span class="custom-span">numero chassis</span>
+                        <div *ngIf="shouldShowRequiredError('numero_chassis')" class="invalid-feedback">veillez saisir le numéro du chassis.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Type d'automobile" formControlName="type_automobile_id" [selected]="editForm.get('type_automobile_id').value" [dataSource]="allTypeAutomobiles$" [createModal]="automobileTypeEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('type_automobile_id')" class="invalid-feedback">veillez choisir la type d'automobile.</div>
                     </div>
                 </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Caractéristiques techniques
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'nombre_place'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_place'), 'is-valid': isValid('nombre_place')}" name="nombre_place" required>
+                        <span class="custom-span">Nombre de places</span>
+                        <div *ngIf="shouldShowRequiredError('nombre_place')" class="invalid-feedback">veillez saisir le nombre de places.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'nombre_porte'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_porte'), 'is-valid': isValid('nombre_porte')}" name="nombre_porte" required>
+                        <span class="custom-span">Nombre de portes</span>
+                        <div *ngIf="shouldShowRequiredError('nombre_porte')" class="invalid-feedback">veillez saisir le nombre de portes.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Transmission" formControlName="type_transmission" [selected]="editForm.get('type_transmission').value" [dataSource]="transmission_select" ></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('type_transmission')" class="invalid-feedback">veillez choisir la transmission.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="carburant" formControlName="type_carburant_id" [selected]="editForm.get('type_carburant_id').value" [dataSource]="allTypeCarburants$" [createModal]="carburantEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('type_carburant_id')" class="invalid-feedback">veillez choisir la type carburant.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="text" class="form-control" required [formControlName]="'emission_co2'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'emission_co2'), 'is-valid': isValid('emission_co2')}" name="emission_co2" required>
+                        <span class="custom-span">Emission CO2</span>
+                        <div *ngIf="shouldShowRequiredError('emission_co2')" class="invalid-feedback">veillez saisir l'emission.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'nombre_chevaux'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'nombre_chevaux'), 'is-valid': isValid('nombre_chevaux')}" name="nombre_chevaux" required>
+                        <span class="custom-span">Nombre de chevaux</span>
+                        <div *ngIf="shouldShowRequiredError('nombre_chevaux')" class="invalid-feedback">veillez saisir le nombre de chevaux.</div>
+                    </div>
+                    
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Marque et modèle
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0">
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="genre" formControlName="genre_id" [selected]="editForm.get('genre_id').value" [dataSource]="allGenre$" [createModal]="genreEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('genre_id')" class="invalid-feedback">veillez choisir le genre.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="marque" formControlName="marque_id" [selected]="editForm.get('marque_id').value" [dataSource]="allMarque$" [createModal]="marqueEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('marque_id')" class="invalid-feedback">veillez choisir la marque.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="modele" formControlName="modele_id" [selected]="editForm.get('modele_id').value" [dataSource]="allModele$" [createModal]="modeleEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('modele_id')" class="invalid-feedback">veillez choisir la modele.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="serie" formControlName="serie_id" [selected]="editForm.get('serie_id').value" [dataSource]="allSerie$" [createModal]="serieEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('serie')" class="invalid-feedback">veillez choisir la série.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Acquisition
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-3 pt-0">
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Acquisition" formControlName="type_acquisition" [selected]="editForm.get('type_acquisition').value" [dataSource]="acquisition_select" ></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('type_acquisition')" class="invalid-feedback">veillez choisir la transmission.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="fournisseur" formControlName="coordonnee_id" [selected]="editForm.get('coordonnee_id').value" [dataSource]="allCoordonnee$" [createModal]="coordonneeEditComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('coordonnee_id')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Etat" formControlName="etat_achat" [selected]="editForm.get('etat_achat').value" [dataSource]="etat_select" ></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('etat_achat')" class="invalid-feedback">veillez choisir la transmission.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_achat'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_achat'), 'is-valid': isValid('date_achat')}" required>
+                        <span class="custom-span" i18n>date d'acquisition</span>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'montant'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'montant'), 'is-valid': isValid('montant')}" name="montant" required>
+                        <span class="custom-span">Montant</span>
+                        <div *ngIf="shouldShowRequiredError('montant')" class="invalid-feedback">veillez saisir le montant.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <input type="number" class="form-control" required [formControlName]="'kilometrage_durant_achat'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'kilometrage_durant_achat'), 'is-valid': isValid('kilometrage_durant_achat')}" name="kilometrage_durant_achat"
+                            required>
+                        <span class="custom-span">Kilometrage à l'acquistion</span>
+                        <div *ngIf="shouldShowRequiredError('kilometrage_durant_achat')" class="invalid-feedback">veillez saisir le kilometrage.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Situation
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-3 pt-0">
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Emplacement" formControlName="emplacement_id" [selected]="editForm.get('emplacement_id').value" [dataSource]="emplacementService.allData" [createComponent]="addEmplacementComponent"></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('emplacement_id')" class="invalid-feedback">veillez choisir.</div>
+                    </div>
+                    <div class="col-10 mb-3 col-md-5">
+                        <app-select-formgroup [small]="true" label="Chauffeur" formControlName="conducteur_id" [selected]="editForm.get('conducteur_id').value" [dataSource]="allDossierConducteurs$" ></app-select-formgroup>
+                        <div *ngIf="shouldShowRequiredError('conducteur_id')" class="invalid-feedback">veillez choisir le chauffeur.</div>
+                    </div>
+                </div>
+                <header class="px-3 mx-auto">
+                    <h5>
+                        Apparence extérieure
+                    </h5>
+                </header>
+                <div class="formSep form-group my-3 d-flex flex-wrap justify-content-center pb-0 ">
+                    <div class="col-10 mb-3">
+                        <label for="" class="control-label">Image</label>
+                        <app-image-upload formControlName="image" [image]="editForm.get('image').value"></app-image-upload>
+                        <small id="tempsHelp" class="form-text text-muted">Format autorisé PNG, GIF</small>
+                        <div class="invalid-feedback" style="display: block">
+                            <ng-container *ngIf="hasError('image', 'required')">veillez choisir une image</ng-container>
+                            <ng-container *ngIf="hasError( 'image', 'requiredFileType')">Seulement PNG, GIF </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <header class="px-3 mx-auto">
+                <h5>
+                    Affectataires
+                </h5>
+            </header>
+            <div class="table-responsive" formArrayName="affectataire">
+                <table class="table table-sm table-stripped table-hover text-nowrap" *ngIf="editForm.get('affectataire').controls && editForm.get('affectataire').controls.length">
+                    <thead>
+                        <tr>
+                            <td>Prenom et Nom</td>
+                            <td>Permis</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let point_arret of editForm.get('affectataire').controls; let y = index;" [formGroupName]="y">
+                            <td [class.loading]="!(allInscriptions$ | async)">
+                                <select  class="form-control form-control-sm" formControlName="personnel_id">
+                                    <ng-container *ngIf="(allInscriptions$ | async) as items">
+                                        <option [value]="null">--Veuillez choisir--</option>
+                                        <option [ngValue]="item.id" *ngFor="let item of items">{{item.nom }} {{item.prenom}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
+                                    </ng-container>                            
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" [formControlName]="'libelle'" autofocus class="form-control form-control-sm">
+                            </td>
+                            
+                            <td>
+                                <i (click)="removeAffectataire(y)" class="fal fa-minus-square fal fa-minus-square fa-2x text-danger cursor-pointer"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button (click)="addAffectataire()" class="btn btn-light m-2" style="font-size: 13px"> <i class="fal fa-layer-plus" style="color:   #99600b    "></i> Ajouter</button>
             </div>
         </form>
     </div>

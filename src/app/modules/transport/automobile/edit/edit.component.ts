@@ -5,11 +5,11 @@ import { CarburantTypeFactory } from 'src/app/core/services/transport/carburant-
 import { IAutomobile, Automobile } from 'src/app/core/models/transport/automobile';
 import { Component, Input, ChangeDetectorRef} from '@angular/core';
 import { NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter  } from '@ng-bootstrap/ng-bootstrap';
-import { Validators } from '@angular/forms';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { shareReplay, map, take, retryWhen, delay } from 'rxjs/operators';
 import { CacheService } from 'src/app/shared/services';
 import { AutomobileFactory } from 'src/app/core/services/transport/automobile';
-import { QueryAllOptionWithIns } from 'src/app/shared/models/query-options/query-options.model';
+import { QueryAllOptionWithIns, QueryOptions } from 'src/app/shared/models/query-options/query-options.model';
 import { EditComponent as SerieEditComponent} from '../../serie/edit/edit.component';
 import { EditComponent as MarqueEditComponent} from '../../marque/edit/edit.component';
 import { EditComponent as ModeleEditComponent} from '../../modele/edit/edit.component';
@@ -17,14 +17,19 @@ import { EditComponent as GenreEditComponent} from '../../genre/edit/edit.compon
 import { EditComponent as CarburantEditComponent} from '../../carburant/edit/edit.component';
 import { EditComponent as AutomobileTypeEditComponent} from '../../automobile-type/edit/edit.component';
 import { EditComponent as CoordonneeEditComponent} from 'src/app/modules/fournisseur/coordonnee/edit/edit.component';
+import { EditComponent as DossierConducteurEditComponent} from 'src/app/modules/transport/dossier-conducteur/edit/edit.component';
 
 import { MarqueFactory } from 'src/app/core/services/transport/marque';
 import { ModeleFactory } from 'src/app/core/services/transport/modele';
 import { GenreFactory } from 'src/app/core/services/transport/genre';
-import { CouleurFactory } from 'src/app/core/services/transport/couleur';
 import { of, Subscription } from 'rxjs';
 import { requiredFileType } from 'src/app/shared/upload-file.validator';
 import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
+import { DashboardService } from 'src/app/components/modules/tableau/dashboard/dashboard.service';
+import { Sort } from 'src/app/shared/models/query-options';
+import { DossierConducteurFactory } from 'src/app/core/services/transport/dossier-conducteur';
+import { EmplacementService } from 'src/app/services/emplacement.service';
+import { AddEmplacementComponent } from 'src/app/components/maps/add-emplacement/add-emplacement.component';
 
 @Component({
   selector: 'app-edit',
@@ -46,9 +51,13 @@ export class EditComponent extends BaseEditComponent  {
   subscription: Subscription = new Subscription();
   heading = 'bus';
   @Input() item: IAutomobile = new Automobile();
+  @Input() affectataireOnly = false;
   allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
     shareReplay(1),
     map(data => data.data)
+  );
+  allInscriptions$ = this.dashService.allPersonnels(
+      new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
   );
   readonly carburantEditComponent  = CarburantEditComponent;
   allTypeAutomobiles$ = new AutomobileTypeFactory().list().pipe(
@@ -82,6 +91,16 @@ export class EditComponent extends BaseEditComponent  {
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly coordonneeEditComponent  = CoordonneeEditComponent;
 
+  allDossierConducteurs$ = new DossierConducteurFactory().list(
+    new QueryOptions().setIncludes(
+    ['type_permis','cpt_conducteur','visi_pays'])
+  ).pipe(
+    shareReplay(1),
+    map(data => data.data)
+  );
+  readonly dossierConducteurEditComponent  = DossierConducteurEditComponent;
+  readonly addEmplacementComponent = AddEmplacementComponent;
+
   transmission_select = of([
     {libelle:'Automatique', id:'Automatique'},
     {libelle:'Manuelle', id:'Manuelle'},
@@ -98,9 +117,12 @@ export class EditComponent extends BaseEditComponent  {
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
+    private dashService: DashboardService, 
+    protected emplacementService: EmplacementService, 
     activeModal: NgbActiveModal)
   {
     super(new AutomobileFactory(), cdRef, activeModal);
+    emplacementService.getAll();
   }
 
   ngOnInit() {
@@ -118,8 +140,25 @@ export class EditComponent extends BaseEditComponent  {
   }
 
   createFormGroup(item: IAutomobile) {
+    let affectataires =   this.formBuilder.array([]);
+
+    if(item.affectataires && item.affectataires.length) {
+      item.affectataires.forEach(
+        (field)=> {
+          affectataires.push(this.formBuilder.group({
+            'personnel_id': [field.personnel_id, Validators.required],
+            'libelle': [field.libelle],
+            id: [field.id]
+          }))
+        }
+      )
+    }
+
+
 
     return this.formBuilder.group({
+      'removedAffectataire': [],
+      'affectataire': affectataires,
       'type_acquisition': [item.type_acquisition, Validators.required],
       'immatriculation': [item.immatriculation, Validators.required],
       'numero_chassis': [item.numero_chassis, Validators.required],
@@ -138,12 +177,35 @@ export class EditComponent extends BaseEditComponent  {
       'genre_id': [item.genre_id, Validators.required],
       'type_carburant_id': [item.type_carburant_id, Validators.required],
       'type_automobile_id': [item.type_automobile_id, Validators.required],
+      'emplacement_id': [item.emplacement_id],
+      'conducteur_id': [item.conducteur_id],
       'coordonnee_id': [item.coordonnee_id, Validators.required],
       'libelle': [item.libelle, Validators.required],
       'image':[item.image, [requiredFileType(['png','gif','jpeg', 'jpg'])]],
       'id': [item.id]
     });
   }
+
+  addAffectataire() {
+      const control = this.editForm.get('affectataire') as FormArray;
+      control.push(this.formBuilder.group({
+        'personnel_id': ['', Validators.required],
+        'libelle': [''],
+        id: [0]
+      }));
+    }
+  
+    removeAffectataire(child_index) {
+      const control = this.editForm.get('affectataire') as FormArray;
+      control.markAsDirty();
+      if(control.at(child_index).get('id').value) {
+        const removeControl = this.editForm.get('removedAffectataire') as FormControl;
+        let data = removeControl.value ? removeControl.value : [];
+        data.push(control.at(child_index).get('id').value);
+        removeControl.setValue(data);
+      }
+      control.removeAt(child_index);
+   }
 
   ngOnDestroy()
   {

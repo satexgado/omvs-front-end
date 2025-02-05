@@ -23,7 +23,7 @@
         <!-- Page Heading -->
         <div class="row  mb-4">
           <h4 class="col-md-6 mb-0 text-gray-800">
-            <i class="fas fa-fw fa-map-marker-alt"></i> {{ 'PAYS' | translate }}
+            <i class="fas fa-fw fa-map-signs"></i> Emplacement
           </h4>
 
           <div class="col-md-6">
@@ -37,11 +37,11 @@
               <a routerLink="/localisation/emplacement" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                 <i class="fas fa-map-signs"></i> Emplacement
               </a>
-              <a routerLink="/localisation/pays" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                <i class="fas fa-map-marked"></i> {{'PAYS' | translate}}
-              </a>
               <a routerLink="/localisation/ville" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                 <i class="fas fa-map-marker fa-sm"></i> {{'LOCALITE' | translate}}
+              </a>
+              <a routerLink="/localisation/pays" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-map-marked"></i> {{'PAYS' | translate}}
               </a>
             </div>
           </div>
@@ -52,7 +52,7 @@
             <div class="card shadow mb-4">
               <!-- Card Header - Dropdown -->
               <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">{{'PAYS' | translate}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Emplacement</h6>
               </div>
               <!-- CLIST ELEMENT -->
               <div *ngIf="currentView == 'list'">
@@ -61,6 +61,8 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
+                          <th scope="col">Emplacement</th>
+                          <th scope="col">Localité</th>
                           <th scope="col">Pays</th>
                           <th scope="col">{{'MISSION' | translate}}</th>
                           <th scope="col">Vehicule</th>
@@ -74,7 +76,9 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of SOURCE.data.data; let i=index" class="handMe animated slideInDown">
-                          <td>{{item?.name}}</td>
+                          <td>{{item?.libelle}}</td>
+                          <td>{{item?.ville?.name}}</td>
+                          <td>{{item?.ville?.pays?.name}}</td>
                           <td>--</td>
                           <td>--</td>
                           <td>--</td>
@@ -93,7 +97,7 @@
                             </div>
                           </td>
                         </tr>
-                      </tbody>
+
                     </table>
                   </div>
                 </div>
@@ -120,11 +124,21 @@
                     <form [formGroup]="forms.edit" (ngSubmit)="edit()" class="form pb-4" role="form"
                       autocomplete="off">
                       <div class="form-group row">
+                        <label class="col-sm-12 col-form-label form-control-label pl-0">Ville<span
+                            class="text-danger requiredField">*</span>
+                        </label>
+                        <div class="col-sm-12 pl-0">
+                          <select formControlName="ville_id" class="form-control form-control-lg">
+                            <option *ngFor="let item of service.villeService.allData | async" [value]="item.id">{{item?.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
                         <label class="col-sm-12 col-form-label form-control-label pl-0">Libelle<span
                             class="text-danger requiredField">*</span>
                         </label>
                         <div class="col-sm-12 pl-0">
-                          <input formControlName="name" class="form-control form-control-lg" type="text">
+                          <input formControlName="libelle" class="form-control form-control-lg" type="text">
                         </div>
                       </div>
                       <div class="row">
@@ -144,6 +158,7 @@
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -171,8 +186,9 @@
     class="btn btn-primary btn-circle btn-lg">
     <i class="fas fa-plus-circle"></i>
   </button>
-  <popover-content #addPopover title="Nouveau Pays" [animation]="true" [closeOnClickOutside]="true" placement="top">
-    <app-add-pays></app-add-pays>
+  <popover-content #addPopover title="Nouvelle Emplacement" [animation]="true" [closeOnClickOutside]="true"
+    placement="top">
+    <app-add-emplacement></app-add-emplacement>
   </popover-content>
 </div>
 

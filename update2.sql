@@ -561,3 +561,26 @@ CREATE TABLE IF NOT EXISTS `carte_abonnement_carburant` (
   `inscription` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `trans_auto_affectataire` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL COMMENT 'numero permis de conduire',
+  `inscription_id` int(11) NOT NULL,
+  `auto_id` int(11) NOT NULL,
+  `personnel_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+CREATE TABLE `emplacement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL,
+  `inscription_id` int(11) NOT NULL,
+  `ville_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;

@@ -38,7 +38,7 @@ export class DossierConducteur implements IDossierConducteur {
       if(!this.conducteur){
         return '';
       }
-      return  this.conducteur.nom + '' + this.conducteur.prenom;
+      return  this.conducteur.nom + ' ' + this.conducteur.prenom;
     }
 
     @dateAdaptableMap('date_obtention')

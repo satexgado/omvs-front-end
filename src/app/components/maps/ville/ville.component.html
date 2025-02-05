@@ -34,6 +34,9 @@
         <div class="row mb-4 animated slideInUp">
           <div class="col-md-12">
             <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
+              <a routerLink="/localisation/emplacement" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <i class="fas fa-map-signs"></i> Emplacement
+              </a>
               <a routerLink="/localisation/ville" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                 <i class="fas fa-map-marker fa-sm"></i> {{'LOCALITE' | translate}}
               </a>
@@ -45,7 +48,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="card shadow mb-4">
               <!-- Card Header - Dropdown -->
               <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
@@ -61,6 +64,7 @@
                           <th scope="col">Localité</th>
                           <th scope="col">Pays</th>
                           <th scope="col">{{'MISSION' | translate}}</th>
+                          <th scope="col">Vehicule</th>
                           <th scope="col">{{'PERSONNES' | translate}}</th>
                           <th scope="col">{{'MATERIEL' | translate}}</th>
                           <th scope="col">{{'BUDGET' | translate}}</th>
@@ -73,6 +77,7 @@
                         <tr *ngFor="let item of SOURCE.data.data; let i=index" class="handMe animated slideInDown">
                           <td>{{item?.name}}</td>
                           <td>{{item?.pays?.name}}</td>
+                          <td>--</td>
                           <td>--</td>
                           <td>--</td>
                           <td>--</td>
@@ -154,11 +159,6 @@
 
             </div>
           </div>
-
-          <div class="col-md-4">
-            <app-plugin-mission></app-plugin-mission>
-          </div>
-
         </div>
 
 

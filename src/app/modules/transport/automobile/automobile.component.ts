@@ -57,17 +57,6 @@ export class AutomobileComponent extends EditableListComponent {
   );
   allInscriptions$ = this.dashService.allPersonnels(
     new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
-  ).pipe(
-    (map(data => {
-        if(data.data && data.data.length) {
-          data.data = data.data.map((personnel) => {
-            personnel['libelle'] = personnel.nom + ' ' + personnel.prenom;
-            return personnel;
-          });
-        }
-        return data;
-      }
-    ))
   );
   allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
       shareReplay(1),
@@ -125,7 +114,8 @@ export class AutomobileComponent extends EditableListComponent {
       "cr_coordonnee",
       "trans_type_carburant",
       "trans_type_automobile",
-      "trans_etat_automobile"
+      "trans_etat_automobile",
+      "trans_auto_affectataires.personne_inscription"
     ];
   }
 
@@ -134,6 +124,7 @@ export class AutomobileComponent extends EditableListComponent {
       this.uiService.automobileData$.subscribe(
         (automobile)=> {
           this.selectedAuto = automobile;
+          console.log(automobile);
 
           if(automobile) {
             this.titleservice.setTitle(automobile.libelle? automobile.libelle: 'Parc Automobile');
@@ -145,7 +136,7 @@ export class AutomobileComponent extends EditableListComponent {
       )
     )
 
-    const detailsView = 'details,panne,visite,calendrier,mission, assurance';
+    const detailsView = 'details,panne,visite,calendrier,mission,assurance,affectataire';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;

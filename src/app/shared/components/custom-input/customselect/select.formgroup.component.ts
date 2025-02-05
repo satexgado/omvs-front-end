@@ -1,4 +1,4 @@
-import { Component,  Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component,  Input, OnInit, Output, EventEmitter, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +19,8 @@ export interface SelectIconItem {value: string; icon_class?: string};
   styleUrls: ['./select.formgroup.component.css']
 })
 export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
+  @ViewChild('dynamicView', {read: ViewContainerRef}) itemViewContainer: ViewContainerRef;
+
   onChange: Function;
   onTouched: Function;
   loading = true;
@@ -29,6 +31,7 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
   items: any[] = [];
   @Input() label = 'Selectionnez';
   @Input('createModal') createModal;
+  @Input('createComponent') createComponent;
   @Input() createCallback: Function;
   @Input() createAdditionalParam: {name: string, value: any}[];
   @Output() selectedItemEmitter = new EventEmitter<any>(); ;
@@ -46,12 +49,14 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
     )
   };
 
-  constructor(protected modalSelect: NgbModal) {
+  constructor(protected modalSelect: NgbModal, private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   ngOnInit()
   {
-
+    if(this.createComponent) {
+      this.onLoadComponent(this.createComponent);
+    }
   }
 
   onShowCreateForm() {
@@ -78,6 +83,12 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
           }
         )
     }
+  }
+
+  onLoadComponent(component: any) {
+    const factory = this.componentFactoryResolver.resolveComponentFactory(component);
+    this.itemViewContainer.clear();
+    const componentRef = this.itemViewContainer.createComponent(factory);
   }
 
   onSetSelected(value = null)

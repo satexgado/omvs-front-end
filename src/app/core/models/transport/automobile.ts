@@ -1,4 +1,4 @@
-import { hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
+import { hasManyMap, hasOneMap } from 'src/app/shared/decorator/adapter/relation-map';
 import { IAutomobileType, AutomobileType } from './automobile-type';
 import { ICarburantType, CarburantType } from './carburant-type';
 import { IGenre, Genre } from './genre';
@@ -9,6 +9,8 @@ import { IBase } from '../base.interface';
 import { ITransSerie, TransSerie } from './serie';
 import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
 import { AutomobileEtat, IAutomobileEtat } from './automobile-etat';
+import { Affectataire, IAffectataire } from './affectataire';
+import { DossierConducteur, IDossierConducteur } from './dossier-conducteur';
 
 export interface IAutomobile extends IBase {
   type_acquisition: string;
@@ -40,6 +42,11 @@ export interface IAutomobile extends IBase {
   emission_co2: string;
   nombre_chevaux: number;
   image: string;
+  affectataires: IAffectataire[];
+  conducteur_id: number;
+  conducteur: IDossierConducteur;
+  emplacement_id: number;
+  emplacement: any;
 }
 
 export class Automobile implements IAutomobile {
@@ -109,4 +116,15 @@ export class Automobile implements IAutomobile {
 
     @hasOneMap({field:'trans_type_automobile', class: AutomobileType})
     type_automobile: IAutomobileType = null;
+
+    @hasManyMap({field:'trans_auto_affectataires', class: Affectataire})
+    affectataires: IAffectataire[] = [];
+
+    conducteur_id = 0;
+
+    @hasOneMap({field:'conducteur', class: DossierConducteur})
+    conducteur: IDossierConducteur = null;
+    
+    emplacement_id = 0;
+    emplacement: any = null;
 }

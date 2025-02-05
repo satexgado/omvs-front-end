@@ -15,5 +15,18 @@
         <i class="fa fa-plus-circle"></i>
       </button>
     </div>
+    <div class="input-group-append" *ngIf="small  && createComponent">
+      <button class="btn btn-outline-primary" popoverPlacement="top-right" [popoverOnHover]="false" [popover]="addPopover" type="button" id="button-addon3">
+        <i class="fa fa-plus-circle"></i>
+      </button>
+      
+    </div>
   </div>
 </div>
+
+<popover-content #addPopover title="Nouveau" [animation]="true" [closeOnClickOutside]="true"
+        placement="top">
+        <div style="width: max-content;">
+          <div #dynamicView></div>
+        </div>
+</popover-content>

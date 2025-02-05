@@ -1,5 +1,4 @@
-import { IDossierConducteur } from 'src/app/core/models/transport/dossier-conducteur';
-import { DossierConducteurFactory } from 'src/app/core/services/transport/dossier-conducteur';
+import { DossierConducteur, IDossierConducteur } from 'src/app/core/models/transport/dossier-conducteur';
 import { Injectable } from '@angular/core';
 
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
@@ -9,6 +8,7 @@ import { QueryOptions, Filter } from 'src/app/shared/models/query-options';
 import { first, map, switchMap } from 'rxjs/operators';
 import { CacheService } from 'src/app/shared/services';
 import { TransportUiService } from '../../../transport.service';
+import { DossierConducteurFactory } from 'src/app/core/services/transport/dossier-conducteur';
 
 @Injectable()
 export class DossierConducteurDetailsEditResolver implements Resolve<Observable<IDossierConducteur>> {
@@ -17,10 +17,10 @@ export class DossierConducteurDetailsEditResolver implements Resolve<Observable<
     protected transService: TransportUiService
   ) {}
 
-  resolve( route: ActivatedRouteSnapshot ) {
+  resolve( route: ActivatedRouteSnapshot ): Observable<IDossierConducteur> {
     return this.transService.conducteurData$.pipe(
       first(),
-      switchMap((data) => {
+      switchMap((data): Observable<IDossierConducteur> => {
         if (data && data.id == +route.paramMap.get("iddossier")) {
           return of(data);
         }

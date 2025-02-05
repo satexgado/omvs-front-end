@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CustomSelectIconComponent } from './custom-select-icon/custom-select-icon.component';
 import { SelectFormGroupComponent } from './customselect/select.formgroup.component';
+import { MapsPluginModule } from 'src/app/components/maps/maps-plugin.module';
+import { AddEmplacementComponent } from 'src/app/components/maps/add-emplacement/add-emplacement.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +17,8 @@ import { SelectFormGroupComponent } from './customselect/select.formgroup.compon
     ],
     imports: [
         CommonModule,
-        SharedModule
+        SharedModule,
+        MapsPluginModule
     ],
     exports: [
         CustomSelectIconComponent,
@@ -23,7 +26,8 @@ import { SelectFormGroupComponent } from './customselect/select.formgroup.compon
         CustomCheckBoxComponent,
         NgbDateTimePicker
     ],
-    providers: []
+    providers: [],
+    entryComponents: [AddEmplacementComponent]
 })
 export class CustomInputModule {
 }
