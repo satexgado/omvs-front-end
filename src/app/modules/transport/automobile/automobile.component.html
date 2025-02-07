@@ -202,16 +202,20 @@
                                     </ul>
                                 </td>
                                 <td class="align-middle">
-                                    <a>
-                                        <div class="avatar">
-                                            <img
-                                                container="body"
-                                                [ngbTooltip]="'name'"
-                                                class="avatar-initial border border-secondary rounded-circle"
-                                                [src]="'assets/images/users/male.png'"
-                                                alt="avatar">
-                                        </div>
-                                    </a>
+                                    <div class="d-flex justify-content-center">
+                                        <a *ngIf="automobile.conducteur?.conducteur" [routerLink]="['/transport/mes-chauffeurs', automobile.conducteur_id]">
+                                            <div class="avatar"
+                                                [title]="automobile.conducteur?.conducteur.nom+' '+automobile.conducteur?.conducteur.prenom">
+                                                <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Masculin'"
+                                                    src="assets/images/users/male.png"
+                                                    class="avatar-initial border border-secondary rounded-circle">
+                                                <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Feminin'"
+                                                    src="assets/images/users/female.png"
+                                                    class="avatar-initial border border-secondary rounded-circle"
+                                                    alt="">
+                                            </div>
+                                        </a>
+                                    </div>
                                 </td>   
                                 <td class="align-middle">
                                     <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
@@ -244,12 +248,40 @@
                         {{selectedAuto.libelle}} 
                     </h6>    
                 </span>
-                <div ngbDropdown container="body" class="d-inline-block">
-                    <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(selectedAuto.etat ? selectedAuto.etat.couleur : '')" [style.background-color]="selectedAuto.etat ? selectedAuto.etat.couleur : ''" ngbDropdownToggle> {{selectedAuto.etat ? selectedAuto.etat.libelle : selectedAuto.etat_achat}} </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(selectedAuto,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                <div class="float">
+                    <div>
+                        <ul class="nav float-right list-inline justify-content-end">
+                            <li class="nav-item">
+                                <button class="btn btn-link" container="body"
+                                    [ngbTooltip]="'Supprimer'"
+                                    (click)="onDelete(selectedAuto)">
+                                    <span>
+                                        <i class="fad card-1 fa-trash  tx-16 bg-danger text-white"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-link" container="body" ngbTooltip="Modifier"
+                                    (click)="onShowUpdateForm(selectedAuto)">
+                                    <span class="tx-echos">
+                                        <i class="fal card-1 fa-pencil bg-light tx-16 tx-yeto"
+                                            style="padding:6px; border-radius:50%"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item my-auto">
+                                <div ngbDropdown container="body" class="d-inline-block">
+                                    <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(selectedAuto.etat ? selectedAuto.etat.couleur : '')" [style.background-color]="selectedAuto.etat ? selectedAuto.etat.couleur : ''" ngbDropdownToggle> {{selectedAuto.etat ? selectedAuto.etat.libelle : selectedAuto.etat_achat}} </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                        <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(selectedAuto,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+                
             </div>
             <!-- Card Body -->
             <div class="card-body p-1 pb-3">
@@ -262,11 +294,11 @@
                                 <a class="nav-link3 mx-2 tx-echos"><i
                                         class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
                             </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'affectataire'"
-                                [class.bg-white]="fragment == 'affectataire'"
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'situation'"
+                                [class.bg-white]="fragment == 'situation'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-users tx-16  mr-2"></i>
-                                    Affectataires</a>
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-biking-mountain tx-16  mr-2"></i>
+                                    Situation</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
                                 [class.bg-white]="fragment == 'mission'"
@@ -345,7 +377,7 @@
                             <div *ngSwitchCase="'affectataire'">
                                 <div class="d-flex justify-content-center">
                                     <div class="col-xl-3 col-sm-6" *ngFor="let affectataire of selectedAuto.affectataires">
-                                        <div class="mycard4 card-profile-1 mb-3">
+                                        <div class="card card-profile-1 mb-3">
                                             <a class="card-body tx-center p-0">
                                                 <div class="mx-auto my-2 avatar-md" *ngIf="!affectataire.personnel.avatar">
                                                     <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
@@ -358,13 +390,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <h6 class="m-0 tx-primary">{{affectataire.personnel.nom }} {{affectataire.personnel.prenom}}
+                                                <h4 class="m-0 text-primary">
+                                                    {{affectataire.personnel.nom }} {{affectataire.personnel.prenom}}
+                                                </h4>
+                                                <h6 class="m-0 tx-info">
+                                                    {{affectataire.libelle}}
                                                 </h6>
-                                                <p class="text-muted mb-0"><i class="fas fa-phone tx-15 align-middle pe-2 text-primary"></i> {{affectataire.personnel.telephone}} </p>
-                                                <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{affectataire.personnel.email}} </p>
                                                 <div class="p-2 tx-echos tx-center bg-soft-primary">
                                                     <span class="badge badge-primary mx-1 card-2"> ({{affectataire.personnel?.departement?.name}}-{{affectataire.personnel?.poste?.name}})</span>
-
                                                 </div>
                                             </a>
                                         </div>
@@ -383,89 +416,276 @@
                             <div *ngSwitchCase="'calendrier'">
                                 <app-calendar-ui [eventParent]="{name: 'trans_auto', id: selectedAuto.id}"></app-calendar-ui>
                             </div>
+                            <div *ngSwitchCase="'situation'">
+                                <div class="row">
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="card">
+                                            <div class="card-header justify-content-center">
+                                                <h4 class="my-0">
+                                                   <span class="text-info">Emplacement:</span> {{selectedAuto.emplacement?.libelle}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div class="col-xl-12">
+                                        <div class="card">
+                                            <div class="card-header justify-content-center">
+                                                <h4 class="my-0">
+                                                    <span class="text-warning">Chauffeur</span>
+                                                </h4>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive">
+                                                            <table
+                                                                class="table display mb-0 dataTablesCard table-responsive-xxl card-table"
+                                                                id="example-5">
+                                                                <thead>
+                                                                    <tr class="border-top-primary">
+                                                                        <th class="text-center">
+                                                                            Image
+                                                                         </th>
+                                                                        <th>
+                                                                           Nom
+                                                                        </th>
+                                                                        <th>
+                                                                            Prenom
+                                                                        </th>
+                                                                        <th>
+                                                                            Departement
+                                                                        </th>
+                                                                        <th> Poste </th>
+                                                                        <th> Permis </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr [routerLink]="['/transport/mes-chauffeurs', selectedAuto.conducteur_id]">
+                                                                        <td>
+                                                                            <div class="d-flex justify-content-center">
+                                                                                <a *ngIf="selectedAuto.conducteur" [routerLink]="['/transport/mes-chauffeurs', selectedAuto.conducteur_id]">
+                                                                                    <div class="avatar"
+                                                                                        [title]="selectedAuto.conducteur?.conducteur?.nom+' '+selectedAuto.conducteur?.conducteur?.prenom">
+                                                                                        <img *ngIf="selectedAuto.conducteur?.conducteur?.sexe == 'Masculin'"
+                                                                                            src="assets/images/users/male.png"
+                                                                                            class="avatar-initial border border-secondary rounded-circle">
+                                                                                        <img *ngIf="selectedAuto.conducteur?.conducteur?.sexe == 'Feminin'"
+                                                                                            src="assets/images/users/female.png"
+                                                                                            class="avatar-initial border border-secondary rounded-circle"
+                                                                                            alt="">
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{selectedAuto.conducteur?.conducteur?.nom}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{selectedAuto.conducteur?.conducteur?.prenom}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{selectedAuto.conducteur?.conducteur?.departement?.name}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{selectedAuto.conducteur?.conducteur?.poste?.name}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{selectedAuto.conducteur?.numero_permis}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12">
+                                        <div class="card">
+                                            <div class="card-header justify-content-center">
+                                                <h4 class="my-0">
+                                                   <span class="text-success">Affectataires</span>
+                                                </h4>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive">
+                                                            <table
+                                                                class="table display mb-0 dataTablesCard table-responsive-xxl card-table"
+                                                                id="example-5">
+                                                                <thead>
+                                                                    <tr class="border-top-primary">
+                                                                        <th class="text-center">
+                                                                            Image
+                                                                         </th>
+                                                                        <th>
+                                                                           Nom
+                                                                        </th>
+                                                                        <th>
+                                                                            Prenom
+                                                                        </th>
+                                                                        <th>
+                                                                            Departement
+                                                                        </th>
+                                                                        <th> Poste </th>
+                                                                        <th> Permis </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let affectataire of selectedAuto.affectataires">
+                                                                        <td>
+                                                                            <div class="d-flex justify-content-center">
+                                                                                <a *ngIf="affectataire.personnel">
+                                                                                    <div class="avatar"
+                                                                                        [title]="affectataire.personnel.nom+' '+affectataire.personnel.prenom">
+                                                                                        <img *ngIf="affectataire.personnel.sexe == 'Masculin'"
+                                                                                            src="assets/images/users/male.png"
+                                                                                            class="avatar-initial border border-secondary rounded-circle">
+                                                                                        <img *ngIf="affectataire.personnel.sexe == 'Feminin'"
+                                                                                            src="assets/images/users/female.png"
+                                                                                            class="avatar-initial border border-secondary rounded-circle"
+                                                                                            alt="">
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{affectataire.personnel.nom}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{affectataire.personnel.prenom}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{affectataire.personnel.departement?.name}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{affectataire.personnel.poste?.name}}
+                                                                        </td>
+                                                                        <td>
+                                                                            {{affectataire.libelle}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </div>
                             <div *ngSwitchDefault>
                                 <section class="py-2 col-md-11  d-block mx-auto">
-                                    <img class="card-img mb-2" style="width: 100%;
+                                    <div class="row">
+                                        
+                                        <!-- Acquisition Group -->
+                                         <div class="col-md-6">
+                                            <div class="card mb-4">
+                                                <div class="card-header bg-primary text-white">
+                                                  Acquisition
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                  <li class="list-group-item">
+                                                    <strong>Acquisition:</strong> {{selectedAuto.type_acquisition | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Fournisseur:</strong> {{selectedAuto.coordonnee?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Montant:</strong> {{selectedAuto.montant}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Etat à l'acquisition:</strong> {{selectedAuto.etat_achat | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Date de l'acquisition:</strong> {{selectedAuto.date_achat | date:'dd/MM/yyyy'}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Kilometrage à l'acquisition:</strong> {{selectedAuto.kilometrage_durant_achat}}
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                         </div>
+                                        
+                                      
+                                        <!-- Identification du véhicule Group -->
+                                        <div class="col-md-6">
+                                            <div class="card mb-4">
+                                                <div class="card-header bg-success text-white">
+                                                  Identification du véhicule
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                  <li class="list-group-item">
+                                                    <strong>Immatriculation:</strong> {{selectedAuto.immatriculation | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Numero chassis:</strong> {{selectedAuto.numero_chassis}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Marque:</strong> {{selectedAuto.marque?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Modèle:</strong> {{selectedAuto.modele?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Genre:</strong> {{selectedAuto.genre?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Série:</strong> {{selectedAuto.serie?.libelle | titlecase}}
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                        </div>
+
+                                        <!-- Caractéristiques techniques Group -->
+                                        <div class="col-md-6">
+                                            <div class="card mb-4">
+                                                <div class="card-header bg-warning text-dark">
+                                                  Caractéristiques techniques
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                  <li class="list-group-item">
+                                                    <strong>Carburant:</strong> {{selectedAuto.type_carburant?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Type:</strong> {{selectedAuto.type_automobile?.libelle | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Nombre de places:</strong> {{selectedAuto.nombre_place}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Nombre de portes:</strong> {{selectedAuto.nombre_porte}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Transmission:</strong> {{selectedAuto.type_transmission | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Emission CO2:</strong> {{selectedAuto.emission_co2 | titlecase}}
+                                                  </li>
+                                                  <li class="list-group-item">
+                                                    <strong>Nombre de chevaux:</strong> {{selectedAuto.nombre_chevaux}}
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                        </div>
+
+                                        <!-- Image Group -->
+                                        <div class="col-md-6">
+                                            <img class="card-img mb-2" style="width: 100%;
                                     max-height: 20vw;
                                     object-fit: cover;" src="{{selectedAuto.image}}" [alt]="selectedAuto.libelle">
-                                    <ul class="row pl-0 mb-0">
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Acquisition: </span> {{selectedAuto.type_acquisition | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Montant: </span> {{selectedAuto.montant}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Etat à l'acquisition: </span> {{selectedAuto.etat_achat | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Date de l'acquisition: </span> {{selectedAuto.date_achat | date: 'dd/MM/yyyy'}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Kilometrage à l'acquisition: </span> {{selectedAuto.kilometrage_durant_achat}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Immatriculation: </span> {{selectedAuto.immatriculation | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Numero chassis: </span> {{selectedAuto.numero_chassis}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Serie: </span> {{selectedAuto.serie?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Marque: </span> {{selectedAuto.marque?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Modele: </span> {{selectedAuto.modele?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Genre: </span> {{selectedAuto.genre?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Carburant: </span> {{selectedAuto.type_carburant?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Type: </span> {{selectedAuto.type_automobile?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Nombre de places: </span> {{selectedAuto.nombre_place}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Nombre de portes: </span> {{selectedAuto.nombre_porte}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">fournisseur: </span> {{selectedAuto.coordonnee?.libelle | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Transmission: </span> {{selectedAuto.type_transmission | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Emission CO2: </span> {{selectedAuto.emission_co2 | titlecase}}
-                                            </p>
-                                        </li>
-                                        <li class="list-group-item p-0 border-0 col-md-6 col-12 font-weight-bold">
-                                            <p class="formSep m-0"><span class="text-muted">Nombre de chevaux: </span> {{selectedAuto.nombre_chevaux}}
-                                            </p>
-                                        </li>
-                                    </ul>
+                                        </div>
+                                        
+                                      </div>
                                 </section>
                             </div>
                         </div>

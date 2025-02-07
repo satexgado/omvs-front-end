@@ -139,7 +139,7 @@
                         <div *ngIf="shouldShowRequiredError('emplacement_id')" class="invalid-feedback">veillez choisir.</div>
                     </div>
                     <div class="col-10 mb-3 col-md-5">
-                        <app-select-formgroup [small]="true" label="Chauffeur" formControlName="conducteur_id" [selected]="editForm.get('conducteur_id').value" [dataSource]="allDossierConducteurs$" ></app-select-formgroup>
+                        <app-select-formgroup [small]="true" [required]="false" label="Chauffeur" formControlName="conducteur_id" [selected]="editForm.get('conducteur_id').value" [dataSource]="allDossierConducteurs$" ></app-select-formgroup>
                         <div *ngIf="shouldShowRequiredError('conducteur_id')" class="invalid-feedback">veillez choisir le chauffeur.</div>
                     </div>
                 </div>

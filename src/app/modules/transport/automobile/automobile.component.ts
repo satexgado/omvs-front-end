@@ -115,7 +115,11 @@ export class AutomobileComponent extends EditableListComponent {
       "trans_type_carburant",
       "trans_type_automobile",
       "trans_etat_automobile",
-      "trans_auto_affectataires.personne_inscription"
+      "conducteur.cpt_conducteur.departement",
+      "conducteur.cpt_conducteur.poste",
+      "emplacement.ville.pays",
+      "trans_auto_affectataires.personne_inscription.departement",
+      "trans_auto_affectataires.personne_inscription.poste"
     ];
   }
 
@@ -124,8 +128,6 @@ export class AutomobileComponent extends EditableListComponent {
       this.uiService.automobileData$.subscribe(
         (automobile)=> {
           this.selectedAuto = automobile;
-          console.log(automobile);
-
           if(automobile) {
             this.titleservice.setTitle(automobile.libelle? automobile.libelle: 'Parc Automobile');
             this.loadMission(automobile);
@@ -136,7 +138,7 @@ export class AutomobileComponent extends EditableListComponent {
       )
     )
 
-    const detailsView = 'details,panne,visite,calendrier,mission,assurance,affectataire';
+    const detailsView = 'situation,details,panne,visite,calendrier,mission,assurance,affectataire';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;

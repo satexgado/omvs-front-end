@@ -43,6 +43,9 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
     dataSource.subscribe(
       (data)=>{
         this.items = data;
+        if(!this.required) {
+          this.items.unshift({id: '', [this.libelleColumn]: '-- Aucun --'});
+        }
         this.loading = false;
         // console.log(this.selected);
       }
