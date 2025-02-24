@@ -33,8 +33,11 @@
                 </div>
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                     <div class="col-12 col-sm-10">
-                        <app-select-formgroup [small]="true" label="type de permis" formControlName="type_permis" [selected]="editForm.get('type_permis').value" [dataSource]="allTypePermis$" [createModal]="permiEditComponent"></app-select-formgroup>
-                        <div *ngIf="shouldShowRequiredError('type_permis')" class="invalid-feedback">veillez choisir le type de permis.</div>
+                       <label class="control-label" for="tag">Type permis</label>
+                        <div class="d-flex justify-content-start flex-wrap">
+                            <app-custom-checkbox [formControlName]="'type_permis'" [valColumn]="'id'" [dataSource]="allTypePermis$" [createModal]="permiEditComponent"></app-custom-checkbox>
+                        </div>
+                        <div *ngIf="shouldShowRequiredError('type_permis')" class="invalid-feedback">veillez remplir ce champ.</div>
                     </div>
                 </div>
 

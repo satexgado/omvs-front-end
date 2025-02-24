@@ -584,3 +584,46 @@ CREATE TABLE `emplacement` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- Table des types d'entretien
+CREATE TABLE `trans_type_entretien` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(191) NOT NULL, -- Exemples : 'vidange', 'kilométrage', 'amortisseur'
+  `condition_entretien` text, -- Exemple : '100 km' ou 'Poids élevé'
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- Table des relevés de kilométrage
+CREATE TABLE `trans_kilometrage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `automobile_id` int(11) NOT NULL,  -- Référence au véhicule concerné
+  `kilometrage` int(11) NOT NULL,
+  `date_donnee` date NOT NULL,      -- Date du relevé
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `automobile_id` (`automobile_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- Table des opérations d'entretien
+CREATE TABLE `trans_entretien` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `coordonnee_id` int(11) NOT NULL,  -- Référence au fournisseur (table fournisseur)
+  `automobile_id` int(11) NOT NULL,     -- Référence au véhicule (table vehicule)
+  `type_entretien_id` int(11) NOT NULL, -- Référence au type d'entretien (table type_entretien)
+  `date_debut` date NOT NULL,         -- Début de l'entretien
+  `date_fin` date DEFAULT NULL,       -- Fin de l'entretien (peut être NULL si non terminé)
+  `observation` text,                 -- Observations éventuelles
+  `statut` enum('Oui','Non','En cours') NOT NULL DEFAULT 'Non', -- Déclencher un entretien ?
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `coordonnee_id` (`coordonnee_id`),
+  KEY `automobile_id` (`automobile_id`),
+  KEY `type_entretien_id` (`type_entretien_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;

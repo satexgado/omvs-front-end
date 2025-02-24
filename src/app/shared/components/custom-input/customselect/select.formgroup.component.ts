@@ -39,6 +39,9 @@ export class SelectFormGroupComponent implements ControlValueAccessor, OnInit {
   @Input() required = true;
   @Input('dataSource')
   set dataSource$(dataSource: Observable<[]>) {
+    if(!dataSource) {
+      return;
+    }
     this.loading = true;
     dataSource.subscribe(
       (data)=>{

@@ -26,6 +26,14 @@
                         <p class="formSep m-0"><span class="text-muted">Sexe: </span> {{dossierconducteur.conducteur.sexe | titlecase}}
                         </p>
                     </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Departement: </span> {{dossierconducteur.conducteur.departement?.name | titlecase}}
+                        </p>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <p class="formSep m-0"><span class="text-muted">Poste: </span> {{dossierconducteur.conducteur.poste?.name | titlecase}}
+                        </p>
+                    </li>
                 </ul>
             </div>
         </div>

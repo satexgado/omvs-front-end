@@ -36,7 +36,7 @@
                                 <select class="custom-select" (change)="resetFormValue()" formControlName="type">
                                     <option value="affectataire_id">Affectataire</option>
                                     <option value="type_carburant">Carburant</option>
-                                    <option value="chauffeur_id">Chauffeur</option>
+                                    <option value="conducteur_id">Chauffeur</option>
                                     <option value="disponibilite">Disponibilite</option>
                                     <option value="etat_id">Etat</option>
                                     <option value="coordonnee_id">Fournisseur</option>
@@ -122,6 +122,15 @@
                                             </ng-container>
                                         </select>
                                     </div>
+                                    <div [class.loading]="!(allDossierConducteurs$ | async)"
+                                        *ngSwitchCase="'conducteur_id'">
+                                        <select class="custom-select" formControlName="value">
+                                            <option [value]="null">--Veuillez choisir--</option>
+                                            <ng-container *ngFor="let item of (allDossierConducteurs$ | async)">
+                                                <option [ngValue]="item">{{item.conducteur?.nom }} {{item.conducteur?.prenom}} ({{item?.conducteur?.departement?.name}}-{{item?.conducteur?.poste?.name}})</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
                                     <div [class.loading]="!(allInscriptions$ | async)" *ngSwitchDefault>
                                         <select class="custom-select" formControlName="value">
                                             <option [value]="null">--Veuillez choisir--</option>
@@ -138,99 +147,102 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async" *ngIf="view == 'list'; else cardView">
+            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async" >
                 <div class="p-3" *ngIf="filtres && filtres.length">
                     <button class="btn btn-sm btn-outline-primary mx-1" *ngFor="let filtre of filtres; let i = index"
                         (click)="onRemoveFilter(i)">
                         {{filtre.name | titlecase}} <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="table-responsive" *ngIf="dataHelper.data$ | async as items" >
-                    <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
-                        <thead class="tx-10 tx-uppercase">
-                            <tr>
-                                <th scope="col">Vehicule</th>
-                                <th scope="col">Immatriculation</th>
-                                <th scope="col">Etat</th>
-                                <th scope="col">Disponibilite</th>
-                                <th scope="col" class="text-center">Affectataire(s)</th>
-                                <th scope="col" class="text-center">Chauffeur</th>    
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
-                                <td class="align-middle">
-                                    <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
-                                </td>
-                                <td class="align-middle">
-                                    {{automobile.immatriculation}}
-                                </td>
-                                <td class="align-middle">
-                                    <div ngbDropdown container="body" class="d-inline-block">
-                                        <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
-                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                            <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(automobile,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                <ng-container *ngIf="view == 'list'; else cardView">
+                    <div class="table-responsive" *ngIf="dataHelper.data$ | async as items" >
+                        <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
+                            <thead class="tx-10 tx-uppercase">
+                                <tr>
+                                    <th scope="col">Vehicule</th>
+                                    <th scope="col">Immatriculation</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Disponibilite</th>
+                                    <th scope="col" class="text-center">Affectataire(s)</th>
+                                    <th scope="col" class="text-center">Chauffeur</th>    
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
+                                    <td class="align-middle">
+                                        <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{automobile.immatriculation}}
+                                    </td>
+                                    <td class="align-middle">
+                                        <div ngbDropdown container="body" class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-outline-default" [style.color]="getTextColor(automobile.etat ? automobile.etat.couleur : '')" [style.background-color]="automobile.etat ? automobile.etat.couleur : ''" ngbDropdownToggle> {{automobile.etat ? automobile.etat.libelle : automobile.etat_achat}} </button>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                <button *ngFor="let etat of (allEtatAutomobiles$|async);" (click)="onUpdateEtat(automobile,etat)" ngbDropdownItem> <i class="fal fa-dot-circle" [style.color]="etat.couleur"></i>  {{etat.libelle}}</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="text-success align-middle">
-                                    Disponible
-                                </td>
-                                <td class="align-middle">
-                                    <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
-                                        <li *ngFor="let equipe of automobile.affectataires | slice:0:4" class="mg-l--10"
-                                            data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
-                                            data-html="true" title="" data-original-title="Alison G">
-                                            <div class="avatar"
-                                                [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
-                                                <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
-                                                    src="assets/images/users/male.png"
-                                                    class="avatar-initial border border-secondary rounded-circle">
-                                                <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
-                                                    src="assets/images/users/female.png"
-                                                    class="avatar-initial border border-secondary rounded-circle"
-                                                    alt="">
-                                            </div>
-                                        </li>
-                                        <li *ngIf="automobile.affectataires?.length > 4" class="mg-l--10" data-original-title=""
-                                            title="">
-                                            <div class="avatar"><span
-                                                    class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{automobile.affectataires.length - 4}}+</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td class="align-middle">
-                                    <div class="d-flex justify-content-center">
-                                        <a *ngIf="automobile.conducteur?.conducteur" [routerLink]="['/transport/mes-chauffeurs', automobile.conducteur_id]">
-                                            <div class="avatar"
-                                                [title]="automobile.conducteur?.conducteur.nom+' '+automobile.conducteur?.conducteur.prenom">
-                                                <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Masculin'"
-                                                    src="assets/images/users/male.png"
-                                                    class="avatar-initial border border-secondary rounded-circle">
-                                                <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Feminin'"
-                                                    src="assets/images/users/female.png"
-                                                    class="avatar-initial border border-secondary rounded-circle"
-                                                    alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                </td>   
-                                <td class="align-middle">
-                                    <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
-                                    <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
-
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
-                    </section>
-                </div>
+                                    </td>
+                                    <td class="text-success align-middle">
+                                        Disponible
+                                    </td>
+                                    <td class="align-middle">
+                                        <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center">
+                                            <li *ngFor="let equipe of automobile.affectataires | slice:0:4" class="mg-l--10"
+                                                data-toggle="tooltip" data-placement="top" data-skin-class="tooltip-base"
+                                                data-html="true" title="" data-original-title="Alison G">
+                                                <div class="avatar"
+                                                    [title]="equipe?.personnel?.nom+' '+equipe?.personnel?.prenom">
+                                                    <img *ngIf="equipe?.personnel?.sexe == 'Masculin'"
+                                                        src="assets/images/users/male.png"
+                                                        class="avatar-initial border border-secondary rounded-circle">
+                                                    <img *ngIf="equipe?.personnel?.sexe == 'Feminin'"
+                                                        src="assets/images/users/female.png"
+                                                        class="avatar-initial border border-secondary rounded-circle"
+                                                        alt="">
+                                                </div>
+                                            </li>
+                                            <li *ngIf="automobile.affectataires?.length > 4" class="mg-l--10" data-original-title=""
+                                                title="">
+                                                <div class="avatar"><span
+                                                        class="bg-soft-primary avatar-initial rounded-circle bg-primary">{{automobile.affectataires.length - 4}}+</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="d-flex justify-content-center">
+                                            <a *ngIf="automobile.conducteur?.conducteur" [routerLink]="['/transport/mes-chauffeurs', automobile.conducteur_id]">
+                                                <div class="avatar"
+                                                    [title]="automobile.conducteur?.conducteur.nom+' '+automobile.conducteur?.conducteur.prenom">
+                                                    <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Masculin'"
+                                                        src="assets/images/users/male.png"
+                                                        class="avatar-initial border border-secondary rounded-circle">
+                                                    <img *ngIf="automobile.conducteur?.conducteur.sexe == 'Feminin'"
+                                                        src="assets/images/users/female.png"
+                                                        class="avatar-initial border border-secondary rounded-circle"
+                                                        alt="">
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </td>   
+                                    <td class="align-middle">
+                                        <a class="table-action cursor-pointer  mr-2" (click)="onSelectAuto(automobile)"><i class="fal fa-search tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(automobile) "><i class="fal fa-edit tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(automobile) "><i class="fal fa-clone tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(automobile) "><i class="fal fa-times-square tx-second "></i></a>
+    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                        <section *ngIf="dataHelper.hasMoreData " [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2 " [infiniteScrollThrottle]="50 " (scrolled)="dataHelper.loadData() ">
+                        </section>
+                    </div>
+                </ng-container>
+                
             </div>
         </div>
     </div>
@@ -299,6 +311,18 @@
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
                                 <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-biking-mountain tx-16  mr-2"></i>
                                     Situation</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'kilometrage'"
+                                [class.bg-white]="fragment == 'kilometrage'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
+                                    Kilometrage</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'entretien'"
+                                [class.bg-white]="fragment == 'entretien'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
+                                    Entretien</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
                                 [class.bg-white]="fragment == 'mission'"
@@ -403,6 +427,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div *ngSwitchCase="'kilometrage'">
+                                <app-kilometrage [automobileId]="selectedAuto.id"></app-kilometrage>
+                            </div>
+                            <div *ngSwitchCase="'entretien'">
+                                <app-entretien [automobileId]="selectedAuto.id"></app-entretien>
                             </div>
                             <div *ngSwitchCase="'panne'">
                                 <app-panne-automobile [automobileId]="selectedAuto.id"></app-panne-automobile>

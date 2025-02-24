@@ -1,0 +1,79 @@
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title | capitalizeFirst}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div *ngIf="!(automobileId||isUpdating)" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="automobile_id">Vehicule</label>
+                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="automobile_id" [formControlName]="'automobile_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'automobile_id'), 'is-valid': isValid('automobile_id')}"
+                        required>
+                    <option value="">--choississez le vehicule --</option>
+                    <ng-container *ngFor="let item of (allAutomobiles$ | async)">
+                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                    </ng-container>
+                </select>
+                    <div *ngIf="shouldShowRequiredError('automobile_id')" class="invalid-feedback">veillez choisir le vehicule.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <app-select-formgroup [small]="true" label="fournisseur" formControlName="coordonnee_id" [selected]="editForm.get('coordonnee_id').value" [dataSource]="allCoordonnees$" [createModal]="coordonneeEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('coordonnee_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
+                <div class="col-10">
+                    <app-select-formgroup [small]="true" label="type entretien" formControlName="type_entretien_id" [selected]="editForm.get('type_entretien_id').value" [dataSource]="allEntretienTypes$" [createModal]="entretienTypeEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('type_entretien_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label">Statut</label>
+                    <select class="form-control form-control-sm" name="statut" [formControlName]="'statut'">
+                        <ng-container *ngFor="let item of frequenceSelect">
+                            <option [ngValue]="item.id">{{item.libelle}}</option>
+                        </ng-container>
+                      </select>
+                    <div *ngIf="shouldShowRequiredError('statut')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>    
+            <div class="formSep form-group d-flex flex-wrap justify-content-center pb-0 pt-3" *ngIf="this.editForm.get('statut').value == 'Oui' || this.editForm.get('statut').value == 'En cours'">
+                <div class="col-10 col-sm-5 mb-3">
+                    <input class="form-control form-control-sm" name="date_debut" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_debut'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_debut'), 'is-valid': isValid('date_debut')}"
+                        >
+                    <span class="custom-span">Date debut </span>
+                    <div *ngIf="shouldShowRequiredError('date_debut')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+                <div class="col-10 col-sm-5 mb-3" *ngIf="this.editForm.get('statut').value != 'En cours'">
+                    <input class="form-control form-control-sm" name="date_fin" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_fin'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_fin'), 'is-valid': isValid('date_fin')}"
+                        >
+                    <span class="custom-span">Date fin</span>
+                    <div *ngIf="shouldShowRequiredError('date_fin')" class="invalid-feedback">veillez remplir ce champ.</div>
+                </div>
+                <div class="col-10">
+                    <small class="text-danger" *ngIf="editForm.hasError('dateSuperieur')">La période de fin doit être àpres le debut</small>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10">
+                    <label class="control-label" for="libelle">Observation</label>
+                    <textarea name="libelle" required maxlength="5000" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}"></textarea>
+                    <small>{{editForm.get('libelle').value?.length}}/5000</small>
+                    <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir l'observation.</div>
+                </div>
+            </div>        
+        </form>
+    </div>
+</ng-container>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+    <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">Réinitialiser</button>
+</div>

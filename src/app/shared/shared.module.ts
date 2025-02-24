@@ -33,6 +33,7 @@ import {
   ConvertToArrayPipe,
   BaseColumnFilterPipe
 } from './pipes';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import {
     // CKEditorModule,
     TreeviewModule,
     InfiniteScrollModule,
-    
+    AngularMultiSelectModule,
     SharedOppo
   ],
   exports: [
@@ -80,6 +81,7 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularMultiSelectModule,
     SharedOppo,
     Select2Directive,
     Select2DefaultDirective,

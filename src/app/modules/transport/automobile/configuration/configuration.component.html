@@ -16,6 +16,11 @@
                     <i class="fal fa-palette  tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Couleurs</span>
                 </div>
             </a>
+            <a [class.active]="fragment == 'etat'" routerLink="." [fragment]="'etat'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-wave-square tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Etats</span>
+                </div>
+            </a>
             <a [class.active]="fragment == 'genre'" routerLink="." [fragment]="'genre'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
                 <div class="nav-link3 text-center">
                     <i class="fal fa-palette tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Genres</span>
@@ -41,9 +46,9 @@
                     <i class="fal fa-cars tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Series</span>
                 </div>
             </a>
-            <a [class.active]="fragment == 'etat'" routerLink="." [fragment]="'etat'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+            <a [class.active]="fragment == 'entretien'" routerLink="." [fragment]="'entretien'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
                 <div class="nav-link3 text-center">
-                    <i class="fal fa-wave-square tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Etats</span>
+                    <i class="fal fa-palette tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Type Entretien</span>
                 </div>
             </a>
             <!-- <a [class.active]="fragment == 'masque-itineraire'" routerLink="." [fragment]="'masque-itineraire'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
@@ -78,6 +83,9 @@
             </div>
             <div *ngSwitchCase="'etat'">
                 <app-etat></app-etat>
+            </div>
+            <div *ngSwitchCase="'entretien'">
+                <app-entretien-type></app-entretien-type>
             </div>
             <!-- <div *ngSwitchCase="'masque-itineraire'">
                 <app-masque-itineraire></app-masque-itineraire>

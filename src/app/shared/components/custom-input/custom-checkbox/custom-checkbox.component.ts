@@ -3,6 +3,7 @@ import { IBase } from 'src/app/core/models/base.interface';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class CustomCheckBoxComponent implements ControlValueAccessor {
   @Input() selected: string | null = null;
   checkboxItems: checkBoxRow<string>[] = [];
   @Input('createModal') createModal;
+  @Input() valColumn = 'libelle';
   @Input() createCallback: Function;
   @Input() createAdditionalParam: {name: string, value: any}[];
   @Output() itemCreated = new EventEmitter<any>();
@@ -34,11 +36,25 @@ export class CustomCheckBoxComponent implements ControlValueAccessor {
       this.checkboxItems.push({
         checked: false,
         libelle: element.libelle,
-        value: element.libelle
+        value: element[this.valColumn]
       });
     });
     this.onSetCheckBoxChecked();
   }
+  loading = false;
+  @Input('dataSource')
+    set dataSource$(dataSource: Observable<[]>) {
+      if(!dataSource) {
+        return;
+      }
+      this.loading = true;
+      dataSource.subscribe(
+        (data)=>{
+          this.items = data;
+          this.loading = false;
+        }
+      )
+    };
 
   constructor(protected modalSelect: NgbModal) {
   }

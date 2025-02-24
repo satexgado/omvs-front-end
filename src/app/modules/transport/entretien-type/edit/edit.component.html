@@ -1,7 +1,7 @@
 <div class="modal-header bg-light ">
     <h5 class="modal-title title">{{title}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
-<span aria-hidden="true">×</span>
+  <span aria-hidden="true">×</span>
 </button>
 </div>
 <ng-container *ngIf="editForm">
@@ -10,16 +10,16 @@
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
-                    <span class="custom-span">Type de permis</span>
+                    <span class="custom-span">Type Entretien</span>
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-12 col-sm-10">
-                    <textarea name="description" maxlength="3000" class="form-control" cols="30" rows="5" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'description'), 'is-valid': isValid('description')}"></textarea>
-                    <span class="custom-span">Description</span>
-                    <small>{{editForm.get('description').value?.length}}/3000</small>
-                    <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
+                <div class="col-10">
+                    <textarea name="condition_entretien" required maxlength="500" class="form-control" cols="30" rows="5" [formControlName]="'condition_entretien'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'condition_entretien'), 'is-valid': isValid('condition_entretien')}"></textarea>
+                    <span class="custom-span">Condition d'Entretien</span>
+                    <small>{{editForm.get('condition_entretien').value?.length}}/500</small>
+                    <div *ngIf="shouldShowRequiredError('condition_entretien')" class="invalid-feedback">veillez saisir les conditions d'entretiens.</div>
                 </div>
             </div>
         </form>

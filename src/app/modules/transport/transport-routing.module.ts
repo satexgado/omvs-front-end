@@ -23,6 +23,7 @@ import { AssuranceComponent } from './assurance/assurance.component';
 import { CalendrierTransportComponent } from './calendrier/calendrier.component';
 import { VisiteTechniqueComponent } from './visite-technique/visite-technique.component';
 import { CarteRapidoComponent } from './carte-rapido/carte-rapido.component';
+import { EntretienComponent } from './entretien/entretien.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -115,6 +116,20 @@ const butsRoutes: Routes = [
           //   resolve: { automobile: AutomobileDetailsEditResolver}
           // }
         ]},
+        { path: 'entretien',
+          data: {
+            breadcrumb: 'Mes entretiens'
+          },
+          children: [
+            {path: '', component: TemplateComponent,children: [
+              {path: '', component: EntretienComponent, data: {
+                icon: 'fa-car-mechanic', title:'Entretien'
+              }}
+            ]},
+            // {path: ':idauto', component: AutomobileDetailsEditComponent,
+            //   resolve: { automobile: AutomobileDetailsEditResolver}
+            // }
+          ]},
   { path: 'mes-chauffeurs',
   data: {
     breadcrumb: 'Mes chauffeurs'

@@ -11,16 +11,41 @@ import { Subscription } from 'rxjs';
 import { IDossierConducteur } from 'src/app/core/models/transport/dossier-conducteur';
 import { TransportUiService } from '../transport.service';
 import { ActivatedRoute, Event, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'app-dossier-conducteur',
   templateUrl: './dossier-conducteur.component.html',
-  styleUrls:['./dossier-conducteur.component.css']
+  styleUrls:['./dossier-conducteur.component.css'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ transform: 'translateX(0)' })),
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)' }),
+        animate(100)
+      ]),
+      transition('* => void', [
+        animate(100, style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
 export class DossierConducteurComponent extends EditableListComponent {
   subscription: Subscription = new Subscription();
   selectedDossier: IDossierConducteur;
+  modalData: IDossierConducteur;
   editModal = EditComponent;
+  view: 'card' | 'list' =  localStorage.getItem("userViewType") ? <'card' | 'list'>localStorage.getItem("userViewType"):  'card';
+  onChangeView(view : 'card' | 'list') {
+    this.view = view;
+    localStorage.setItem('userViewType',view);
+  }
 
   constructor(
     protected titleservice: AppTitleService,
@@ -34,7 +59,7 @@ export class DossierConducteurComponent extends EditableListComponent {
         {or: false, filters:[new Filter('isIns', true, 'eq')]},
         {or: true, filters:[new Filter('searchString', '', 'ct')]},
       ],
-      ['type_permis','cpt_conducteur','visi_pays']))
+      ['type_permis','cpt_conducteur.departement','cpt_conducteur.poste','visi_pays']))
     );
     titleservice.setTitle('mes dossier-conducteurs');
     this.modalService = modalService;
@@ -94,4 +119,8 @@ export class DossierConducteurComponent extends EditableListComponent {
       this.subscription.unsubscribe();
   }
 
+  openModal(content, data: IDossierConducteur) {
+    this.modalData = data;
+    this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
+  }
 }

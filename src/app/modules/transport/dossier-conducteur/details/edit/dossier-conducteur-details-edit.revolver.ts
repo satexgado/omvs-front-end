@@ -33,7 +33,7 @@ export class DossierConducteurDetailsEditResolver implements Resolve<Observable<
                 new Filter('id_dossieur_conducteur', +route.paramMap.get('iddossier'), 'eq')
             ]},
           ],
-          ['type_permis','cpt_conducteur','visi_pays']
+          ['type_permis','cpt_conducteur.departement','cpt_conducteur.poste','visi_pays']
         )
           
         return service.list(query).pipe(

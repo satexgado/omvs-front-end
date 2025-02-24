@@ -5,10 +5,10 @@ export class DateValidators {
     return (c: AbstractControl): { [key: string]: boolean } | null => {
           let date1 = c.get(dateField1).value;
           let date2 = c.get(dateField2).value;
-          if(!(date1 instanceof Date)) {
+          if(date1 !== null&&!(date1 instanceof Date)) {
             date1 = new Date(date1);
           }
-          if(!(date2 instanceof Date)) {
+          if(date2 !== null&&!(date2 instanceof Date)) {
             date2 = new Date(date2);
           }
           if ((date1 !== null && date2 !== null) && date1 > date2) {

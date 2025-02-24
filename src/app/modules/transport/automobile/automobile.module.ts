@@ -26,6 +26,9 @@ import { VisiteTechniqueModule } from '../visite-technique/visite-technique.modu
 import { AssuranceModule } from '../assurance/assurance.module';
 import { MapsPluginModule } from 'src/app/components/maps/maps-plugin.module';
 import { DossierConducteurModule } from '../dossier-conducteur/dossier-conducteur.module';
+import { EntretienModule } from '../entretien/entretien.module';
+import { EntretienTypeModule } from '../entretien-type/entretien-type.module';
+import { KilometrageModule } from '../kilometrage/kilometrage.module';
 
 @NgModule({
     declarations: [
@@ -57,7 +60,10 @@ import { DossierConducteurModule } from '../dossier-conducteur/dossier-conducteu
         VisiteTechniqueModule,
         AssuranceModule,
         DossierConducteurModule,
-        MapsPluginModule
+        MapsPluginModule,
+        EntretienModule,
+        EntretienTypeModule,
+        KilometrageModule
     ],
     exports: [
         AutomobileComponent,

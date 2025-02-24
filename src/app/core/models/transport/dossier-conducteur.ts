@@ -9,7 +9,7 @@ export interface IDossierConducteur extends IBase {
   conducteur_id: number;
   conducteur: any;
   date_obtention: Date;
-  type_permis?: PermiType[];
+  type_permis: PermiType[];
   lieu_obtention_permis: Pays;
   lieu_obtention_permis_id: number;
   numero_permis: string;

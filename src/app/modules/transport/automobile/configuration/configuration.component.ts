@@ -18,7 +18,7 @@ export class ConfigurationTransportComponent implements OnInit {
     }
     
     ngOnInit(): void {
-        const detailsView = 'type,carburant,couleur,genre,marque,modele,serie,lieu,etat';
+        const detailsView = 'type,carburant,couleur,genre,marque,modele,serie,lieu,etat,entretien';
         this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;
         if(!detailsView.includes(fragment)) {

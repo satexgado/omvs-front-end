@@ -83,6 +83,7 @@ export class EditComponent extends BaseEditComponent implements OnInit, OnDestro
 
   ngOnInit() {
     super.ngOnInit();
+    this.onRunThemPocket();
     this.onControlValueChange();
   }
 
@@ -91,21 +92,10 @@ export class EditComponent extends BaseEditComponent implements OnInit, OnDestro
     this.proprietaire = item.conducteur_id;
     console.log(item);
     let type_permis = item.type_permis ? item.type_permis.map((element => element.id)) : [];
-    this.typePermisPreselectedData = this.allTypePermis$.pipe(
-      map((data: any) => {
-        data = data.map((element) => {
-          const result = {id : element.id ,  text: element.libelle, selected: false};
-          if (type_permis.includes(element.id)) {
-            result.selected = true;
-          }
-          return result;
-        });
-        return data;
-      })
-    );
+    
     return this.formBuilder.group({
       conducteur_id: [item.conducteur_id, Validators.required],
-      type_permis: [null, Validators.required],
+      type_permis: [type_permis.join(','), Validators.required],
       date_obtention: [item.date_obtention, Validators.required],
       lieu_obtention_permis_id: [item.lieu_obtention_permis_id, Validators.required],
       numero_permis: [item.numero_permis, Validators.required],
@@ -243,6 +233,91 @@ export class EditComponent extends BaseEditComponent implements OnInit, OnDestro
     this.subscription.add(sub6);
     this.cdRef.detectChanges();
 
+  }
+
+  onRunThemPocket() {
+    // fumeur
+    const control_arreter_fumer = this.editForm.get('depuis_quand_avez_vous_arrete_fumer');
+    if (this.editForm.get('etes_vous_fumeur').value === 'j\'ai arreté') {
+      control_arreter_fumer.setValidators([Validators.required]);
+    } else {
+      control_arreter_fumer.setValue(null);
+      control_arreter_fumer.setValidators(null);
+    }
+    control_arreter_fumer.updateValueAndValidity();
+
+      // alcool
+    const control_arreter_alcool = this.editForm.get('depuis_quand_avez_vous_arrete_alcool');
+    if (this.editForm.get('prenez_vous_lalcool').value === 'j\'ai arreté') {
+      control_arreter_alcool.setValidators([Validators.required]);
+    } else {
+      control_arreter_alcool.setValue(null);
+      control_arreter_alcool.setValidators(null);
+    }
+    control_arreter_alcool.updateValueAndValidity();
+
+      // audition
+    const control_difficulte = this.editForm.get('quel_difficulte');
+    const control_oreille = this.editForm.get('combien_doreille');
+
+    if (this.editForm.get('avez_vous_difficulter_entendre').value === 'Oui') {
+      control_difficulte.setValidators([Validators.required]);
+      control_oreille.setValidators([Validators.required]);
+
+    } else {
+      control_difficulte.setValue(null);
+      control_difficulte.setValidators(null);
+
+      control_oreille.setValue(null);
+      control_oreille.setValidators(null);
+    }
+    control_difficulte.updateValueAndValidity();
+    control_oreille.updateValueAndValidity();
+
+      // vue
+    const control_correcteur = this.editForm.get('utilisez_vous_des_correcteurs');
+    const control_specialiste = this.editForm.get('avez_vous_consulte_un_specialiste');
+    const control_laquel = this.editForm.get('laquel');
+
+    if (this.editForm.get('avez_vous_des_difficultes_voir').value === 'Oui') {
+      control_correcteur.setValidators([Validators.required]);
+      control_specialiste.setValidators([Validators.required]);
+      control_laquel.setValidators([Validators.required]);
+
+    } else {
+      control_correcteur.setValue(null);
+      control_correcteur.setValidators(null);
+
+      control_specialiste.setValue(null);
+      control_specialiste.setValidators(null);
+
+      control_laquel.setValue(null);
+      control_laquel.setValidators(null);
+    }
+    control_correcteur.updateValueAndValidity();
+    control_specialiste.updateValueAndValidity();
+    control_laquel.updateValueAndValidity();
+
+
+      // consultation
+    const control_consultation = this.editForm.get('a_quand_remonte_votre_consultation');
+    if (this.editForm.get('avez_vous_consulte_un_specialiste').value === 'Oui') {
+      control_consultation.setValidators([Validators.required]);
+    } else {
+      control_consultation.setValue(null);
+      control_consultation.setValidators(null);
+    }
+    control_consultation.updateValueAndValidity();
+
+      // Autre
+    const control_reference = this.editForm.get('reference');
+    if (this.editForm.get('avez_vous_exercez_autre_part').value === 'Oui') {
+      control_reference.setValidators([Validators.required]);
+    } else {
+      control_reference.setValue(null);
+      control_reference.setValidators(null);
+    }
+    control_reference.updateValueAndValidity();
   }
 
   ngOnDestroy() {

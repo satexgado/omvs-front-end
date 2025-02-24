@@ -7,20 +7,20 @@
             <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
                 <thead class="tx-10 tx-uppercase">
                     <tr>
-                        <th scope="col">Type d'entretien</th>
+                        <th scope="col">Marque</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let typeEntretien of items;trackBy: dataHelper.trackByFn">
-                        <td (click)="openModal(content, typeEntretien)">
-                            {{typeEntretien.libelle}}
+                    <tr *ngFor="let marque of items;trackBy: dataHelper.trackByFn">
+                        <td (click)="openModal(content, marque)">
+                            {{marque.libelle}}
                         </td>
                         <td>
-                            <!-- <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, typeEntretien)"><i class="fal fa-search tx-second "></i></a> -->
-                            <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(typeEntretien) "><i class="fal fa-edit tx-second "></i></a>
-                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(typeEntretien) "><i class="fal fa-clone tx-second "></i></a>
-                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(typeEntretien) "><i class="fal fa-times-square tx-second "></i></a>
+                            <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, marque)"><i class="fal fa-search tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(marque) "><i class="fal fa-edit tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(marque) "><i class="fal fa-clone tx-second "></i></a>
+                            <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(marque) "><i class="fal fa-times-square tx-second "></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -43,8 +43,8 @@
         <h5 class="modal-title ">
             {{modalData.libelle}}</h5>
         <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
-          <span aria-hidden="true ">&times;</span>
-          </button>
+            <span aria-hidden="true ">&times;</span>
+            </button>
     </div>
     <div class="modal-body">
         <h5>Description</h5>

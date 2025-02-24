@@ -1,43 +1,73 @@
 <div class="grid-container">
     <div class="sidebarlist" [class.sidebar_small]="selectedDossier">        
         <div class="card card-2 card-accent-primary">
-            <div class="d-flex p-2  border-bottom">
+            <div class="d-flex align-items-center p-2  border-bottom">
                 <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+                <button class="btn btn-link" (click)="onChangeView('card')">
+                    <span class="tx-primary">
+                        <i
+                        class="fad fa-th card-1 tx-16"
+                        [ngClass]="
+                            view == 'card' ? 'bg-primary text-white' : 'text-primary bg-white'
+                        "
+                        style="padding: 6px; border-radius: 50%"
+                        ></i>
+                    </span>
+                    </button>
+                    <button class="btn btn-link" (click)="onChangeView('list')">
+                    <span class="tx-primary">
+                        <i
+                        class="fad fa-list card-1 tx-16"
+                        [ngClass]="
+                            view == 'list' ? 'bg-primary text-white' : 'text-primary bg-white'
+                        "
+                        style="padding: 6px; border-radius: 50%"
+                        ></i>
+                    </span>
+                </button>
             </div>
-            <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
-                <div *ngIf="dataHelper.data$ | async as items">
-                    <ng-container *ngIf="items.length; else noItem">
-                        <div class="row card-group p-2">
-                            <div class="mb-2 col-12 col-sm-8 col-md-6 col-lg-4" *ngFor="let dossier of items;trackBy:  dataHelper.trackByFn">
-                                <div class="card card-1 mg-15">
-                                    <img *ngIf="dossier.conducteur?.sexe == 'Masculin' || dossier.conducteur?.sexe == 'Masculin'" src="assets/images/users/male.png"
-                                    class="card-img" style="max-height: 200px;" alt="avatar">
-                                    <img *ngIf="dossier.conducteur?.sexe == 'Feminin' || dossier.conducteur?.sexe == 'Feminin'" src="assets/images/users/female.png"
-                                    class="card-img" style="max-height: 200px;" alt="avatar">
-                                    <div class="card-body">
-
-                                        <h3 class="card-title mb-0">{{dossier.conducteur.libelle | titlecase}}
-                                        </h3>
-                                        <p class="text-center mb-0">
-                                            <button class="btn  p-0 mx-2" (click)="onSelectDossier(dossier)" [ngbTooltip]="'Details'" tooltipClass="my-tooltip-class">
-                                                <i class="fal fa-search" size="lg" style="color: #99600b "></i>
-                                            </button>
-                                            <button class="btn p-0 mx-2" (click)="onShowUpdateForm(dossier)" [ngbTooltip]="'Modifier'" tooltipClass="my-tooltip-class">
-                                                <i class="fal fa-edit" size="lg" style="color: #99600b "></i>
-                                            </button>
-                                            <button class="btn p-0 mx-2" (click)="onShowCreateForm(dossier)" [ngbTooltip]="'Créer comme'" tooltipClass="my-tooltip-class">
-                                                <i class="fal fa-copy" size="lg" style="color: #99600b "></i>
-                                            </button>
-                                            <button class="btn p-0 mx-2" (click)="onDelete(dossier)" [ngbTooltip]="'Supprimer'" tooltipClass="my-tooltip-class">
-                                                <i class="fal fa-times-square" size="lg" style="color: #99600b "></i>
-                                            </button>
-                                        </p>
+            <div class="card-body" *ngIf="view == 'card'; else listView ">
+                <div [scrollWindow]="false" infiniteScroll  (scrolled)="dataHelper.checkData()" class="d-flex scrollable-y-75 justify-content-center flex-wrap  mg-l-0 mg-r-0">
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loading)">
+                            <div class="col-xl-3 col-sm-6" [@flyInOut]="'in'" *ngFor="let dossier of items;trackBy: dataHelper.trackByFn">
+                                <div class="card card-profile-1 mb-3">
+                                    <a (click)="onSelectDossier(dossier)" class="card-body tx-center p-0">
+                                        <div class="mx-auto my-2 avatar-md" *ngIf="!dossier.avatar">
+                                            <div class="avatar-title bg-soft-primary text-primary display-6 m-0 rounded-circle"><i class="fas fa-3x fa-user-circle"></i></div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-2" *ngIf="dossier.avatar">
+                                            <div class="image_outer_container" >
+                                                <div class="icon_statut" ></div>
+                                                <div class="image_inner_container">
+                                                    <img [src]="dossier.avatar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h4 class="m-0 text-center tx-primary">{{dossier.libelle}}
+                                        </h4>
+                                        <p class="text-muted mb-0"><i class="fas fa-sitemap tx-15 align-middle pe-2 text-primary"></i> {{dossier.conducteur?.departement?.name}}{{dossier.conducteur?.poste ? ' - '+dossier.conducteur?.poste?.name : ''}} </p>
+                                        <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{dossier.numero_permis}} </p>
+                                        <div class="p-2 tx-echos tx-center bg-soft-primary">
+                                            <ng-container *ngFor="let type_permis of dossier.type_permis">
+                                                <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="type_permis"> {{type_permis.libelle}}</span>
+                                            </ng-container>
+                                        </div>     
+                                    </a>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <a class="table-action cursor-pointer  mr-2" (click)="onSelectDossier(dossier)"><i class="fal fa-search tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(dossier) "><i class="fal fa-edit tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(dossier) "><i class="fal fa-clone tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(dossier) "><i class="fal fa-times-square tx-second "></i></a>    
                                     </div>
                                 </div>
-                            </div>
-                            <section *ngIf="dataHelper.hasMoreData" [fromRoot]="true" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="dataHelper.loadData()">
-                            </section>
-                        </div>
+                                
+                           </div>
+                            <ng-container *ngIf="dataHelper.loading$ | async">
+                                <ng-container *ngTemplateOutlet="loading"></ng-container>
+                            </ng-container>
+                            <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+                        </ng-container>
                     </ng-container>
                 </div>
             </div>
@@ -83,8 +113,16 @@
                       <span class="float-right fas fa-fw fa-map"></span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Adresse: {{selectedDossier.conducteur.situation_matrimoniale}}
+                        Situation Matrimoniale: {{selectedDossier.conducteur.situation_matrimoniale}}
                         <span class="float-right fas fa-fw fa-users"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Departement: {{selectedDossier.conducteur.departement.name}}
+                        <span class="float-right fas fa-sitemap fa-fw"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Poste: {{selectedDossier.conducteur.poste.name}}
+                        <span class="float-right fas fa-user-circle fa-fw"></span>
                     </li>
                   </ul>
                 </div>
@@ -219,3 +257,199 @@
       <i class="fas fa-times"></i>
     </button> -->
 </div>
+
+<ng-template #listView>
+    <div class="card px-0 card-2 card-accent-primary " >
+        <div [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50 " (scrolled)="checkData()" class="card-body p-0 scrollable-y-75 scroll-11">
+            <div class="table-responsive" *ngIf="dataHelper.data$ | async as items">
+                <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else ((!(dataHelper.loading$ | async)) && true ? noItem : loadingLine)">
+                    <thead class="tx-10 tx-uppercase">
+                        <tr>
+                            <th></th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Departement</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dossier of items;trackBy: dataHelper.trackByFn">
+                            <td (click)="onSelectDossier(dossier)">
+                                <div *ngIf="dossier.avatar" class="profiles avatar avatar-xs">
+                                    <img class="rounded-circle" container="body" [ngbTooltip]="dossier.libelle" [src]="dossier.avatar" alt="avatar">
+                                </div>
+                                <i *ngIf="!dossier.avatar" container="body" [ngbTooltip]="dossier.libelle" class="fad fa-user-circle fa-2x"></i>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" (click)="onSelectDossier(dossier)">
+                                  {{dossier.libelle}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-link" (click)="onSelectDossier(dossier)">
+                                    {{dossier.conducteur?.departement?.name}}{{dossier.conducteur?.poste ? ' - '+dossier.conducteur?.poste?.name : ''}}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="table-action cursor-pointer  mr-2" (click)="onSelectDossier(dossier)"><i class="fal fa-search tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(dossier) "><i class="fal fa-edit tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(dossier) "><i class="fal fa-clone tx-second "></i></a>
+                                        <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(dossier) "><i class="fal fa-times-square tx-second "></i></a>
+    
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-container *ngIf="dataHelper.loading$ | async">
+                    <ng-container *ngTemplateOutlet="loadingLine"></ng-container>
+                </ng-container>
+                <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #loadMore>
+    <div class="col-12 d-flex justify-content-center" *ngIf="dataHelper.hasMoreData && !(dataHelper.loading$ | async)">
+        <button class="btn btn-outline-primary btn-oblong" (click)="checkData()"> 
+           Voir plus
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header ">
+        <h5  class="modal-title">
+            <i  class="fa-users-crown fad"></i> Details de l'utilisateur </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss( 'Cross click') ">
+        <span aria-hidden="true"><i class="icon-close"></i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex flex-wrap">
+
+            <div class="col-12 ">
+              <div class="d-flex users-icon mb-2 clickable w-100 align-items-center justify-content-center ">
+                <span class="icone m-0">
+        
+                  <img *ngIf="modalData.avatar" [src]="modalData.avatar" [alt]="modalData.libelle">
+                  <span *ngIf="!modalData.avatar">
+                    <i class="fad fa-user-circle" style="font-size: 200px;"></i>
+                  </span>
+        
+                </span>
+        
+              </div>
+            </div>
+          </div>
+        
+        <div class="d-flex justify-content-around mb-2">
+            <div class="mr-4 col">
+                <!-- Prenom -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user"></i>
+                        </span> Prenom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.conducteur.prenom}}</span>
+                </div>
+
+                <!-- Sexe -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-credit-card"></i>
+                        </span> Sexe:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.conducteur.sexe | lowercase}}</span>
+                </div>
+
+                <!-- Telephone -->
+                <div class="my-3" style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-phone-alt"></i>
+                        </span> Telephone:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.telephone}}</span>
+                </div>
+
+
+                <!-- Email  -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-at"></i>
+                        </span> Email:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.email}}</span>
+                </div>
+
+            </div>
+
+            <div class="col">
+                <!-- NOm -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-user-tie"></i>
+                        </span> Nom:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.conducteur.nom}}</span>
+                </div>
+
+
+                <!-- Date de naissance -->
+                <div class="my-3 " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-venus-mars"></i>
+                        </span> Date de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.date_naissance | date:'mediumDate' : undefined :
+                        'fr'}}</span>
+                </div>
+
+                <!-- Lieu de naissance -->
+                <div class="my-3  " style="font-size: 16px;">
+                    <span class="mr-2">
+                        <span clas="">
+                            <i class="fad tx-primary fa-map-marked-alt"></i>
+                        </span> Lieu de naissance:
+                    </span>
+                    <span class="tx-rubik tx-dark">{{modalData.lieu_naissance}}</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer ">
+        <button [routerLink]="['./',modalData.id]" (click)="modal.close( 'Close click')" class="btn btn-sm btn-primary mx-2 "> Voir plus</button>
+        <button type="button " class="btn btn-sm btn-outline-primary " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #loading>
+    <div class="col-xl-3 col-sm-6 mg-b-20"  *ngFor="let e of [].constructor(5);">
+        <div class="loading-card card h-100 w-100">
+            <div class="image loading-placeholder">
+            </div>
+            <div class="bars">
+                <div class="bar bar1 loading-placeholder"></div>
+                <div class="bar bar2 loading-placeholder"></div>
+            </div>
+        </div>
+    </div>   
+</ng-template>
+
+<ng-template #loadingLine>
+    <div *ngFor="let e of [].constructor(5);"  class="w-100 rounded-0">
+        <div  class="loading-card  w-100  rounded-0">
+            <div  class="bars d-flex h-100  p-2">
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+                <div class="col-2"></div>
+                <div  class="bar bar2 col-2 loading-placeholder  m-0"></div>
+            </div>
+        </div>
+    </div>
+</ng-template>

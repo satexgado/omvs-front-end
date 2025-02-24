@@ -25,6 +25,7 @@ import { MarqueFactory } from "src/app/core/services/transport/marque";
 import { ModeleFactory } from "src/app/core/services/transport/modele";
 import { GenreFactory } from "src/app/core/services/transport/genre";
 import { CrCoordonneeFactory } from "src/app/core/services/cr-coordonnee";
+import { DossierConducteurFactory } from "src/app/core/services/transport/dossier-conducteur";
 
 interface AutomobileFiltre {
   type: string;
@@ -57,6 +58,10 @@ export class AutomobileComponent extends EditableListComponent {
   );
   allInscriptions$ = this.dashService.allPersonnels(
     new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
+  );
+  allDossierConducteurs$ = new DossierConducteurFactory().list(new QueryOptions().setIncludes(['cpt_conducteur.departement','cpt_conducteur.poste'])).pipe(
+    shareReplay(1),
+    map(data => data.data)
   );
   allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
       shareReplay(1),
@@ -138,7 +143,7 @@ export class AutomobileComponent extends EditableListComponent {
       )
     )
 
-    const detailsView = 'situation,details,panne,visite,calendrier,mission,assurance,affectataire';
+    const detailsView = 'situation,details,panne,visite,calendrier,mission,assurance,affectataire,entretien,kilometrage';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;
@@ -252,8 +257,15 @@ export class AutomobileComponent extends EditableListComponent {
   onAddFilter() {
     const type = this.configForm.controls.type.value;
     const value = this.configForm.controls.value.value;
+    let name = `${type.toString().replace('_id','').replace('_', ' ')}: ${value.libelle}`;
+    if(name == 'coordonnee') {
+      name = 'fournisseur';
+    }
+    if(name == 'conducteur') {
+      name = 'chauffeur';
+    }
     const filter: AutomobileFiltre = {
-      name: `${type.toString().replace('_id','').replace('_', ' ')}: ${value.libelle}`,
+      name: name,
       value: value.id,
       type: type
     };
