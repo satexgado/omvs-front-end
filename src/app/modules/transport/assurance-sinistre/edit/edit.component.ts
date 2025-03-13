@@ -9,6 +9,7 @@ import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepi
 import { AssuranceSinistre, IAssuranceSinistre } from 'src/app/core/models/transport/assurance-sinistre';
 import { AssuranceSinistreFactory } from 'src/app/core/services/transport/assurance-sinistre';
 import { AssuranceFactory } from 'src/app/core/services/transport/assurance';
+import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 
 @Component({
   selector: 'app-edit',
@@ -38,7 +39,9 @@ export class EditComponent extends BaseEditComponent {
     }
   ];
 
-  protected readonly allAssurances$ = new AssuranceFactory().list().pipe(
+  protected readonly allAssurances$ = new AssuranceFactory().list(
+    new QueryOptions().setSort([new Sort('libelle', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );

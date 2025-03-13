@@ -143,7 +143,7 @@ export class AutomobileComponent extends EditableListComponent {
       )
     )
 
-    const detailsView = 'situation,details,panne,visite,calendrier,mission,assurance,affectataire,entretien,kilometrage';
+    const detailsView = 'commande,situation,details,panne,visite,calendrier,mission,assurance,affectataire,entretien,kilometrage';
     this.subscription.add(
       this.route.fragment.subscribe(fragment => {
         this.fragment = fragment;

@@ -9,52 +9,53 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!(automobileId||isUpdating)" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="auto_id">Vehicule</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="auto_id" [formControlName]="'auto_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'auto_id'), 'is-valid': isValid('auto_id')}"
+                    <div class="input-group">
+                        <select class="form-control" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="auto_id" [formControlName]="'auto_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'auto_id'), 'is-valid': isValid('auto_id')}"
                         required>
-                    <option value="">--choississez le vehicule --</option>
-                    <ng-container *ngFor="let item of (allAutomobiles$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
-                    </ng-container>
-                </select>
+                            <ng-container *ngFor="let item of (allAutomobiles$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Vehicule</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('auto_id')" class="invalid-feedback">veillez choisir le vehicule.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="salle">Libelle de l'assurance</label>
-                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <span class="custom-span">Libelle de l'assurance</span>                    
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="libelle">Fournisseur</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption required name="coordonnee_id" [formControlName]="'coordonnee_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'coordonnee_id') , 'is-valid': isValid('coordonnee_id')}" required>
-                        <ng-container *ngFor="let item of (allCoordonnees$ | async)">
-                            <option [ngValue]="item.id">{{item.libelle}} </option>
-                        </ng-container>
-                    </select>
+                    <div class="input-group">
+                        <select class="custom-select" mySelectFirstOption required name="coordonnee_id" [formControlName]="'coordonnee_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'coordonnee_id') , 'is-valid': isValid('coordonnee_id')}" required>
+                            <ng-container *ngFor="let item of (allCoordonnees$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle}} </option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Fournisseur</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('coordonnee_id')" class="invalid-feedback">veillez choisir.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="salle">Prime d'assurance</label>
-                    <input type="number" class="form-control form-control-sm" required [formControlName]="'prime'" [ngClass]="{'is-invalid': shouldShowRequiredError('prime'), 'is-valid': isValid('prime')}" name="prime" required>
+                    <input type="number" class="form-control" required [formControlName]="'prime'" [ngClass]="{'is-invalid': shouldShowRequiredError('prime'), 'is-valid': isValid('prime')}" name="prime" required>
+                    <span class="custom-span">Prime d'assurance</span>                    
                     <div *ngIf="shouldShowRequiredError('prime')" class="invalid-feedback">veillez saisir la prime.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label">Periodicite</label>
-
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text bg-white">Chaque</span>
+                            <span class="input-group-text bg-white">Periodicite: Chaque</span>
                         </div>
                         <input type="number" min="1" class="form-control" [formControlName]="'duree_periodicite'" name="duree_periodicite">
-                        <select class="form-control form-control-sm" name="type" [formControlName]="'periodicite'">
+                        <select class="form-control" name="type" [formControlName]="'periodicite'">
                           <ng-container *ngFor="let item of frequenceSelect">
                               <option [ngValue]="item.id">{{item.libelle}}</option>
                           </ng-container>
@@ -65,43 +66,47 @@
 
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="salle">Numero du contrat</label>
-                    <input type="text" class="form-control form-control-sm" required [formControlName]="'numero_contrat'" [ngClass]="{'is-invalid': shouldShowRequiredError('numero_contrat'), 'is-valid': isValid('numero_contrat')}" name="numero_contrat" required>
+                    <input type="text" class="form-control" required [formControlName]="'numero_contrat'" [ngClass]="{'is-invalid': shouldShowRequiredError('numero_contrat'), 'is-valid': isValid('numero_contrat')}" name="numero_contrat" required>
+                    <span class="custom-span">Numero du contrat</span>                    
                     <div *ngIf="shouldShowRequiredError('numero_contrat')" class="invalid-feedback">veillez saisir le numero du contrat.</div>
                 </div>
             </div>
 
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="etat_contrat">Etat</label>
-                    <select class="form-control form-control-sm" name="etat_contrat" [formControlName]="'etat_contrat'">
-                        <ng-container *ngFor="let item of (tagList|sortBy:'asc':'libelle')">
-                            <option [ngValue]="item.id">{{item.libelle}}</option>
-                        </ng-container>
-                    </select>
+                    <div class="input-group">
+                        <select class="custom-select" name="etat_contrat" [formControlName]="'etat_contrat'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'etat_contrat') , 'is-valid': isValid('etat_contrat')}">
+                            <ng-container *ngFor="let item of (tagList|sortBy:'asc':'libelle')">
+                                <option [ngValue]="item.id">{{item.libelle}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Etat</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('etat_contrat')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
             </div>
 
-            <div class="formSep form-group d-flex justify-content-center pb-0 pt-3">
+            <div class="formSep form-group d-flex flex-wrap justify-content-center pb-0 pt-3">
                 <div class="col-10 col-sm-5 mb-3">
-                    <input class="form-control form-control-sm" name="date_debut" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_debut'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_debut'), 'is-valid': isValid('date_debut')}"
+                    <input class="form-control" name="date_debut" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_debut'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_debut'), 'is-valid': isValid('date_debut')}"
                         required>
                     <span class="custom-span">Date debut </span>
                     <div *ngIf="shouldShowRequiredError('date_debut')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
                 <div class="col-10 col-sm-5 mb-3">
-                    <input class="form-control form-control-sm" name="date_fin" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_fin'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_fin'), 'is-valid': isValid('date_fin')}"
+                    <input class="form-control" name="date_fin" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" [formControlName]="'date_fin'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_fin'), 'is-valid': isValid('date_fin')}"
                         required>
                     <span class="custom-span">Date fin</span>
                     <div *ngIf="shouldShowRequiredError('date_fin')" class="invalid-feedback">veillez remplir ce champ.</div>
                 </div>
+                <div class="col-10">
+                    <small class="text-danger" *ngIf="editForm.hasError('dateSuperieur')">La période de fin doit être àpres le debut</small>
+                </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="description">Description</label>
-                    <textarea name="description" required maxlength="10000" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
-                    <small>{{editForm.get('description').value?.length}}/10000</small>
+                    <textarea name="description" required maxlength="10000" class="form-control" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
+                    <span class="custom-span">Description {{editForm.get('description').value?.length}}/10000</span>
                     <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
                 </div>
             </div>

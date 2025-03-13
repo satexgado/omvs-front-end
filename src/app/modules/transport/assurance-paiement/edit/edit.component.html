@@ -9,36 +9,35 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!(assuranceId||isUpdating)" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="assurance_id">Assurance</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allAssurances$ | async" required name="assurance_id" [formControlName]="'assurance_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'assurance_id'), 'is-valid': isValid('assurance_id')}"
+                    <div class="input-g">
+                        <select class="custom-select" mySelectFirstOption [class.loading]="allAssurances$ | async" required name="assurance_id" [formControlName]="'assurance_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'assurance_id'), 'is-valid': isValid('assurance_id')}"
                         required>
-                    <option value="">--choississez l'assurance --</option>
-                    <ng-container *ngFor="let item of (allAssurances$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
-                    </ng-container>
-                </select>
+                            <ng-container *ngFor="let item of (allAssurances$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Assurance</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('assurance_id')" class="invalid-feedback">veillez choisir l'assurance.</div>
                 </div>
             </div>
 
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="libelle">Date Paiement</label>
-                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_paiement'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_paiement'), 'is-valid': isValid('date_paiement')}" required>
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_paiement'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_paiement'), 'is-valid': isValid('date_paiement')}" required>
+                    <span class="custom-span">Date Paiement</span>                    
                     <div *ngIf="shouldShowRequiredError('date_paiement')" class="invalid-feedback">veillez saisir la date.</div>
                 </div>
             </div>
 
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label">Paiement</label>
-
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white">Montant</span>
                         </div>
                         <input type="number" min="1" class="form-control" [formControlName]="'montant'" name="montant">
-                        <select class="form-control form-control-sm" name="type_paiement" [formControlName]="'type_paiement'">
+                        <select class="form-control" name="type_paiement" [formControlName]="'type_paiement'">
                           <ng-container *ngFor="let item of frequenceSelect">
                               <option [ngValue]="item.id">{{item.libelle}}</option>
                           </ng-container>

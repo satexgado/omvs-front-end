@@ -25,29 +25,29 @@
 
                 <ng-template #dataView>
                     <div class="bg-light">
-                        <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa bold tx-facebook tx-16 op-7" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+                        <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa bold text-facebook text-16 op-7" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
                     </div>
-                    <a container="body" [ngbTooltip]="item.text | capitalizeFirst" (click)="onItemChoosed(item)" [class.highlight-dot]="selectedItem?.value?.id == item?.value?.id && item.value.type == selectedItem.value.type" class="flex-1 tx-echos tx-14 mx-2 text-truncate cursor-pointer cusor-pointer">
-                        <i class="fa-object-group" [ngClass]="item.children.length ? ' fas tx-echos' : 'fal tx-echos1'"></i> {{item.text | capitalizeFirst}}
+                    <a container="body" [ngbTooltip]="item.text | capitalizeFirst" (click)="onItemChoosed(item)" [class.highlight-dot]="selectedItem?.value?.id == item?.value?.id && item.value.type == selectedItem.value.type" class="flex-1 text-echos text-14 mx-2 text-truncate cursor-pointer cusor-pointer">
+                        <i [ngClass]="item.children&&item.children.length ? ' fas text-echos' : 'fal text-echos1'"></i> {{item.text | capitalizeFirst}}
                         <div>
-                            <span class=" mr-1 tx-14 mg-b-5 tx-echos1 pl-2 ">Sous groupes</span>
-                            <span class=" mr-1  mg-b-5 tx-warning ">{{item.children.length ? item.children.length : 0}}</span>
-                            <span class=" mr-1 tx-14 mg-b-5 tx-echos1 ">Eléments</span>
-                            <span class=" mr-1 mg-b-5 tx-danger ">{{item.value.extends?.nb_coordonnees}} </span>
+                            <span class=" mr-1 text-14 mb-2 text-primary pl-2 ">Sous groupes</span>
+                            <span class=" mr-1  mb-2 text-warning ">{{item.children&&item.children.length ? item.children.length : 0}}</span>
+                            <span class=" mr-1 text-14 mb-2 text-primary ">Eléments</span>
+                            <span class=" mr-1 mb-2 text-danger ">{{item.children&&item.value.extends?.nb_coordonnees}} </span>
                         </div>
                     </a>
                     <div *ngIf="!hideUpdateDelete">
 
-                        <button class=" btn p-0 mx-1 tx-14 flex-shrink-1 btn-sm tx-echos" *ngIf="!item.value.extends.groupe_id" (click)="quickAdd(item)" placement="top" ngbTooltip="Ajouter un groupe" tooltipClass="my-tooltip-class">
+                        <button class=" btn p-0 mx-1 text-14 flex-shrink-1 btn-sm text-echos" *ngIf="!item.value.extends.groupe_id" (click)="quickAdd(item)" placement="top" ngbTooltip="Ajouter un groupe" tooltipClass="my-tooltip-class">
                     <i class="fal fa-layer-plus"></i>
                   </button>
-                        <button class=" btn p-0 mx-1 tx-14 flex-shrink-1 btn-sm tx-echos" (click)="item.text = null" placement="top" ngbTooltip="Modifier le groupe" tooltipClass="my-tooltip-class">
+                        <button class=" btn p-0 mx-1 text-14 flex-shrink-1 btn-sm text-echos" (click)="item.text = null" placement="top" ngbTooltip="Modifier le groupe" tooltipClass="my-tooltip-class">
                     <i class="fal fa-edit"></i>
                   </button>
-                        <!-- <button class=" btn p-0 mx-1 tx-16 flex-shrink-1 btn-sm tx-echos" (click)="ajouterGroupe(item)" placement="top" ngbTooltip="Ajouter un groupe" tooltipClass="my-tooltip-class">
+                        <!-- <button class=" btn p-0 mx-1 text-16 flex-shrink-1 btn-sm text-echos" (click)="ajouterGroupe(item)" placement="top" ngbTooltip="Ajouter un groupe" tooltipClass="my-tooltip-class">
                     <i class="fal fa-layer-plus"></i>
                   </button> -->
-                        <button class=" btn p-0 mx-1 tx-14 flex-shrink-1 btn-sm" *ngIf="!item.value.extends.cant_delete" (click)="removeChild(item)" placement="top" ngbTooltip="Supprimer" tooltipClass="my-tooltip-class">
+                        <button class=" btn p-0 mx-1 text-14 flex-shrink-1 btn-sm" *ngIf="!item.value.extends.cant_delete" (click)="removeChild(item)" placement="top" ngbTooltip="Supprimer" tooltipClass="my-tooltip-class">
                     <i class="fal fa-times-square text-danger"></i>
                   </button>
                     </div>

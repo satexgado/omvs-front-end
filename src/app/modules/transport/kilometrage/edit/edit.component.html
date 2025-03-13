@@ -9,14 +9,15 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!(automobileId||isUpdating)" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="auto_id">Vehicule</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="auto_id" [formControlName]="'auto_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'auto_id'), 'is-valid': isValid('auto_id')}"
+                    <div class="input-group">
+                        <select class="custom-select" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="auto_id" [formControlName]="'auto_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'auto_id'), 'is-valid': isValid('auto_id')}"
                         required>
-                    <option value="">--choississez le vehicule --</option>
-                    <ng-container *ngFor="let item of (allAutomobiles$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
-                    </ng-container>
-                </select>
+                            <ng-container *ngFor="let item of (allAutomobiles$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Vehicule</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('auto_id')" class="invalid-feedback">veillez choisir le vehicule.</div>
                 </div>
             </div>
@@ -30,7 +31,7 @@
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <label class="control-label" for="libelle">Date</label>
-                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_donnee'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_donnee'), 'is-valid': isValid('date_donnee')}" required>
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_donnee'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_donnee'), 'is-valid': isValid('date_donnee')}" required>
                     <div *ngIf="shouldShowRequiredError('date_donnee')" class="invalid-feedback">veillez saisir la date.</div>
                 </div>
             </div>    

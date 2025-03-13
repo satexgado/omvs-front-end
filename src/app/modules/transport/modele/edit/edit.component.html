@@ -17,8 +17,7 @@
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <textarea name="description" required maxlength="500" class="form-control" cols="30" rows="5" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'description'), 'is-valid': isValid('description')}"></textarea>
-                    <span class="custom-span">description</span>
-                    <small>{{editForm.get('description').value?.length}}/500</small>
+                    <span class="custom-span">description {{editForm.get('description').value?.length}}/500</span>
                     <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
                 </div>
             </div>

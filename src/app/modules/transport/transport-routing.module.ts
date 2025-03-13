@@ -24,6 +24,7 @@ import { CalendrierTransportComponent } from './calendrier/calendrier.component'
 import { VisiteTechniqueComponent } from './visite-technique/visite-technique.component';
 import { CarteRapidoComponent } from './carte-rapido/carte-rapido.component';
 import { EntretienComponent } from './entretien/entretien.component';
+import { CommandeComponent } from './automobile/panne/commande/commande.component';
 
 const butsRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo:'mes-autos'},
@@ -53,13 +54,27 @@ const butsRoutes: Routes = [
     children: [
       {path: '', component: TemplateComponent,children: [
         {path: '', component: PanneComponent, data: {
-          icon: 'fa-exclamation-circle', title:'Panne & Commande'
+          icon: 'fa-car-garage', title:'Panne'
         }}
       ]},
       // {path: ':idauto', component: AutomobileDetailsEditComponent,
       //   resolve: { automobile: AutomobileDetailsEditResolver}
       // }
     ]},
+    { path: 'commande',
+      data: {
+        breadcrumb: 'Mes bons de commande'
+      },
+      children: [
+        {path: '', component: TemplateComponent,children: [
+          {path: '', component: CommandeComponent, data: {
+            icon: 'fa-file-signature', title:'Bon de commande'
+          }}
+        ]},
+        // {path: ':idauto', component: AutomobileDetailsEditComponent,
+        //   resolve: { automobile: AutomobileDetailsEditResolver}
+        // }
+      ]},
     { path: 'carte-rapido',
       data: {
         breadcrumb: 'Mes Cartes Rapido'

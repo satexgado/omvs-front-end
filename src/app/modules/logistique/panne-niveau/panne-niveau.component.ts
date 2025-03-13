@@ -8,6 +8,7 @@ import { AppTitleService } from 'src/app/shared/services';
 import { ResourceScrollableHelper } from '../../../shared/state';
 import { IPanneNiveau } from 'src/app/core/models/logistique/panne-niveau';
 import { PanneNiveauFactory } from 'src/app/core/services/logistique/panne-niveau';
+import { getTextColor } from 'src/app/shared/helperfonction';
 
 @Component({
   selector: 'app-panne-niveau',
@@ -17,6 +18,7 @@ export class PanneNiveauComponent extends EditableListComponent {
   modalData: IPanneNiveau;
 
   editModal = EditComponent;
+  getTextColor = getTextColor;
 
   constructor(
     protected titleservice: AppTitleService,

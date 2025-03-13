@@ -17,7 +17,7 @@
                             {{typeEntretien.libelle}}
                         </td>
                         <td>
-                            <!-- <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, typeEntretien)"><i class="fal fa-search tx-second "></i></a> -->
+                            <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, typeEntretien)"><i class="fal fa-search tx-second "></i></a>
                             <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(typeEntretien) "><i class="fal fa-edit tx-second "></i></a>
                             <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(typeEntretien) "><i class="fal fa-clone tx-second "></i></a>
                             <a class="table-action cursor-pointer mr-2 "  container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(typeEntretien) "><i class="fal fa-times-square tx-second "></i></a>
@@ -51,7 +51,7 @@
         <p style="font-size: 18px;">{{modalData.description}}</p>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
         <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>

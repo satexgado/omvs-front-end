@@ -33,39 +33,43 @@
               </a>
             </div>
           </div>
-          <div class="row mb-4 animated slideInUp">
+          <div class="row mb-4">
             <div class="col-md-12">
               <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
-                <a routerLink="/transport/mes-autos" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-car"></i> Vehicules
-                </a>
+                
                 <!-- <a routerLink="/transport/mes-itineraires" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                   <i class="fas fa-route"></i> Itineraires
                 </a> -->
-                <a routerLink="/transport/mes-chauffeurs" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-user-tie"></i> Chauffeurs
-                </a>
-                <a routerLink="/transport/carte-rapido" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-credit-card-blank"></i> Carte
-                </a>
-                <a routerLink="/transport/assurance" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/transport/assurance" routerLinkActive #assurance="routerLinkActive" [class.text-secondary]="!assurance.isActive" class="d-none d-sm-inline-block mr-3 ml-3 ">
                   <i class="fas fa-car-crash"></i> Assurance
                 </a>
-                <a routerLink="/transport/visite-technique" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-car-mechanic"></i> Visites Techniques
+                <a routerLink="/transport/calendrier" routerLinkActive #calendrier="routerLinkActive" [class.text-secondary]="!calendrier.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-calendar"></i> Calendrier
                 </a>
-                <a routerLink="/transport/entretien" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/transport/commande" routerLinkActive #commande="routerLinkActive" [class.text-secondary]="!commande.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-file-signature"></i> Commande
+                </a>
+                <a routerLink="/transport/carte-rapido" routerLinkActive #carte="routerLinkActive" [class.text-secondary]="!carte.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-credit-card-blank"></i> Carte Rapido
+                </a>
+                <a routerLink="/transport/mes-chauffeurs" routerLinkActive #chauffeur="routerLinkActive" [class.text-secondary]="!chauffeur.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-user-tie"></i> Chauffeurs
+                </a>
+                <a routerLink="/transport/entretien" routerLinkActive #entretien="routerLinkActive" [class.text-secondary]="!entretien.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-car-battery"></i> Entretiens
+                </a>
+                <a routerLink="/transport/panne" routerLinkActive #panne="routerLinkActive" [class.text-secondary]="!panne.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-car-garage"></i> Pannes
+                </a>
+                <a routerLink="/transport/mes-autos" routerLinkActive #vehicule="routerLinkActive" [class.text-secondary]="!vehicule.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-car"></i> Vehicules
+                </a>
+                <a routerLink="/transport/visite-technique" routerLinkActive #visite="routerLinkActive" [class.text-secondary]="!visite.isActive" class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-car-mechanic"></i> Visites Techniques
                 </a>
                 <!-- <a routerLink="/transport/mes-conducteurs" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
                   <i class="fas fa-user-tie"></i> cartes rapido
                 </a> -->
-                <a routerLink="/transport/panne" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-car-garage"></i> pannes & bons
-                </a>
-                <a routerLink="/transport/calendrier" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-calendar"></i> Calendrier
-                </a>
               </div>
             </div>
           </div>

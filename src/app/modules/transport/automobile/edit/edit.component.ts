@@ -52,7 +52,9 @@ export class EditComponent extends BaseEditComponent  {
   heading = 'bus';
   @Input() item: IAutomobile = new Automobile();
   @Input() affectataireOnly = false;
-  allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
+  allTypeCarburants$ = new CarburantTypeFactory().list(
+    new QueryOptions().setSort([new Sort('type_carburant', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );
@@ -60,39 +62,41 @@ export class EditComponent extends BaseEditComponent  {
       new QueryOptions().setSort([new Sort('nom', 'asc')]).setIncludes(['departement','poste'])
   );
   readonly carburantEditComponent  = CarburantEditComponent;
-  allTypeAutomobiles$ = new AutomobileTypeFactory().list().pipe(
+  allTypeAutomobiles$ = new AutomobileTypeFactory().list(
+    new QueryOptions().setSort([new Sort('type_automobile', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );
   readonly automobileTypeEditComponent  = AutomobileTypeEditComponent;
 
   allSerie$ = new TransSerieFactory().list(
-    
+    new QueryOptions().setSort([new Sort('serie', 'asc')])
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly serieEditComponent  = SerieEditComponent;
 
   allMarque$ = new MarqueFactory().list(
-    
+    new QueryOptions().setSort([new Sort('marque', 'asc')])
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly marqueEditComponent  = MarqueEditComponent;
 
   allModele$ = new ModeleFactory().list(
-    
+    new QueryOptions().setSort([new Sort('modele', 'asc')])
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly modeleEditComponent  = ModeleEditComponent;
 
   allGenre$ = new GenreFactory().list(
-    
+    new QueryOptions().setSort([new Sort('genre', 'asc')])
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly genreEditComponent  = GenreEditComponent;
 
   allCoordonnee$ = new CrCoordonneeFactory().list(
-    
+    new QueryOptions().setSort([new Sort('libelle', 'asc')])
   ).pipe(retryWhen(errors => errors.pipe(delay(5000), take(10))), shareReplay(1), map(data => data.data));
   readonly coordonneeEditComponent  = CoordonneeEditComponent;
 
   allDossierConducteurs$ = new DossierConducteurFactory().list(
-    new QueryOptions().setIncludes(
+    new QueryOptions().setSort([new Sort('conducteur_libelle', 'asc')]).setIncludes(
     ['type_permis','cpt_conducteur','visi_pays'])
   ).pipe(
     shareReplay(1),

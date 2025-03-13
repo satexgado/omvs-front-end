@@ -16,23 +16,27 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" *ngIf="!proprietaire">
                 <div class="col-10">
-                    <select class="custom-select" mySelectFirstOption required name="preteur" [formControlName]="'proprietaire_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'proprietaire_id'), 'is-valid': isValid('proprietaire_id')}" required>
-                        <ng-container *ngFor="let item of (allInscriptions$ | async)">
-                            <option [ngValue]="item.user?.id">{{item.user?.libelle}} ({{item.user?.idcam}})</option>
-                        </ng-container>
-                    </select>
-                    <span class="custom-span">Proprietaire</span>
+                    <div class="input-group">
+                        <select class="custom-select" mySelectFirstOption required name="preteur" [formControlName]="'proprietaire_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'proprietaire_id'), 'is-valid': isValid('proprietaire_id')}" required>
+                            <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                                <option [ngValue]="item.user?.id">{{item.user?.libelle}} ({{item.user?.idcam}})</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Proprietaire</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('proprietaire_id')" class="invalid-feedback">veillez choisir le proprietaire.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'type_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_permis_id'), 'is-valid': isValid('type_permis_id')}" required>
-                    <ng-container *ngFor="let item of (allTypePermis$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle}}</option>
-                    </ng-container>
-                </select>
-                    <span class="custom-span">Permis</span>
+                    <div class="input-group">
+                        <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'type_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'type_permis_id'), 'is-valid': isValid('type_permis_id')}" required>
+                            <ng-container *ngFor="let item of (allTypePermis$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Permis</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('type_permis_id')" class="invalid-feedback">veillez choisir le type.</div>
                 </div>
             </div>
@@ -45,8 +49,7 @@
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <textarea name="remarque" required maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'remarque'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'remarque'), 'is-valid': isValid('remarque')}"></textarea>
-                    <span class="custom-span">remarque</span>
-                    <small>{{editForm[i].get('remarque').value?.length}}/500</small>
+                    <span class="custom-span">remarque {{editForm[i].get('remarque').value?.length}}/500</span>
                     <div *ngIf="shouldShowRequiredError('remarque')" class="invalid-feedback">veillez saisir la remarque.</div>
                 </div>
             </div>

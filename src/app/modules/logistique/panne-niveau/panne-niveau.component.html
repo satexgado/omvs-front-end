@@ -18,9 +18,9 @@
                             {{niveau.libelle}}
                         </td>
                         <td>
-                            <span class="badge badge-secondary" [style.background-color]="niveau.couleur">
-                              {{niveau.couleur}}
-                            </span>
+                            <span class="badge badge-secondary" [style.color]="getTextColor(niveau.couleur)" [style.background-color]="niveau.couleur">
+                                {{niveau.couleur}}
+                              </span>
                         </td>
                         <td>
                             <a class="table-action cursor-pointer mr-2 " container="body" [ngbTooltip]="'Modifier'"  (click)="onShowUpdateForm(couleur) "><i class="fal fa-edit tx-second "></i></a>
@@ -56,7 +56,7 @@
         <p style="font-size: 18px;">{{modalData.description}}</p>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
         <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>

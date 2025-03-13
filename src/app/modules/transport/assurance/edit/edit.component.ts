@@ -10,6 +10,8 @@ import { AutomobileFactory } from 'src/app/core/services/transport/automobile';
 import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { Assurance, IAssurance } from 'src/app/core/models/transport/assurance';
 import { AssuranceFactory } from 'src/app/core/services/transport/assurance';
+import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
+import { DateValidators } from 'src/app/shared/date.validator';
 
 @Component({
   selector: 'app-edit',
@@ -50,12 +52,16 @@ export class EditComponent extends BaseEditComponent {
     }
   ]
 
-  protected readonly allAutomobiles$ = new AutomobileFactory().list().pipe(
+  protected readonly allAutomobiles$ = new AutomobileFactory().list(
+    new QueryOptions().setSort([new Sort('designation', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );
 
-  protected readonly allCoordonnees$ = new CrCoordonneeFactory().list().pipe(
+  protected readonly allCoordonnees$ = new CrCoordonneeFactory().list(
+    new QueryOptions().setSort([new Sort('libelle', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );
@@ -82,6 +88,6 @@ export class EditComponent extends BaseEditComponent {
       'numero_contrat': [item.numero_contrat, Validators.required],  
       'libelle': [item.libelle, Validators.required],
       'id': [item.id]
-    });
+    }, {validator: DateValidators.dateLessThan('date_debut','date_fin', { 'dateSuperieur': true })});
   }
 }

@@ -46,8 +46,8 @@
                                         </div>
                                         <h4 class="m-0 text-center tx-primary">{{dossier.libelle}}
                                         </h4>
-                                        <p class="text-muted mb-0"><i class="fas fa-sitemap tx-15 align-middle pe-2 text-primary"></i> {{dossier.conducteur?.departement?.name}}{{dossier.conducteur?.poste ? ' - '+dossier.conducteur?.poste?.name : ''}} </p>
-                                        <p class="text-muted mb-0"><i class="fas fa-at tx-15 align-middle pe-2 text-primary"></i> {{dossier.numero_permis}} </p>
+                                        <p class="text-muted text-center mb-0"><i class="fas fa-sitemap tx-15 align-middle pe-2 text-primary"></i> {{dossier.conducteur?.departement?.name}}{{dossier.conducteur?.poste ? ' - '+dossier.conducteur?.poste?.name : ''}} </p>
+                                        <p class="text-muted text-center mb-0"><strong class="text-primary">PERMIS:</strong> {{dossier.numero_permis}} </p>
                                         <div class="p-2 tx-echos tx-center bg-soft-primary">
                                             <ng-container *ngFor="let type_permis of dossier.type_permis">
                                                 <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="type_permis"> {{type_permis.libelle}}</span>
@@ -268,6 +268,8 @@
                             <th></th>
                             <th scope="col">Nom</th>
                             <th scope="col">Departement</th>
+                            <th scope="col">Numero Permis</th>
+                            <th scope="col">Type Permis</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -288,6 +290,14 @@
                                 <a class="btn btn-sm btn-link" (click)="onSelectDossier(dossier)">
                                     {{dossier.conducteur?.departement?.name}}{{dossier.conducteur?.poste ? ' - '+dossier.conducteur?.poste?.name : ''}}
                                 </a>
+                            </td>
+                            <td>
+                                {{dossier.numero_permis}} 
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let type_permis of dossier.type_permis">
+                                    <span class="badge badge-primary mx-1 card-2"  container="body" *ngIf="type_permis"> {{type_permis.libelle}}</span>
+                                </ng-container>
                             </td>
                             <td>
                                 <a class="table-action cursor-pointer  mr-2" (click)="onSelectDossier(dossier)"><i class="fal fa-search tx-second "></i></a>

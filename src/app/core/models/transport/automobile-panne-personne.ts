@@ -4,6 +4,7 @@ import { adaptableMap, dateAdaptableMap } from 'src/app/shared/decorator/adapter
 import { IAutomobileEtat, AutomobileEtat } from './automobile-etat';
 import { IBase } from '../base.interface';
 import { CrCoordonnee, ICrCoordonnee } from '../cr-coordonnee';
+import { IPanne, Panne } from './panne';
 
 export interface IAutomobilePannePersonne extends IBase {
     date_sortie: Date;
@@ -15,6 +16,7 @@ export interface IAutomobilePannePersonne extends IBase {
     fournisseur_id: number;
     fournisseur: ICrCoordonnee;
     panne_id: number;
+    panne: IPanne;
     remarque:string;
 }
 
@@ -53,4 +55,6 @@ export class AutomobilePannePersonne implements IAutomobilePannePersonne {
     @adaptableMap('panne')
     panne_id: number = 0;
 
+    @hasOneMap({field:'trans_panne_automobile', class: Panne})
+    panne: IPanne = null;
 }

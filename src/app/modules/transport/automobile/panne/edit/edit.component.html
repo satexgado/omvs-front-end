@@ -8,22 +8,23 @@
     <div class="modal-body  tx-dark" [ngClass]="{'loading': isLoading}">
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!automobileId" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
-                <div class="col-10">
-                    <label class="control-label" for="automobile_id">Vehicule</label>
-                    <select class="form-control form-control-sm" [class.loading]="allAutomobiles$ | async" required name="automobile_id" [formControlName]="'automobile_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'automobile_id'), 'is-valid': isValid('automobile_id')}"
+                <div class="col-10" [class.loading]="!(allAutomobiles$ | async)">
+                    <div class="input-group">
+                        <select mySelectFirstOption class="custom-select"  required name="automobile_id" [formControlName]="'automobile_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'automobile_id'), 'is-valid': isValid('automobile_id')}"
                         required>
-                    <option value="">--choississez le vehicule --</option>
-                    <ng-container *ngFor="let item of (allAutomobiles$ | async)">
-                        <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
-                    </ng-container>
-                </select>
+                            <ng-container *ngFor="let item of (allAutomobiles$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Vehicule</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('automobile_id')" class="invalid-feedback">veillez choisir le vehicule.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="salle">Type de panne</label>
-                    <input type="text" class="form-control form-control-sm" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <input type="text" class="form-control" required [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <span class="custom-span">Type de panne</span>
                     <div *ngIf="shouldShowRequiredError('libelle')" class="invalid-feedback">veillez saisir le libellé.</div>
                 </div>
             </div>
@@ -35,16 +36,15 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="libelle">Signaler le</label>
-                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date'" [ngClass]="{'is-invalid': shouldShowRequiredError('date'), 'is-valid': isValid('date')}" required>
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date'" [ngClass]="{'is-invalid': shouldShowRequiredError('date'), 'is-valid': isValid('date')}" required>
+                    <span class="custom-span">Signaler le</span>
                     <div *ngIf="shouldShowRequiredError('date')" class="invalid-feedback">veillez saisir la date.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="description">Description</label>
-                    <textarea name="description" required maxlength="500" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
-                    <small>{{editForm.get('description').value?.length}}/500</small>
+                    <textarea name="description" required maxlength="500" class="form-control" cols="30" rows="3" [formControlName]="'description'" [ngClass]="{'is-invalid': shouldShowRequiredError('description'), 'is-valid': isValid('description')}"></textarea>
+                    <span class="custom-span">Description {{editForm.get('description').value?.length}}/500</span>                    
                     <div *ngIf="shouldShowRequiredError('description')" class="invalid-feedback">veillez saisir la description.</div>
                 </div>
             </div>

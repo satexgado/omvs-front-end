@@ -13,7 +13,7 @@ export interface IPanne extends IBase {
     niveau_id: number;
     date: Date;
     quantite: number;
-    // affectation_personnes: IAutomobilePannePersonne[];
+    nb_commandes: number;
 }
 
 export class Panne implements IPanne {
@@ -25,6 +25,7 @@ export class Panne implements IPanne {
 
     description: string = '';
     quantite = 0;
+    nb_commandes = 0;
 
     @dateAdaptableMap('date')
     date: Date = new Date();
@@ -41,6 +42,4 @@ export class Panne implements IPanne {
     @hasOneMap({field:'visi_niveau_panne_materiel',class: PanneNiveau})
     niveau : IPanneNiveau= null;
 
-    // @hasManyMap({field:'visi_affectation_panne_materiel_personnes', class: AutomobilePannePersonne})
-    // affectation_personnes: IAutomobilePannePersonne[] = null;
 }

@@ -1,0 +1,159 @@
+<div class="card card-2 card-accent-primary">
+    <div class="d-flex p-2  border-bottom">
+        <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+        <button *ngIf="_automobileId" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" class="btn btn-oblong btn-primary bd-0 btn-icon mx-2 mg-t-5 mg-b-5">
+            <i class="fal fa-plus-circle tx-14" ></i>
+        </button>
+    </div>
+    <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
+        <div class="table-responsive">
+            <table class="table  table-hover table-sm mb-0">
+                <tbody>
+                    <tr class=" mg-b-20">
+                        <th class="tx-yeto2 tx-16 bg-greenlight"> Affectés à</th>
+                        <th class="tx-yeto2 tx-16 bg-greenlight"> N° du bon </th>
+                        <th class="tx-yeto2  tx-16 bg-greenlight bd-r bd-white">Date sortie</th>
+                        <th class="tx-yeto2  tx-16 bg-bluelight">Date retour</th>
+                        <th class="tx-orange text-center tx-16">Etats </th>
+                        <th class="tx-yeto2 tx-16 bg-greenlight"> Fournisseur</th>
+                        <th class="tx-yeto2 tx-16 bg-greenlight"> Panne</th>
+                        <th class="tx-orange text-center tx-16"></th>
+                    </tr>
+                    <ng-container *ngIf="dataHelper.data$ | async as items">
+                        <ng-container *ngIf="items.length; else noItem">
+                            <tr *ngFor="let affectation of items;trackBy: dataHelper.trackByFn">
+                                <td class=" text-center ">
+                                    <div class="d-flex flex-row  mg-t-6">
+                                        <div class="profiles">
+                                            <img *ngIf="affectation?.user?.sexe == 'Masculin'"
+                                                    src="assets/images/users/male.png"
+                                                    class="rounded-circle" width="30">
+                                                <img *ngIf="affectation?.user?.sexe == 'Feminin'"
+                                                    src="assets/images/users/female.png"
+                                                    class="rounded-circle"
+                                                    alt="" width="30">
+                                        </div>
+                                        {{affectation.user.libelle}}
+                                    </div>
+                                </td>
+                                <td class=" bd-b bg-light">
+                                    <span class=" tx-danger tx-14"> {{affectation.libelle}} </span>
+                                </td>
+                                <td class=" bd-b bg-light">
+                                    <span class=" tx-danger tx-14"> {{affectation.date_sortie | date: 'dd/MM/yyyy'}} </span>
+                                </td>
+                                <td class=" bd-b bg-light">
+                                    <span class=" tx-success-100 tx-14"> {{affectation.date_retour | date: 'dd/MM/yyyy'}} </span>
+                                </td>
+                                <td class=" bd-b bg-light">
+                                    <span *ngIf="affectation.etat" class=" tx-{{affectation.etat.couleur}} tx-14"> {{affectation.etat.libelle}} </span>
+                                </td>
+                                <td class=" text-center ">
+                                    <div class="d-flex flex-row  mg-t-6">
+                                        {{affectation.fournisseur.libelle}}
+                                    </div>
+                                </td>
+                                <td class=" text-center ">
+                                    <button class="btn btn-sm btn-outline-primary" (click)="openModal(contentPanne, affectation)">Voir</button>
+                                </td>
+                                <td class=" text-center ">
+                                    <button class="btn btn-sm btn-link" (click)="openModal(content, affectation)"><i class="fad fa-search tx-14 bg-gray tx-warning " style="padding:6px; border-radius:50%"></i></button>
+                                    <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowUpdateForm(affectation)"> <i class="fal fa-edit" ></i> </button>
+                                    <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowCreateForm(affectation)"> <i class="fal fa-clone" ></i> </button>
+
+                                    <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(affectation)"> <i class="fal fa-trash-alt" ></i></button>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #noItem>
+    <tr>
+        <td colspan="6">
+            <h5 class="text-center title m-2 p-5" *ngIf="!(dataHelper.loading$ | async)">
+                {{ 'Aucun Element' }}
+            </h5>
+        </td>
+    </tr>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header bg-light  ">
+        <h5 class="modal-title ">
+            {{modalData.libelle}}</h5>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+          <span aria-hidden="true ">&times;</span>
+          </button>
+    </div>
+    <div class="modal-body">
+        <h5>Remarque</h5>
+        <p style="font-size: 18px;">{{modalData.remarque}}</p>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
+    </div>
+</ng-template>
+
+<!-- ADD -->
+<div class="button-fixed-bottom-right">
+    <button *ngIf="(!_automobileId)&&!selectedCommande" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+      class="btn btn-primary btn-circle btn-lg">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+      (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
+      class="btn btn-danger btn-circle btn-lg">
+      <i class="fas fa-times"></i>
+    </button> -->
+</div>
+
+<ng-template #contentPanne let-modal>
+    <div class="modal-header bg-light">
+        <h5 class="modal-title">N° du bon de commande: {{modalData.libelle}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <h5>Type de Pannes</h5>
+                <p class="font-size-lg text-primary">{{modalData.panne.libelle || 'Non spécifié'}}</p>
+            </div>
+            <div class="col-md-6">
+                <h5>Signalé le</h5>
+                <p class="font-size-lg text-primary">{{modalData.panne.date | date:'dd/MM/yyyy'}}</p>
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <h5>Niveau d'urgence</h5>
+                <p class="font-size-lg" [style.background-color]="modalData.panne.niveau ? modalData.panne.niveau.couleur : ''" [style.color]="getTextColor(modalData.panne.niveau ? modalData.panne.niveau.couleur : '')">
+                    {{(modalData.panne.niveau.libelle|uppercase) || 'Non classé'}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h5>Véhicule</h5>
+                <p class="font-size-lg text-primary">{{modalData.panne.automobile.libelle | titlecase}}</p>
+            </div>
+        </div>
+    
+        <h5>Description</h5>
+        <p class="font-size-lg text-primary" style="white-space: pre-wrap">{{modalData.panne.description || 'Aucune description fournie'}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-light mx-2" (click)="modal.close('Close click'); onShowUpdatePanneForm(modalData.panne);">
+            <i class="fal fa-edit" style="color:#99600b"></i> Modifier
+        </button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Fermer</button>
+    </div>
+</ng-template>

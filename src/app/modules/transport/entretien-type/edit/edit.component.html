@@ -17,8 +17,7 @@
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
                     <textarea name="condition_entretien" required maxlength="500" class="form-control" cols="30" rows="5" [formControlName]="'condition_entretien'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'condition_entretien'), 'is-valid': isValid('condition_entretien')}"></textarea>
-                    <span class="custom-span">Condition d'Entretien</span>
-                    <small>{{editForm.get('condition_entretien').value?.length}}/500</small>
+                    <span class="custom-span">Condition d'Entretien {{editForm.get('condition_entretien').value?.length}}/500</span>
                     <div *ngIf="shouldShowRequiredError('condition_entretien')" class="invalid-feedback">veillez saisir les conditions d'entretiens.</div>
                 </div>
             </div>

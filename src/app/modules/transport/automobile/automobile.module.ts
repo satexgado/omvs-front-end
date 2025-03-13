@@ -29,6 +29,7 @@ import { DossierConducteurModule } from '../dossier-conducteur/dossier-conducteu
 import { EntretienModule } from '../entretien/entretien.module';
 import { EntretienTypeModule } from '../entretien-type/entretien-type.module';
 import { KilometrageModule } from '../kilometrage/kilometrage.module';
+import { PermiTypeModule } from '../permi-type/permi-type.module';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { KilometrageModule } from '../kilometrage/kilometrage.module';
         MapsPluginModule,
         EntretienModule,
         EntretienTypeModule,
-        KilometrageModule
+        KilometrageModule,
+        PermiTypeModule
     ],
     exports: [
         AutomobileComponent,

@@ -11,6 +11,7 @@ import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { AssurancePaiement, IAssurancePaiement } from 'src/app/core/models/transport/assurance-paiement';
 import { AssurancePaiementFactory } from 'src/app/core/services/transport/assurance-paiement';
 import { AssuranceFactory } from 'src/app/core/services/transport/assurance';
+import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
 
 @Component({
   selector: 'app-edit',
@@ -53,7 +54,9 @@ export class EditComponent extends BaseEditComponent {
     }
   ];
 
-  protected readonly allAssurances$ = new AssuranceFactory().list().pipe(
+  protected readonly allAssurances$ = new AssuranceFactory().list(
+    new QueryOptions().setSort([new Sort('libelle', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );

@@ -37,7 +37,7 @@
                                     <option value="affectataire_id">Affectataire</option>
                                     <option value="type_carburant">Carburant</option>
                                     <option value="conducteur_id">Chauffeur</option>
-                                    <option value="disponibilite">Disponibilite</option>
+                                    <!-- <option value="disponibilite">Disponibilite</option> -->
                                     <option value="etat_id">Etat</option>
                                     <option value="coordonnee_id">Fournisseur</option>
                                     <option value="localisation">Localisation</option>
@@ -171,10 +171,14 @@
                             <tbody>
                                 <tr *ngFor="let automobile of items;trackBy: dataHelper.trackByFn">
                                     <td class="align-middle">
-                                        <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
+                                        <a class="cursor-pointer" (click)="onSelectAuto(automobile)">
+                                            <i class="fal fa-dot-circle fa-lg " [style.color]="automobile.etat ? automobile.etat.couleur : '' "></i>  {{automobile.libelle}}
+                                        </a>
                                     </td>
                                     <td class="align-middle">
-                                        {{automobile.immatriculation}}
+                                        <a class="cursor-pointer" (click)="onSelectAuto(automobile)">
+                                            {{automobile.immatriculation}}
+                                        </a>
                                     </td>
                                     <td class="align-middle">
                                         <div ngbDropdown container="body" class="d-inline-block">
@@ -300,53 +304,12 @@
                 <div class="d-flex clearfix  mg-0 pd-0">
                     <div class="col-lg-2 p-0 " style="background:#f4f8f9; height:100vh ">
                         <nav class="monmenu nav flex-column  ">
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'details'"
-                                [class.bg-white]="fragment == 'details'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i
-                                        class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'situation'"
-                                [class.bg-white]="fragment == 'situation'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-biking-mountain tx-16  mr-2"></i>
-                                    Situation</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'kilometrage'"
-                                [class.bg-white]="fragment == 'kilometrage'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
-                                    Kilometrage</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'entretien'"
-                                [class.bg-white]="fragment == 'entretien'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
-                                    Entretien</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
-                                [class.bg-white]="fragment == 'mission'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
-                                    Missions</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'visite'"
-                                [class.bg-white]="fragment == 'visite'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-mechanic tx-16  mr-2"></i>
-                                    Visite Technique</a>
-                            </a>
+                            
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'assurance'"
                                 [class.bg-white]="fragment == 'assurance'"
                                 class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
                                 <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-crash tx-16  mr-2"></i>
                                     Assurance</a>
-                            </a>
-                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'panne'"
-                                [class.bg-white]="fragment == 'panne'"
-                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
-                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-garage tx-16  mr-2"></i>
-                                    Panne</a>
                             </a>
                             <a [routerLink]="['./', selectedAuto.id]" [fragment]="'calendrier'"
                                 [class.bg-white]="fragment == 'calendrier'"
@@ -354,6 +317,54 @@
                                 <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-calendar tx-16  mr-2"></i>
                                     Calendrier</a>
                             </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'commande'"
+                                [class.bg-white]="fragment == 'commande'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-file-signature tx-16  mr-2"></i>
+                                    Commande</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'details'"
+                                [class.bg-white]="fragment == 'details'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i
+                                        class="fal fa-info-circle tx-16  mr-2"></i> Détails</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'entretien'"
+                                [class.bg-white]="fragment == 'entretien'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-battery tx-16  mr-2"></i>
+                                    Entretien</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'kilometrage'"
+                                [class.bg-white]="fragment == 'kilometrage'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-tachometer tx-16  mr-2"></i>
+                                    Kilometrage</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'mission'"
+                                [class.bg-white]="fragment == 'mission'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-hiking tx-16  mr-2"></i>
+                                    Missions</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'panne'"
+                                [class.bg-white]="fragment == 'panne'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-garage tx-16  mr-2"></i>
+                                    Panne & Bons</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'situation'"
+                                [class.bg-white]="fragment == 'situation'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-map-marked tx-16  mr-2"></i>
+                                    Situation</a>
+                            </a>
+                            <a [routerLink]="['./', selectedAuto.id]" [fragment]="'visite'"
+                                [class.bg-white]="fragment == 'visite'"
+                                class="d-flex align-items-center justify-content-between pb-2 pt-1 bd-b">
+                                <a class="nav-link3 mx-2 tx-echos"><i class="fal fa-car-mechanic tx-16  mr-2"></i>
+                                    Visite Technique</a>
+                            </a> 
                         </nav>
                     </div>
     
@@ -434,6 +445,9 @@
                             <div *ngSwitchCase="'entretien'">
                                 <app-entretien [automobileId]="selectedAuto.id"></app-entretien>
                             </div>
+                            <div *ngSwitchCase="'commande'">
+                                <app-commande-automobile [automobileId]="selectedAuto.id"></app-commande-automobile>
+                            </div>
                             <div *ngSwitchCase="'panne'">
                                 <app-panne-automobile [automobileId]="selectedAuto.id"></app-panne-automobile>
                             </div>
@@ -494,7 +508,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr [routerLink]="['/transport/mes-chauffeurs', selectedAuto.conducteur_id]">
+                                                                    <tr class="cursor-pointer" [routerLink]="['/transport/mes-chauffeurs', selectedAuto.conducteur_id]">
                                                                         <td>
                                                                             <div class="d-flex justify-content-center">
                                                                                 <a *ngIf="selectedAuto.conducteur" [routerLink]="['/transport/mes-chauffeurs', selectedAuto.conducteur_id]">

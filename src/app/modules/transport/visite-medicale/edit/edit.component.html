@@ -9,52 +9,51 @@
         <form class="custom-placeholder" [formGroup]="editForm">
             <div *ngIf="!(conducteurId||isUpdating)" class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="conducteur_id">Conducteur</label>
-                    <select class="form-control form-control-sm" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="conducteur_id" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}"
+                    <div class="input-group">
+                        <select class="form-control" mySelectFirstOption [class.loading]="allAutomobiles$ | async" required name="conducteur_id" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}"
                         required>
-                        <option value="">--choississez le conducteur --</option>
-                        <ng-container *ngFor="let item of (allConducteurs$ | async)">
-                            <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
-                        </ng-container>
-                    </select>
+                            <ng-container *ngFor="let item of (allConducteurs$ | async)">
+                                <option [ngValue]="item.id">{{item.libelle | titlecase}}</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Chauffeur</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('conducteur_id')" class="invalid-feedback">veillez choisir le conducteur.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="libelle">Motif</label>
-                    <input type="text" class="form-control form-control-sm" [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
-                    <div class="invalid-feedback" *ngIf="shouldShowRequiredError('libelle')">veillez saisir le libellé.</div>
+                    <input type="text" class="form-control" [formControlName]="'libelle'" [ngClass]="{'is-invalid': shouldShowRequiredError('libelle'), 'is-valid': isValid('libelle')}" name="libelle" required>
+                    <span class="custom-span">Motif</span> 
+                    <div class="invalid-feedback" *ngIf="shouldShowRequiredError('libelle')">veillez saisir le motif.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="libelle">Date Visite</label>
-                    <input class="form-control form-control-sm" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_visite'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_visite'), 'is-valid': isValid('date_visite')}" required>
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_visite'" [ngClass]="{'is-invalid': shouldShowRequiredError('date_visite'), 'is-valid': isValid('date_visite')}" required>
+                    <span class="custom-span">Date Visite</span> 
                     <div *ngIf="shouldShowRequiredError('date_visite')" class="invalid-feedback">veillez saisir la date.</div>
                 </div>
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="diagnostic">Diagnostic</label>
-                    <textarea name="diagnostic" required maxlength="5000" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'diagnostic'" [ngClass]="{'is-invalid': shouldShowRequiredError('diagnostic'), 'is-valid': isValid('diagnostic')}"></textarea>
-                    <small>{{editForm.get('diagnostic').value?.length}}/5000</small>
+                    <label class="control-label" for="diagnostic"></label>
+                    <textarea name="diagnostic" required maxlength="5000" class="form-control" cols="30" rows="3" [formControlName]="'diagnostic'" [ngClass]="{'is-invalid': shouldShowRequiredError('diagnostic'), 'is-valid': isValid('diagnostic')}"></textarea>
+                    <span class="custom-span">Diagnostic {{editForm.get('diagnostic').value?.length}}/5000</span>
                     <div *ngIf="shouldShowRequiredError('diagnostic')" class="invalid-feedback">veillez saisirce champ.</div>
                 </div>
             </div>        
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="traitements_prescrits">Traitements Prescrits</label>
-                    <textarea name="traitements_prescrits" required maxlength="5000" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'traitements_prescrits'" [ngClass]="{'is-invalid': shouldShowRequiredError('traitements_prescrits'), 'is-valid': isValid('traitements_prescrits')}"></textarea>
-                    <small>{{editForm.get('traitements_prescrits').value?.length}}/5000</small>
+                    <textarea name="traitements_prescrits" required maxlength="5000" class="form-control" cols="30" rows="3" [formControlName]="'traitements_prescrits'" [ngClass]="{'is-invalid': shouldShowRequiredError('traitements_prescrits'), 'is-valid': isValid('traitements_prescrits')}"></textarea>
+                    <span class="custom-span">Traitements Prescrits {{editForm.get('traitements_prescrits').value?.length}}/5000</span>
                     <div *ngIf="shouldShowRequiredError('traitements_prescrits')" class="invalid-feedback">veillez saisirce champ.</div>
                 </div>
             </div>        
             <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                 <div class="col-10">
-                    <label class="control-label" for="commentaires">Commentaires</label>
-                    <textarea name="commentaires" required maxlength="5000" class="form-control form-control-sm" cols="30" rows="3" [formControlName]="'commentaires'" [ngClass]="{'is-invalid': shouldShowRequiredError('commentaires'), 'is-valid': isValid('commentaires')}"></textarea>
-                    <small>{{editForm.get('commentaires').value?.length}}/5000</small>
+                    <textarea name="commentaires" required maxlength="5000" class="form-control" cols="30" rows="3" [formControlName]="'commentaires'" [ngClass]="{'is-invalid': shouldShowRequiredError('commentaires'), 'is-valid': isValid('commentaires')}"></textarea>
+                    <span class="custom-span">Commentaires {{editForm.get('commentaires').value?.length}}/5000</span>
                     <div *ngIf="shouldShowRequiredError('commentaires')" class="invalid-feedback">veillez saisirce champ.</div>
                 </div>
             </div>        

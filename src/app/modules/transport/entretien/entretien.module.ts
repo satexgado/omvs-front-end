@@ -5,6 +5,7 @@ import { EntretienComponent } from './entretien.component';
 import { EditComponent } from './edit/edit.component';
 import { InlineEditorModule } from 'src/app/inline-editor/inline-editor.module';
 import { CustomInputModule } from 'src/app/shared/components/custom-input';
+import { CoordonneeModule } from '../../fournisseur/coordonnee/coordonnee.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { CustomInputModule } from 'src/app/shared/components/custom-input';
         CommonModule,
         SharedModule,
         InlineEditorModule,
-        CustomInputModule
+        CustomInputModule,
+        CoordonneeModule
     ],
     exports: [
         EntretienComponent,

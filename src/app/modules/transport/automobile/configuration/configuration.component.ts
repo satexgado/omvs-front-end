@@ -18,12 +18,12 @@ export class ConfigurationTransportComponent implements OnInit {
     }
     
     ngOnInit(): void {
-        const detailsView = 'type,carburant,couleur,genre,marque,modele,serie,lieu,etat,entretien';
+        const detailsView = 'type,carburant,couleur,genre,marque,modele,serie,lieu,etat,entretien,permis';
         this.route.fragment.subscribe(fragment => {
-        this.fragment = fragment;
-        if(!detailsView.includes(fragment)) {
-            this.fragment = 'type';
-        }
+            this.fragment = fragment;
+            if(!detailsView.includes(fragment)) {
+                this.fragment = 'type';
+            }
         })
     }
 }

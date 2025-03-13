@@ -28,13 +28,18 @@ export class EditComponent extends BaseEditComponent {
 
   protected readonly allPanneNiveau$ = this.cacheService.get(
     'allPanneNiveau',
-    new PanneNiveauFactory().list().pipe(
+    new PanneNiveauFactory().list(
+    new QueryOptions().setSort([new Sort('libelle_niveau', 'asc')])
+
+    ).pipe(
       shareReplay(1),
       map(data => data.data)
     ),
   1800000);
 
-  protected readonly allAutomobiles$ = new AutomobileFactory().list().pipe(
+  protected readonly allAutomobiles$ = new AutomobileFactory().list(
+    new QueryOptions().setSort([new Sort('designation', 'asc')])
+  ).pipe(
     shareReplay(1),
     map(data => data.data)
   );

@@ -14,15 +14,17 @@
                             <tr class="barder-0">
                                 <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b" *ngIf="!_automobileId">Vehicule</th>
                                 <th class="tx-orange tx-left tx-16 bg-jaunelight bd-b">Type de Pannes</th>
-                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight">Signalé le</th>
-                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Niveau d'urgence</th>
-                                <th class="tx-yeto2 tx-center tx-16 bg-bluelight"> Bon de commande</th>
-                                <th class="tx-orange tx-center p-3 tx-16"> </th>
+                                <th class="tx-yeto2 text-center tx-16 bg-bluelight">Signalé le</th>
+                                <th class="tx-yeto2 text-center tx-16 bg-bluelight"> Niveau d'urgence</th>
+                                <th class="tx-yeto2 text-center tx-16 bg-bluelight"> Bon de commande</th>
+                                <th class="tx-orange text-center p-3 tx-16"> </th>
                             </tr>
                             <ng-container *ngIf="dataHelper.data$ | async as items">
                                 <ng-container *ngIf="items.length; else noItem">
                                     <ng-container *ngFor="let panne of items;trackBy: dataHelper.trackByFn">
-                                        <tr class=" bd-b">
+                                        <tr class=" bd-b" [ngStyle]="{ 
+                                            'border-left': panne.niveau ? '0.25rem solid ' + panne.niveau.couleur : 'none' 
+                                          }">
                                             <td class=" " *ngIf="!_automobileId">
                                                 <div>
                                                     <p class="mg-0 tx-gray-600 tx-bolder"> {{panne.automobile.libelle | titlecase}}</p>
@@ -33,25 +35,23 @@
                                                   {{panne.libelle}}
                                                 </span>
                                             </td>
-                                            <td class="tx-center bg-white bd-r bd-white">
+                                            <td class="text-center bg-white bd-r bd-white">
                                                 <div>
                                                     <p class="mg-0 tx-gray-600 tx-bolder"> {{panne.date | date: 'dd/MM/yyyy'}}</p>
                                                 </div>
                                             </td>
-                                            <td class="tx-center bg-white bd-r bd-white">
-                                                <div>
-                                                    <p class="mg-0 text-{{panne.niveau?.couleur}} tx-bolder"> {{panne.niveau?.libelle}}</p>
-                                                </div>
+                                            <td class="text-center bg-white bd-r bd-white">
+                                                <span class="badge" [style.background-color]="panne.niveau ? panne.niveau.couleur : ''" [style.color]="getTextColor(panne.niveau ? panne.niveau.couleur : '')"> {{panne.niveau?.libelle}}</span>
                                             </td>
-                                            <td class=" tx-center ">
-                                                <button class="btn btn-sm btn-outline-primary" (click)="onSetSelected(panne)">Voir</button>
+                                            <td class=" text-center ">
+                                                <button class="btn btn-sm btn-outline-primary" (click)="onSetSelected(panne)">Voir {{panne.nb_commandes}}</button>
                                             </td>
-                                            <td class=" tx-center ">
+                                            <td class=" text-center ">
                                                 <button class="btn btn-sm btn-link" (click)="openModal(content, panne)"><i class="fad fa-search tx-14 bg-gray tx-warning " style="padding:6px; border-radius:50%"></i></button>
                                                 <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowUpdateForm(panne)"> <i class="fal fa-edit" ></i> </button>
                                                 <button class="btn btn-sm btn-link  tx-gray-600 mx-1 tx-13" (click)="onShowCreateForm(panne)"> <i class="fal fa-clone" ></i> </button>
         
-                                                <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(panne)"> <i class="fal fa-trash-alt" ></i></button>
+                                                <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" *ngIf="!panne.nb_commandes" (click)="onDelete(panne)"> <i class="fal fa-trash-alt" ></i></button>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -79,22 +79,32 @@
                     <tbody>
                         <tr class=" mg-b-20">
                             <th class="tx-yeto2 tx-16 bg-greenlight"> Affectés à</th>
+                            <th class="tx-yeto2 tx-16 bg-greenlight"> N° du bon </th>
                             <th class="tx-yeto2  tx-16 bg-greenlight bd-r bd-white">Date sortie</th>
                             <th class="tx-yeto2  tx-16 bg-bluelight">Date retour</th>
-                            <th class="tx-orange tx-center tx-16">Etats </th>
+                            <th class="tx-orange text-center tx-16">Etats </th>
                             <th class="tx-yeto2 tx-16 bg-greenlight"> Fournisseur</th>
-                            <th class="tx-orange tx-center tx-16"></th>
+                            <th class="tx-orange text-center tx-16"></th>
                         </tr>
                         <ng-container *ngIf="pannePersonneHelper.data$ | async as items">
                             <ng-container *ngIf="items.length; else noItem">
                                 <tr *ngFor="let affectation of items;trackBy: pannePersonneHelper.trackByFn">
-                                    <td class=" tx-center ">
+                                    <td class=" text-center ">
                                         <div class="d-flex flex-row  mg-t-6">
                                             <div class="profiles">
-                                                <img class="rounded-circle" src="assets/images/avatar-placeholder.png" alt="avatar" width="30">
+                                                <img *ngIf="affectation?.user?.sexe == 'Masculin'"
+                                                        src="assets/images/users/male.png"
+                                                        class="rounded-circle" width="30">
+                                                    <img *ngIf="affectation?.user?.sexe == 'Feminin'"
+                                                        src="assets/images/users/female.png"
+                                                        class="rounded-circle"
+                                                        alt="" width="30">
                                             </div>
                                             {{affectation.user.libelle}}
                                         </div>
+                                    </td>
+                                    <td class=" bd-b bg-light">
+                                        <span class=" tx-danger tx-14"> {{affectation.libelle}} </span>
                                     </td>
                                     <td class=" bd-b bg-light">
                                         <span class=" tx-danger tx-14"> {{affectation.date_sortie | date: 'dd/MM/yyyy'}} </span>
@@ -105,15 +115,12 @@
                                     <td class=" bd-b bg-light">
                                         <span *ngIf="affectation.etat" class=" tx-{{affectation.etat.couleur}} tx-14"> {{affectation.etat.libelle}} </span>
                                     </td>
-                                    <td class=" tx-center ">
+                                    <td class=" text-center ">
                                         <div class="d-flex flex-row  mg-t-6">
-                                            <div class="profiles">
-                                                <img class="rounded-circle" src="assets/images/avatar-placeholder.png" alt="avatar" width="30">
-                                            </div>
                                             {{affectation.fournisseur.libelle}}
                                         </div>
                                     </td>
-                                    <td class=" tx-center ">
+                                    <td class=" text-center ">
                                         <button class="btn btn-sm btn-link  tx-gray-600 tx-13" (click)="onShowUpdateAffectationForm(affectation)"> <i class="fal fa-edit" ></i> </button>
                                         <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDeleteAffectation(affectation)"> <i class="fal fa-trash-alt" ></i></button>
                                     </td>
@@ -126,8 +133,6 @@
         </ng-container>
     </div>
 </div>
-
-
 
 <ng-template #noItem>
     <tr>
@@ -152,14 +157,14 @@
         <p style="font-size: 18px;">{{modalData.description}}</p>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
+        <button class="btn btn-light mx-2 " (click)="modal.close( 'Close click');onShowUpdateForm(modalData); "> <i class="fal fa-edit" style="color:#99600b"></i> Modifier</button>
         <button type="button " class="btn btn-outline-dark " (click)="modal.close( 'Close click') ">Fermer</button>
     </div>
 </ng-template>
 
 <!-- ADD -->
 <div class="button-fixed-bottom-right">
-    <button *ngIf="!_automobileId" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
+    <button *ngIf="isViewPanne&&(!_automobileId)&&!selectedPanne" [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
       class="btn btn-primary btn-circle btn-lg">
       <i class="fas fa-plus-circle"></i>
     </button>

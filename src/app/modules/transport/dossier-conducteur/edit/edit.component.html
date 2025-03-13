@@ -15,12 +15,14 @@
                 </header>
                 <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" *ngIf="!proprietaire">
                     <div class="col-12 col-sm-10">
-                        <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}">
-                            <ng-container *ngFor="let item of (allInscriptions$ | async)">
-                                <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
-                            </ng-container>
-                        </select>
-                        <span class="custom-span">Conducteur</span>
+                        <div class="input-group">
+                            <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'conducteur_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'conducteur_id'), 'is-valid': isValid('conducteur_id')}">
+                                <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                                    <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
+                                </ng-container>
+                            </select>
+                            <span class="custom-span">Conducteur</span>
+                        </div>
                         <div *ngIf="shouldShowRequiredError('conducteur_id')" class="invalid-feedback">veillez choisir le conducteur.</div>
                     </div>
                 </div>
@@ -50,13 +52,15 @@
 
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
                     <div class="col-12 col-sm-10">
-                        <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'lieu_obtention_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'lieu_obtention_permis_id'), 'is-valid': isValid('lieu_obtention_permis_id')}"
+                        <div class="input-group">
+                            <select class="custom-select" mySelectFirstOption required name="pageSize" [formControlName]="'lieu_obtention_permis_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'lieu_obtention_permis_id'), 'is-valid': isValid('lieu_obtention_permis_id')}"
                             required>
                                 <ng-container *ngFor="let item of ((allPays$ | async) | sortBy:'asc':'libelle')">
                                     <option [ngValue]="item.id">{{item.libelle}}</option>
                                 </ng-container>
                             </select>
-                        <span class="custom-span">pays d'obtention du permis</span>
+                            <span class="custom-span">pays d'obtention du permis</span>
+                        </div>
                         <div *ngIf="shouldShowRequiredError('lieu_obtention_permis_id')" class="invalid-feedback">veillez choisir le pays.</div>
                     </div>
                 </div>
@@ -80,8 +84,7 @@
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_exercez_autre_part').value == 'Oui'">
                     <div class="col-12 col-sm-10">
                         <textarea name="reference" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'reference'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'reference'), 'is-valid': isValid('reference')}"></textarea>
-                        <span class="custom-span">Reference</span>
-                        <small>{{editForm.get('reference').value?.length}}/200</small>
+                        <span class="custom-span">Reference {{editForm.get('reference').value?.length}}/200</span>
                         <div *ngIf="shouldShowRequiredError('reference')" class="invalid-feedback">veillez saisir la description.</div>
                     </div>
                 </div>
@@ -140,8 +143,7 @@
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_difficulter_entendre').value == 'Oui'">
                     <div class="col-12 col-sm-10">
                         <textarea name="quel_difficulte" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'quel_difficulte'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'quel_difficulte'), 'is-valid': isValid('quel_difficulte')}"></textarea>
-                        <span class="custom-span">Quel difficulté?</span>
-                        <small>{{editForm.get('quel_difficulte').value?.length}}/200</small>
+                        <span class="custom-span">Quel difficulté? {{editForm.get('quel_difficulte').value?.length}}/200</span>
                         <div *ngIf="shouldShowRequiredError('quel_difficulte')" class="invalid-feedback">veillez saisir la description.</div>
                     </div>
                 </div>
@@ -167,8 +169,7 @@
                 <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3" *ngIf="editForm.get('avez_vous_des_difficultes_voir').value == 'Oui'">
                     <div class="col-12 col-sm-10">
                         <textarea name="laquel" maxlength="200" class="form-control" cols="30" rows="5" [formControlName]="'laquel'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'laquel'), 'is-valid': isValid('laquel')}"></textarea>
-                        <span class="custom-span">Quel difficulté?</span>
-                        <small>{{editForm.get('laquel').value?.length}}/200</small>
+                        <span class="custom-span">Quel difficulté? {{editForm.get('laquel').value?.length}}/200</span>
                         <div *ngIf="shouldShowRequiredError('laquel')" class="invalid-feedback">veillez saisir la description.</div>
                     </div>
                 </div>

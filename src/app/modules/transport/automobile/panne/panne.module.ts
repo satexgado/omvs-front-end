@@ -7,13 +7,15 @@ import { EditComponent } from './edit/edit.component';
 import { InlineEditorModule } from 'src/app/inline-editor/inline-editor.module';
 import { CustomInputModule } from 'src/app/shared/components/custom-input';
 import { PanneNiveauModule } from 'src/app/modules/logistique/panne-niveau/panne-niveau.module';
+import { CommandeComponent } from './commande/commande.component';
 
 
 @NgModule({
     declarations: [
         PanneComponent,
         EditComponent,
-        PanneAffectationEditComponent
+        PanneAffectationEditComponent,
+        CommandeComponent
     ],
     imports: [
         CommonModule,
@@ -24,6 +26,7 @@ import { PanneNiveauModule } from 'src/app/modules/logistique/panne-niveau/panne
     ],
     exports: [
         PanneComponent,
+        CommandeComponent
     ],
     entryComponents: [EditComponent,PanneAffectationEditComponent]
 })
