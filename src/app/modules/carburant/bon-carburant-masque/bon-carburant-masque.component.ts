@@ -6,17 +6,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditComponent } from './edit/edit.component';
 import { AppTitleService } from 'src/app/shared/services';
 import { ResourceScrollableHelper } from '../../../shared/state';
-import { IBonCarburantSortie } from 'src/app/core/models/transport/bon-carburant-sortie';
-import { BonCarburantSortieFactory } from 'src/app/core/services/transport/bon-carburant-sortie';
+import { IBonCarburantMasque } from 'src/app/core/models/transport/bon-carburant-masque';
+import { BonCarburantMasqueFactory } from 'src/app/core/services/transport/bon-carburant-masque';
 
 @Component({
-  selector: 'app-bon-carburant-sortie',
-  templateUrl: './carburant-sortie.component.html'
+  selector: 'app-bon-carburant-masque',
+  templateUrl: './bon-carburant-masque.component.html'
 })
-export class CarburantSortieComponent extends EditableListComponent {
-  modalData: IBonCarburantSortie;
+export class BonCarburantMasqueComponent extends EditableListComponent {
+  modalData: IBonCarburantMasque;
 
-  allTypesCarburantSorties$: Observable<object>;
+  allTypesCarburants$: Observable<object>;
   editModal = EditComponent;
   linkFromRoot;
 
@@ -24,23 +24,20 @@ export class CarburantSortieComponent extends EditableListComponent {
     protected titleservice: AppTitleService,
     protected modalService: NgbModal) {
     super(
-      new ResourceScrollableHelper(new BonCarburantSortieFactory(),
+      new ResourceScrollableHelper(new BonCarburantMasqueFactory(),
       DefaultQueryOptionWithInsAndSeachString
       )
     );
-    titleservice.setTitle('mes carburant-sortie');
+    titleservice.setTitle('mes carburant-entree');
     this.modalService = modalService;
     this.dataHelper.relations = [
-      "trans_auto",
-      "trans_bon_type_engagement",
-      "personnel_autorisation",
-      "trans_bon_carburant.trans_bon_carburant_masque.cr_coordonnee",
-      "trans_bon_carburant.trans_bon_carburant_masque.trans_type_carburant",
-      "trans_bon_carburant.trans_bon_carburant_masque.trans_type_coupure"  
+      "cr_coordonnee",
+      "trans_type_carburant",
+      "trans_type_coupure"
     ];
   }
 
-  openModal(content, genre: IBonCarburantSortie) {
+  openModal(content, genre: IBonCarburantMasque) {
     this.modalData = genre;
     this.modalService.open(content, { size: 'lg', centered: true,  backdrop: 'static' });
   }

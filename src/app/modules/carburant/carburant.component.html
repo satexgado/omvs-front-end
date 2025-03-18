@@ -33,28 +33,28 @@
           <div class="row mb-4 animated slideInUp">
             <div class="col-md-12">
               <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
-                <a routerLink="/bon-carburant/entrant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/masque" routerLinkActive #masque="routerLinkActive" [class.text-secondary]="!masque.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-receipt"></i> Masque
+                </a>
+                <a routerLink="/bon-carburant/stock" routerLinkActive #stock="routerLinkActive" [class.text-secondary]="!stock.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
+                  <i class="fas fa-warehouse"></i> Stock
+                </a>
+                <a routerLink="/bon-carburant/entrant" routerLinkActive #entrant="routerLinkActive" [class.text-secondary]="!entrant.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-gift-card"></i> Entrant
                 </a>
-                <a routerLink="/bon-carburant/sortant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/sortant" routerLinkActive #sortant="routerLinkActive" [class.text-secondary]="!sortant.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-hand-holding-box"></i> Sortant
                 </a>
-                <!-- <a routerLink="/bon-carburant/entrant" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-warehouse"></i> Stock
-                </a> -->
-                <a routerLink="/bon-carburant/carte-abonnement" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/carte-abonnement" routerLinkActive #carte="routerLinkActive" [class.text-secondary]="!carte.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-credit-card-front"></i> Carte
                 </a>
-                <a routerLink="/bon-carburant/type-coupure" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/type-coupure" routerLinkActive #coupure="routerLinkActive" [class.text-secondary]="!coupure.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-cabinet-filing"></i> Coupure
                 </a>
-                <a routerLink="/bon-carburant/approvisionnement" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
-                  <i class="fas fa-gas-pump"></i> Approvisionnement
-                </a>
-                <a routerLink="/bon-carburant/type-engagement" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/type-engagement" routerLinkActive #engagement="routerLinkActive" [class.text-secondary]="!engagement.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-ramp-loading"></i> Engagement
                 </a>
-                <a routerLink="/bon-carburant/analyse" [routerLinkActive]="'text-primary'" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/bon-carburant/analyse" routerLinkActive #analyse="routerLinkActive" [class.text-secondary]="!analyse.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-user-chart"></i> Analyse
                 </a>
               </div>

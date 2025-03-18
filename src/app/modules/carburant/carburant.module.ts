@@ -14,6 +14,8 @@ import { CarburantEntreeModule } from './carburant-entree/carburant-entree.modul
 import { CarburantSortieModule } from './carburant-sortie/carburant-sortie.module';
 import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
 import { CarteAbonnementCarburantModule } from './carte-abonnement/carte-abonnement.module';
+import { BonCarburantMasqueModule } from './bon-carburant-masque/bon-carburant-masque.module';
+import { BonCarburantModule } from './bon-carburant/bon-carburant.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { CarteAbonnementCarburantModule } from './carte-abonnement/carte-abonnem
     ApprovisionnementModule,
     CarburantEntreeModule,
     CarburantSortieModule,
-    CarteAbonnementCarburantModule
+    CarteAbonnementCarburantModule,
+    BonCarburantMasqueModule,
+    BonCarburantModule
   ],
   exports: [
   ],

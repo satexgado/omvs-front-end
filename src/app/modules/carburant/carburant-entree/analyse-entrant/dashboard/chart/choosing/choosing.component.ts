@@ -41,7 +41,7 @@ export class ChoosingComponent implements OnInit {
   qualiteSelect = [
     {id: QualiteEnum.annee, libelle: 'Année'},
     {id: QualiteEnum.mois, libelle: 'Mois'},
-    {id: QualiteEnum.approvisionnement, libelle: 'Approvisionement'},
+    // {id: QualiteEnum.approvisionnement, libelle: 'Approvisionement'},
     {id: QualiteEnum.carburant, libelle: 'Carburant'},
     {id: QualiteEnum.coupure, libelle: 'Coupure'},
     {id: QualiteEnum.coordonnee, libelle: 'Fournisseur'},

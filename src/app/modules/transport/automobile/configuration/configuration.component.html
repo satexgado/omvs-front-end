@@ -36,6 +36,11 @@
                     <i class="fal fa-car-bus tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Modeles</span>
                 </div>
             </a>
+            <a [class.active]="fragment == 'niveau'" routerLink="." [fragment]="'niveau'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
+                <div class="nav-link3 text-center">
+                    <i class="fal fa-exclamation-triangle tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Niveau Panne</span>
+                </div>
+            </a>
             <a [class.active]="fragment == 'serie'" routerLink="." [fragment]="'serie'" class="d-flex nav-link align-items-center justify-content-between pb-2 pt-1 bd-b">
                 <div class="nav-link3 text-center">
                     <i class="fal fa-cars tx-20"></i> <span class="nav-tabs-hidden-xs mx-2">Series</span>
@@ -94,6 +99,9 @@
             </div>
             <div *ngSwitchCase="'permis'">
                 <app-permi-type></app-permi-type>
+            </div>
+            <div *ngSwitchCase="'niveau'">
+                <app-panne-niveau></app-panne-niveau>
             </div>
             <!-- <div *ngSwitchCase="'masque-itineraire'">
                 <app-masque-itineraire></app-masque-itineraire>

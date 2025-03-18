@@ -6,19 +6,34 @@
     </div>
     <div class="d-flex p-2  border-bottom">
         <input type="text" class="form-control form-control-sm" name="term" placeholder="recherche" [(ngModel)]="dataHelper.searchTerm" required aria-label="Batiment" aria-describedby="basic-addon2">
+        <div class="mg-l-auto text-right">
+            <button class="btn card-1 btn-primary bd-0 btn-sm mx-2" (click)="onShowCreateForm();">
+                <i class="fal fa-plus-circle tx-14 rounded-circle" ></i>    
+            </button>
+        </div>
     </div>
     <div class="card-body p-0" [class.loading]="dataHelper.loading$ | async">
-        <ul class="scrollable-y-50 scroll-11 list-group list-group-flush choose-title hoverable-list d-none d-lg-flex">
+        <div class="col-lg-12 p-0 scrollable-y-50 scroll-11">
             <ng-container *ngIf="dataHelper.data$ | async as items">
-                <ng-container *ngIf="items.length; else noItemHeaderOnly">
-                    <li class="list-group-item cursor-pointer tx-yeto align-middle" (click)="onSetSelected(materiel)" [class.border-left-primary]="selectedMaterielId && materiel.id == selectedMaterielId" *ngFor="let materiel of (items| sortBy:'asc':'name');trackBy: trackByFn">
-                        <a class="cursor-pointer w-100">
-                            <strong class="tx-yeto2">{{materiel.libelle | titlecase}} </strong>
-                        </a>
-                    </li>
+                <ng-container *ngIf="items.length; else noItem">
+                    <a class="card cursor-pointer card-1 my-1" *ngFor="let materiel of items;trackBy: dataHelper.trackByFn" [class.border-left-primary]="selectedMaterielId && materiel.id == selectedMaterielId" (click)="onSetSelected(materiel)">
+                        <div class="d-flex align-items-center">
+                            <div class="ml-3 mr-3 ">
+                                <h6 class="tx-facebook tx-13 mt-2 tx-bolder tx-uppercase" style="text-align: justify;">{{materiel.libelle}} ({{materiel.quantite}})</h6>
+                                <p class="d-flex  mb-2">
+                                    <button class="mr-2 btn btn-sm btn-info card-1" container="body" [ngbTooltip]="'Modifier'" (click)="onShowUpdateForm(materiel);$event.stopPropagation(); "> <i class="fad fa-edit"></i></button>
+                                    <button class="mr-2 btn btn-sm btn-primary card-1" container="body" [ngbTooltip]="'Copier'" (click)="onShowCreateForm(materiel);$event.stopPropagation(); "> <i class="fad fa-clone"></i></button>
+                                    <button class="mr-2 btn btn-sm btn-danger card-1" container="body" [ngbTooltip]="'Supprimer'" (click)="onDelete(materiel);$event.stopPropagation(); "> <i class="fad fa-times-square "></i></button>
+                                </p>
+                            </div>
+                            <div class="mg-l-auto text-right">
+
+                            </div>
+                        </div>
+                    </a>
                 </ng-container>
             </ng-container>
-        </ul>
+        </div>
     </div>
 </div>
 <ng-template #noItem>
@@ -31,14 +46,14 @@
 </ng-template>
 
 <!-- ADD -->
-<div class="button-fixed-bottom-right">
+<!-- <div class="button-fixed-bottom-right">
     <button [disabled]="(dataHelper.loading$ | async)" (click)="onShowCreateForm();" title="Créer"  type="button"
       class="btn btn-primary btn-circle btn-lg">
       <i class="fas fa-plus-circle"></i>
     </button>
-    <!-- <button *ngIf="currentView == 'add'" title="Fermer"
+    <button *ngIf="currentView == 'add'" title="Fermer"
       (click)="addOrList(); setTitle('window', 'listMission'); removeItem()" type="button"
       class="btn btn-danger btn-circle btn-lg">
       <i class="fas fa-times"></i>
-    </button> -->
-</div>
+    </button>
+</div> -->

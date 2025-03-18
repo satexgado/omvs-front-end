@@ -4,24 +4,19 @@ import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-boot
 import { Validators } from '@angular/forms';
 import { BonCarburantEntree, IBonCarburantEntree } from 'src/app/core/models/transport/bon-carburant-entree';
 import { BonCarburantEntreeFactory } from 'src/app/core/services/transport/bon-carburant-entree';
-import { EditComponent as ApprovisionnementEditComponent} from '../../approvisionnement/edit/edit.component';
-import { EditComponent as TypeCoupureEditComponent} from '../../type-coupure/edit/edit.component';
-import { EditComponent as CarburantEditComponent} from 'src/app/modules/transport/carburant/edit/edit.component';
-import { EditComponent as CoordonneeEditComponent} from 'src/app/modules/fournisseur/coordonnee/edit/edit.component';
-import { CarburantTypeFactory } from 'src/app/core/services/transport/carburant-type';
+import { EditComponent as BonCarburantEditComponent} from '../../bon-carburant/edit/edit.component';
 import { map, shareReplay } from 'rxjs/operators';
-import { BonTypeCoupureFactory } from 'src/app/core/services/transport/bon-type-coupure';
-import { BonApprovisionnementFactory } from 'src/app/core/services/transport/bon-approvisionnement';
-import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepicker.custom';
-
-
+import { QueryOptions, Sort } from 'src/app/shared/models/query-options';
+import { BonCarburantFactory } from 'src/app/core/services/transport/bon-carburant';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   providers: [
+    DatePipe,
     { provide: NgbDateAdapter, useClass: NgbDateToStringAdapter },
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
@@ -29,44 +24,35 @@ import { CustomDateParserFormatter } from 'src/app/shared/custom-config/ngdatepi
 export class EditComponent extends BaseEditComponent  {
   heading = 'Entrée Bon de carburant';
   @Input() item: IBonCarburantEntree = new BonCarburantEntree();
-  allTypeCarburants$ = new CarburantTypeFactory().list().pipe(
-    shareReplay(1),
-    map(data => data.data)
-  );
-  readonly carburantEditComponent  = CarburantEditComponent;
-
-  allCoordonnees$ = new CrCoordonneeFactory().list().pipe(
-    shareReplay(1),
-    map(data => data.data)
-  );
-  readonly coordonneeEditComponent  = CoordonneeEditComponent;
-
-  allTypeCoupures$ = new BonTypeCoupureFactory().list().pipe(
-    shareReplay(1),
-    map(data => data.data)
-  );
-  readonly coupureEditComponent  = TypeCoupureEditComponent;
-
-  allApprovisionnements$ = new BonApprovisionnementFactory().list().pipe(
-    shareReplay(1),
-    map(data => data.data)
-  );
-  readonly approvisionnementEditComponent  = ApprovisionnementEditComponent;
+  allBonCarburantMasques$ = new BonCarburantFactory().list(
+      new QueryOptions().setSort([new Sort('masque_libelle', 'asc')]).setIncludes(
+        [
+          "trans_bon_carburant_masque.cr_coordonnee",
+        "trans_bon_carburant_masque.trans_type_carburant",
+        "trans_bon_carburant_masque.trans_type_coupure"
+        ]
+      )
+    ).pipe(
+      shareReplay(1),
+      map(data => data.data.map(item => {
+        item['displayLibelle'] = ` ${item.libelle}  (${this.datePipe.transform(item.date_expiration,'dd/MM/yyyy')}) `;
+        return item;
+      }))
+    );
+  readonly bonCarburantEditComponent  = BonCarburantEditComponent;
 
   constructor(
     protected cdRef: ChangeDetectorRef,
+    private datePipe: DatePipe,
     activeModal: NgbActiveModal) {
     super(new BonCarburantEntreeFactory(), cdRef, activeModal);
   }
 
   createFormGroup(item: IBonCarburantEntree) {
     return this.formBuilder.group({
-      'coordonnee_id': [item.coordonnee_id, Validators.required],
-      'type_carburant': [item.type_carburant, Validators.required],
-      'type_coupure': [item.type_coupure, Validators.required],
+      'bon_carburant_id': [item.bon_carburant_id, Validators.required],
       'nombre_coupure': [item.nombre_coupure, Validators.required],
       'date_emission': [item.date_emission, Validators.required],
-      'approvisionnement_id': [item.approvisionnement_id, Validators.required],
       'id': [item.id]
     });
   }

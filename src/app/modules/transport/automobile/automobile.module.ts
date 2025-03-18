@@ -30,6 +30,7 @@ import { EntretienModule } from '../entretien/entretien.module';
 import { EntretienTypeModule } from '../entretien-type/entretien-type.module';
 import { KilometrageModule } from '../kilometrage/kilometrage.module';
 import { PermiTypeModule } from '../permi-type/permi-type.module';
+import { PanneNiveauModule } from '../../logistique/panne-niveau/panne-niveau.module';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { PermiTypeModule } from '../permi-type/permi-type.module';
         EntretienModule,
         EntretienTypeModule,
         KilometrageModule,
-        PermiTypeModule
+        PermiTypeModule,
+        PanneNiveauModule,
     ],
     exports: [
         AutomobileComponent,

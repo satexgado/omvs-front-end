@@ -16,6 +16,8 @@ import { LogistiqueTemplateComponent } from './template/template.component';
 import { MaterielComponent } from './materiel/materiel.component';
 import { SuivieComponent} from './suivie/suivie.component';
 import { BesoinModule} from './besoin/besoin.module';
+import { CustomInputModule } from 'src/app/shared/components/custom-input';
+import { CoordonneeModule } from '../fournisseur/coordonnee/coordonnee.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { BesoinModule} from './besoin/besoin.module';
     PanneModule,
     DefectModule,
     LogistiqueSharedModule,
-    AmortissementModule
+    AmortissementModule,
+    CustomInputModule,
+    CoordonneeModule
   ],
   exports: [
     CommonModule,

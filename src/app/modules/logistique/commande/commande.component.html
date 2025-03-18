@@ -19,7 +19,7 @@
                         <th class="tx-orange  tx-16 bg-jaunelight1">Date commande</th>
                         <th class="tx-yeto2  tx-16 bg-bluelight">Coût Unitaire</th>
                         <th class="tx-yeto2  tx-16 bg-bluelight bd-r bd-white">Quantités</th>
-                        <th class="tx-jaune  tx-16 bg-greenlight"> Affectés à</th>
+                        <th class="tx-jaune  tx-16 bg-greenlight"> Fournisseur</th>
                         <th class="tx-orange  tx-16"> </th>
                     </tr>
                     <ng-container *ngIf="dataHelper.data$ | async as items">
@@ -49,21 +49,11 @@
                                         </div>
                                     </td>
                                     <td class=" tx-center ">
-                                        <button class="btn btn-link btn-sm" (click)="onSetSelected(commande)">
-                                          <ul class="list-unstyled mg-0 d-flex align-items-center justify-content-center" *ngIf="commande.affectation_personnes && commande.affectation_personnes.length">
-                                            <li *ngFor="let item of commande.affectation_personnes | slice:0:3" class="mg-l--10">
-                                                <div class="avatar">
-                                                    <img src="assets/images/avatar-placeholder.png" title="{{item.user.libelle}}" class="avatar-initial border border-secondary rounded-circle" alt="">
-                                                </div>
-                                            </li>
-                                            <li *ngIf="commande.affectation_personnes?.length > 3" class="mg-l--10" data-original-title="" title="">
-                                                <div class="avatar"><span class="bg-soft-primary avatar-initial rounded-circle">{{commande.affectation_personnes.length - 3}}+</span></div>
-                                            </li>
-                                          </ul>
-                                        </button>
+                                        <div>
+                                            <p class="mg-0 tx-gray-600 tx-bolder"> {{commande.coordonnee?.libelle}}</p>
+                                        </div>
                                     </td>
                                     <td class=" tx-center ">
-                                        <button class="btn btn-sm btn-link tx-gray-600  tx-13" (click)="onSetSelected(commande)"><i class="fal fa-link"></i></button>
                                         <button class="btn btn-sm btn-link  tx-gray-600  tx-13" (click)="onShowUpdateForm(commande)"> <i class="fal fa-edit" ></i> </button>
                                         <button class="btn btn-sm btn-link btn-link-danger tx-gray-600 tx-13" (click)="onDelete(commande)"> <i class="fal fa-trash-alt" ></i></button>
                                     </td>

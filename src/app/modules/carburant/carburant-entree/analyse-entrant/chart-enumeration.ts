@@ -16,6 +16,6 @@ export enum QualiteEnum {
   carburant = 'Carburant',
   coordonnee = 'Coordonnee',
   coupure = 'Coupure',
-  approvisionnement = 'Approvisionnement',
+  // approvisionnement = 'Approvisionnement',
   valeur = 'Valeur',
 }

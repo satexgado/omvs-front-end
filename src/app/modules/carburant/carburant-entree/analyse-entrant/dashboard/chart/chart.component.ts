@@ -227,13 +227,13 @@ export class ChartComponent implements OnInit, AfterViewInit {
                 }
               );
         break;
-        case QualiteEnum.approvisionnement:
-          this.service.allApprovisionnements$.subscribe(
-                (data)=> {
-                  this.chartConfig.labels = data.map(element => element.libelle);
-                }
-              );
-        break;
+        // case QualiteEnum.approvisionnement:
+        //   this.service.allApprovisionnements$.subscribe(
+        //         (data)=> {
+        //           this.chartConfig.labels = data.map(element => element.libelle);
+        //         }
+        //       );
+        // break;
       default:
         this.chartConfig.labels = null;
     }

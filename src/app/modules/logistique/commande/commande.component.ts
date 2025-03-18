@@ -50,7 +50,7 @@ export class CommandeComponent extends EditableListComponent{
     ))
     titleservice.setTitle('commandes');
     this.modalService = modalService;
-    this.dataHelper.relations = ['visi_materiel','visi_affectation_commande_materiel_personnes.personne_inscription'];
+    this.dataHelper.relations = ['cr_coordonnee','visi_materiel','visi_affectation_commande_materiel_personnes.personne_inscription'];
   }
 
   onSetSelected(commande: IMaterielCommande = null) {

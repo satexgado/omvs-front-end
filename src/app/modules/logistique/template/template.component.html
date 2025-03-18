@@ -33,16 +33,16 @@
           <div class="row mb-4 animated slideInUp">
             <div class="col-md-12">
               <div class="d-sm-flex align-items-center justify-content-start bg-white shadow-sm pt-2 pb-2 subMenu">
-                <a routerLink="/logistique/materiel"  routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/logistique/materiel"  routerLinkActive #materiel="routerLinkActive" [class.text-secondary]="!materiel.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-film-alt"></i> Materiels
                 </a>
-                <a routerLink="/logistique/suivie" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/logistique/suivie" routerLinkActive #suivi="routerLinkActive" [class.text-secondary]="!suivi.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                   <i class="fas fa-bell-on"></i> Suivi du matériel
                 </a>
-                <a routerLink="/logistique/besoin" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                <a routerLink="/logistique/besoin" routerLinkActive #besoin="routerLinkActive" [class.text-secondary]="!besoin.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                     <i class="fas fa-image"></i> Besoins Matériels
                   </a>
-                  <a routerLink="/logistique/inventaire" routerLinkActive="border-bottom-primary" queryParamsHandling="merge" class="d-none d-sm-inline-block mr-3 ml-3 text-secondary">
+                  <a routerLink="/logistique/inventaire" routerLinkActive #inventaire="routerLinkActive" [class.text-secondary]="!inventaire.isActive"  class="d-none d-sm-inline-block mr-3 ml-3">
                     <i class="fas fa-rss"></i> Inventaires
                   </a>
               </div>

@@ -9,7 +9,7 @@ enum GroupEnum {
   carburant = 'Carburant',
   coordonnee = 'Coordonnee',
   coupure = 'Coupure',
-  approvisionnement = 'Approvisionnement',
+  // approvisionnement = 'Approvisionnement',
 }
 
 enum QualiteEnum {
@@ -18,7 +18,7 @@ enum QualiteEnum {
   carburant = 'Carburant',
   coordonnee = 'Coordonnee',
   coupure = 'Coupure',
-  approvisionnement = 'Approvisionnement',
+  // approvisionnement = 'Approvisionnement',
   valeur = 'Valeur',
 }
 
@@ -38,7 +38,7 @@ export class DashboardBonCarburantEntrantComponent implements OnInit {
   groupeSelect = [
     {libelle: GroupEnum.carburant, id: null},
     {libelle: GroupEnum.coupure},
-    {libelle: GroupEnum.approvisionnement},
+    // {libelle: GroupEnum.approvisionnement},
     {libelle: GroupEnum.coordonnee}
   ];
 
@@ -46,7 +46,7 @@ export class DashboardBonCarburantEntrantComponent implements OnInit {
     {libelle: QualiteEnum.annee},
     {libelle: QualiteEnum.carburant, id: null},
     {libelle: QualiteEnum.coupure},
-    {libelle: QualiteEnum.approvisionnement},
+    // {libelle: QualiteEnum.approvisionnement},
     {libelle: QualiteEnum.mois},
     {libelle: QualiteEnum.coordonnee},
     {libelle: QualiteEnum.valeur}

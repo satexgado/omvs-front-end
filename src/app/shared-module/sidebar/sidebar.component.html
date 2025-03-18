@@ -14,6 +14,32 @@
   {{'MODULES' | translate}}
 </div>
 
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/annuaire" routerLinkActive="active">
+    <i class="fas fa-fw fa-address-card"></i>
+    <span>Annuaire</span>
+  </a>
+</li>
+
+<!-- <li  class="nav-item">
+  <a class="nav-link" routerLink="/mission/billet" routerLinkActive="active">
+    <i class="fas fa-fw fa-plane-departure"></i>
+    <span>{{'billetAvion' | translate}}</span>
+  </a>
+</li> -->
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/bon-carburant" routerLinkActive="active">
+    <i class="fas fa-fw fa-gas-pump"></i>
+    <span>Bon de Carburant</span>
+  </a>
+</li>
+
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/mission/evaluation" routerLinkActive="active">
+    <i class="fas fa-fw fa-comment-alt "></i>
+    <span>{{'EVALUATION' | translate}}</span></a>
+</li>
 
 <li class="nav-item" routerLinkActive="active">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseF" aria-expanded="true"
@@ -31,49 +57,18 @@
 </li>
 
 <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/transport" routerLinkActive="active">
-    <i class="fas fa-fw fa-car"></i>
-    <span>{{'TRANSPORT' | translate}}</span>
-  </a>
-</li>
-
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/bon-carburant" routerLinkActive="active">
-    <i class="fas fa-fw fa-gas-pump"></i>
-    <span>Bon de Carburant</span>
-  </a>
-</li>
-
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/annuaire" routerLinkActive="active">
-    <i class="fas fa-fw fa-address-card"></i>
-    <span>Annuaire</span>
-  </a>
-</li>
-
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
   <a class="nav-link" routerLink="/logistique" routerLinkActive="active">
     <i class="fas fa-fw fa-boxes"></i>
     <span>Logistique</span>
   </a>
 </li>
 
-
-<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item" routerLinkActive="active">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
-    aria-controls="collapseFour">
-    <i class="fas fa-fw fa-user-circle"></i>
-    <span>{{'RH' | translate}}</span>
+<li *ngIf="[1].includes(profile.user_type_id)" class="nav-item">
+  <a class="nav-link" routerLink="/mission" routerLinkActive="active">
+    <i class="fas fa-fw fa-hiking"></i>
+    <span>{{'myMissions' | translate}}</span>
   </a>
-  <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" routerLink="/rh/departement">{{'DEPARTEMENT' | translate}}</a>
-      <a class="collapse-item" routerLink="/rh/poste">{{'POSTE' | translate}}</a>
-      <a class="collapse-item" routerLink="/rh">{{'PERSONNEL' | translate}}</a>
-    </div>
-  </div>
 </li>
-
 
 <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item" routerLinkActive="active">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
@@ -90,27 +85,27 @@
   </div>
 </li>
 
-
-<li *ngIf="[1].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/mission" routerLinkActive="active">
-    <i class="fas fa-fw fa-hiking"></i>
-    <span>{{'myMissions' | translate}}</span>
-  </a>
-</li>
-
-<!-- <li  class="nav-item">
-  <a class="nav-link" routerLink="/mission/billet" routerLinkActive="active">
-    <i class="fas fa-fw fa-plane-departure"></i>
-    <span>{{'billetAvion' | translate}}</span>
-  </a>
-</li> -->
-
 <li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item">
-  <a class="nav-link" routerLink="/mission/evaluation" routerLinkActive="active">
-    <i class="fas fa-fw fa-comment-alt "></i>
-    <span>{{'EVALUATION' | translate}}</span></a>
+  <a class="nav-link" routerLink="/transport" routerLinkActive="active">
+    <i class="fas fa-fw fa-car"></i>
+    <span>{{'TRANSPORT' | translate}}</span>
+  </a>
 </li>
 
+<li *ngIf="[2, 3, 4, 5].includes(profile.user_type_id)" class="nav-item" routerLinkActive="active">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+    aria-controls="collapseFour">
+    <i class="fas fa-fw fa-user-circle"></i>
+    <span>{{'RH' | translate}}</span>
+  </a>
+  <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" routerLink="/rh/departement">{{'DEPARTEMENT' | translate}}</a>
+      <a class="collapse-item" routerLink="/rh/poste">{{'POSTE' | translate}}</a>
+      <a class="collapse-item" routerLink="/rh">{{'PERSONNEL' | translate}}</a>
+    </div>
+  </div>
+</li>
 
 
 

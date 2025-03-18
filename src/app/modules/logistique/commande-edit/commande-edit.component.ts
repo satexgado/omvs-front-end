@@ -11,6 +11,8 @@ import { IMaterielCommande, MaterielCommande } from 'src/app/core/models/materie
 import { MaterielCommandeFactory } from 'src/app/core/services/materiel-commande';
 import { NgbDateToStringAdapter } from 'src/app/shared/components/custom-input/ngb-datetime/ngb-date-to-string-adapter';
 import { MaterielService } from 'src/app/services/materiel.service';
+import { EditComponent as CoordonneeEditComponent} from 'src/app/modules/fournisseur/coordonnee/edit/edit.component';
+import { CrCoordonneeFactory } from 'src/app/core/services/cr-coordonnee';
 
 @Component({
   selector: 'app-commande-edit',
@@ -25,7 +27,14 @@ export class CommandeEditComponent extends BaseEditComponent implements OnInit  
   @Input() item: IMaterielCommande = new MaterielCommande();
   allMateriels$ = this.materielService.allData;
   materielId: number;
-
+protected readonly allCoordonnees$ = new CrCoordonneeFactory().list(
+    new QueryOptions().setSort([new Sort('libelle', 'asc')])
+  ).pipe(
+    shareReplay(1),
+    map(data => data.data)
+  );
+    readonly coordonneeEditComponent  = CoordonneeEditComponent;
+  
   constructor(
     cdRef:ChangeDetectorRef,
     protected cacheService: CacheService,
@@ -48,6 +57,7 @@ export class CommandeEditComponent extends BaseEditComponent implements OnInit  
     return this.formBuilder.group({
       'materiel_id': [materielId],
       'quantite': [item.quantite, Validators.required],
+      'coordonnee_id': [item.coordonnee_id, Validators.required],
       'prix': [item.prix, Validators.required],
       'date_commande':  [item.date_commande, Validators.required],
       // 'libelle': [item.libelle, Validators.required],

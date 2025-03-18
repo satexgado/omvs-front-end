@@ -8,6 +8,8 @@ import { TypeCoupureComponent } from './type-coupure/type-coupure.component';
 import { TypeEngagementComponent } from './type-engagement/type-engagement.component';
 import { AnalyseBonCarburantComponent } from './analyse/analyse.component';
 import { CarteAbonnementCarburantComponent } from './carte-abonnement/carte-abonnement.component';
+import { BonCarburantComponent } from './bon-carburant/bon-carburant.component';
+import { BonCarburantMasqueComponent } from './bon-carburant-masque/bon-carburant-masque.component';
 
 const butsRoutes: Routes = [
   {
@@ -15,6 +17,20 @@ const butsRoutes: Routes = [
     children:[
       {
         path:'', pathMatch:'full', redirectTo:'entrant'
+      },
+      {
+        path: 'masque',
+        data: {
+          icon: 'fa-receipt', title:'Masque Bon de carburant'
+        },
+        component:BonCarburantMasqueComponent
+      },
+      {
+        path: 'stock',
+        data: {
+          icon: 'fa-warehouse', title:'Stock Bon de carburant'
+        },
+        component:BonCarburantComponent
       },
       {
         path: 'entrant',

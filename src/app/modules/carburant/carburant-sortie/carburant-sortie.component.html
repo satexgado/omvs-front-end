@@ -7,37 +7,35 @@
             <table class="table table-hover text-nowrap mb-0" *ngIf="items.length; else noItem">
                 <thead class="tx-10 tx-uppercase">
                     <tr>
-                        <th scope="col">Carburant</th>
-                        <th scope="col">Coupure</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Qte en litre</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Bénéficiaire</th>
-                        <th scope="col">Type engagement</th>
-                        <th scope="col">autorisé par</th>
-                        <th scope="col">Action</th>
+                        <th>Bon</th>
+                        <th>Date d'expiration</th>
+                        <th>Date de sortie</th>
+                        <th>Nombre</th>
+
+                        <th>Bénéficiaire</th>
+                        <th>Type engagement</th>
+                        <th>autorisé par</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let carburant of items;trackBy: dataHelper.trackByFn">
                         <td>
-                            {{carburant.carburant?.libelle}}
+                            {{carburant.bon_carburant?.masque_bon_carburant?.libelle}}
                         </td>
                         <td>
-                            {{carburant.coupure?.libelle}}
-                        </td>
-                        <td>
-                            {{carburant.nombre_coupure}}
-                        </td>
-                        <td>
-                            {{carburant.quantite_litre}}
+                            {{carburant.bon_carburant?.date_expiration | date:'d MMM y'}}
                         </td>
                         <td>
                             {{carburant.date_reception | date:'d MMM y'}}
                         </td>
+                        <td>
+                            {{carburant.nombre_coupure}}
+                        </td>
                         <td> 
-                            <a [routerLink]="['/transport/mes-autos',carburant.auto_id]"></a>
-                            {{carburant.automobile?.libelle}}
+                            <a [routerLink]="['/transport/mes-autos',carburant.auto_id]">
+                                {{carburant.automobile?.libelle}}
+                            </a>
                         </td>
                         <td>{{carburant.engagement?.libelle}}</td>
                         <td class=" tx-center ">

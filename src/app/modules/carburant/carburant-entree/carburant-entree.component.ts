@@ -31,10 +31,9 @@ export class CarburantEntreeComponent extends EditableListComponent {
     titleservice.setTitle('mes carburant-entree');
     this.modalService = modalService;
     this.dataHelper.relations = [
-      "cr_coordonnee",
-      "trans_type_carburant",
-      "trans_bon_type_coupure",
-      "trans_bon_approvisionnement"
+      "trans_bon_carburant.trans_bon_carburant_masque.cr_coordonnee",
+      "trans_bon_carburant.trans_bon_carburant_masque.trans_type_carburant",
+      "trans_bon_carburant.trans_bon_carburant_masque.trans_type_coupure"  
     ];
   }
 

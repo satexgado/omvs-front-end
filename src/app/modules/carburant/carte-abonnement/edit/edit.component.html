@@ -39,12 +39,14 @@
             </div>
             <div class="formSep form-group  d-flex justify-content-center pb-0  pt-3" *ngIf="!proprietaire">
                 <div class="col-12 col-sm-10">
-                    <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'personnel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'personnel_id'), 'is-valid': isValid('personnel_id')}">
-                        <ng-container *ngFor="let item of (allInscriptions$ | async)">
-                            <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
-                        </ng-container>
-                    </select>
-                    <span class="custom-span">Beneficiaire</span>
+                    <div class="input-group">
+                        <select class="custom-select" mySelectFirstOption name="preteur" [formControlName]="'personnel_id'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'personnel_id'), 'is-valid': isValid('personnel_id')}">
+                            <ng-container *ngFor="let item of (allInscriptions$ | async)">
+                                <option [ngValue]="item.id">{{item.name}} ({{item?.departement?.name}}-{{item?.poste?.name}})</option>
+                            </ng-container>
+                        </select>
+                        <span class="custom-span">Beneficiaire</span>
+                    </div>
                     <div *ngIf="shouldShowRequiredError('personnel_id')" class="invalid-feedback">veillez choisir le conducteur.</div>
                 </div>
             </div>

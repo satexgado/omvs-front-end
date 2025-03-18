@@ -627,3 +627,30 @@ CREATE TABLE `trans_entretien` (
   KEY `automobile_id` (`automobile_id`),
   KEY `type_entretien_id` (`type_entretien_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+
+DROP TABLE IF EXISTS `trans_bon_carburant_masque`;
+CREATE TABLE IF NOT EXISTS `trans_bon_carburant_masque` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(3000) DEFAULT NULL,
+  `type_carburant` int(11) DEFAULT NULL,
+  `type_coupure` int(11) DEFAULT NULL,
+  `coordonnee_id` int(11) DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `trans_bon_carburant`;
+CREATE TABLE IF NOT EXISTS `trans_bon_carburant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `masque_bon_carburant` int(11) DEFAULT NULL,
+  `quantiteEnStock ` int(11) DEFAULT NULL,
+  `date_expiration` date DEFAULT NULL,
+  `inscription` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`masque_bon_carburant`) REFERENCES `trans_bon_carburant_masque`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

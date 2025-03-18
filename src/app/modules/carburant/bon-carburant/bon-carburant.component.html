@@ -12,33 +12,29 @@
                         <th scope="col">Coupure</th>
                         <th scope="col">Fournisseur</th>
                         <th scope="col">Date d'expiration</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Date livraison</th>
+                        <th scope="col">Quantite</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let carburant of items;trackBy: dataHelper.trackByFn">
                         <td>
-                            {{carburant.bon_carburant?.masque_bon_carburant?.libelle}}
+                            {{carburant.masque_bon_carburant?.libelle}}
                         </td>
                         <td>
-                            {{carburant.bon_carburant?.masque_bon_carburant?.carburant?.libelle}}
+                            {{carburant.masque_bon_carburant?.carburant?.libelle}}
                         </td>
                         <td>
-                            {{carburant.bon_carburant?.masque_bon_carburant?.coupure?.libelle}}
+                            {{carburant.masque_bon_carburant?.coupure?.libelle}}
                         </td>
                         <td>
-                            {{carburant.bon_carburant?.masque_bon_carburant?.coordonnee?.libelle}}
+                            {{carburant.masque_bon_carburant?.coordonnee?.libelle}}
                         </td>
                         <td>
-                            {{carburant.bon_carburant?.date_expiration | date:'d MMM y'}}
+                            {{carburant.date_expiration | date:'d MMM y'}}
                         </td>
                         <td>
-                            {{carburant.nombre_coupure}}
-                        </td>
-                        <td>
-                            {{carburant.date_emission | date:'d MMM y'}}
+                            {{carburant.quantiteEnStock}}
                         </td>
                         <td>
                             <!-- <a class="table-action cursor-pointer  mr-2" (click)="openModal(content, carburant)"><i class="fal fa-search tx-second "></i></a> -->

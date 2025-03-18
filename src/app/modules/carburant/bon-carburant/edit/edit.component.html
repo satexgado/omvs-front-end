@@ -1,0 +1,35 @@
+<div class="modal-header bg-light ">
+    <h5 class="modal-title title">{{title}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseModal('Cross click')">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<ng-container *ngIf="editForm">
+    <div class="modal-body" [ngClass]="{'loading': isLoading}">
+        <form class="custom-placeholder" [formGroup]="editForm">
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 mb-3">
+                    <app-select-formgroup [small]="true" label="masque" formControlName="masque_bon_carburant_id" [selected]="editForm.get('masque_bon_carburant_id').value" [dataSource]="allBonCarburantMasques$" [createModal]="bonCarburantMasqueEditComponent"></app-select-formgroup>
+                    <div *ngIf="shouldShowRequiredError('masque_bon_carburant_id')" class="invalid-feedback">veillez choisir.</div>
+                </div>
+            </div>
+            <div class="formSep form-group  d-flex justify-content-center pb-0 pt-3">
+                <div class="col-10 col-md-5 mb-3">
+                    <input class="form-control" name="dp" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" [formControlName]="'date_expiration'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'date_expiration'), 'is-valid': isValid('date_expiration')}" required>
+                    <span class="custom-span" i18n>date d'expiration</span>
+                    <div *ngIf="shouldShowRequiredError('date_expiration')" class="invalid-feedback">veillez saisir la date.</div>    
+                </div>
+                <div class="col-10 col-md-5 mb-3">
+                    <input type="number" class="form-control" required [formControlName]="'quantiteEnStock'" [ngClass]="{'is-invalid': shouldShowRequiredError( 'quantiteEnStock'), 'is-valid': isValid('quantiteEnStock')}" name="quantiteEnStock" required>
+                    <span class="custom-span">Quantite en stock</span>
+                    <div *ngIf="shouldShowRequiredError('quantiteEnStock')" class="invalid-feedback">veillez saisir la quantite.</div>    
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary mr-3" (click)="onSubmit()" [disabled]="shouldDisableSubmit()">Enregistrer et Quitter</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onSubmit(false)" [disabled]="shouldDisableSubmit()">Appliquer</button>
+        <button type="button" class="btn btn-sm btn-link mr-3" (click)="ngOnInit()">réinitialiser</button>
+    </div>
+</ng-container>

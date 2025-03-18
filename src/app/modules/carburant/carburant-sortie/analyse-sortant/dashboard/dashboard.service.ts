@@ -69,7 +69,7 @@ export class DashboardService {
 
 get allAutomobiles$()  {
   const queryOptions = new QueryOptions();
-  queryOptions.sort = [new Sort('libelle','asc')];
+  queryOptions.sort = [new Sort('designation','asc')];
   if (!this._cacheAutomobiles$) {
     this._loading$.next(true);
       this._cacheAutomobiles$ = new AutomobileFactory().list(queryOptions).pipe(
